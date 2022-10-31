@@ -11,7 +11,7 @@ const User = require("../../models/User");
 
 // @route POST api/users/register
 // @desc Register user
-// @access Public
+// @access Publicgit config --global user.name 
 router.post("/register", (req, res) => {
   // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
