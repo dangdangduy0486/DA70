@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import MarketsDetails from "../components/MarketsDetails"
+import MarketsDetails from "../components/MarketsDetails";
+import NavBar from "../components/NavBar";
 
 const Home = () => {
   const [markets, setMarkets] = useState(null);
-  const url =
-    "/api/markets";
+  const url = "/api/markets";
   useEffect(() => {
     axios
       .get(url)
@@ -17,33 +17,27 @@ const Home = () => {
       });
   }, []);
   console.log(markets);
+  //   function ObjectLength(object) {
+  //     var length = 0;
+  //     for (var key in object) {
+  //       if (object.hasOwnProperty(key)) {
+  //         ++length;
+  //       }
+  //     }
 
+  //     return length;
+  //   }
+  if (markets != null) {
+    console.log(markets.length);
+  }
   if (!markets) return null;
   return (
     <>
-      {/* <div className="card">
-        <div className="top">
-          <img src={markets[0].image} alt="" />
-        </div>
-        <div>
-          <h5>{markets[0].name}</h5>
-          <p>${markets[0].current_price.toLocaleString()}</p>
-        </div>
-
-        {markets[0].price_change_percentage_24h < 0 ? (
-          <span className="red">
-            {markets[0].price_change_percentage_24h.toFixed(2)}%
-          </span>
-        ) : (
-          <span className="green">
-            {markets[0].price_change_percentage_24h.toFixed(2)}%
-          </span>
-        )}
-      </div> */}
+      <NavBar />
       <div>
         {markets &&
           markets.map((market) => (
-            <MarketsDetails key={market.id} market={market}  />
+            <MarketsDetails key={market.id} market={market} />
           ))}
       </div>
     </>

@@ -1,5 +1,22 @@
+import axios from 'axios';
 import '../Css/markestDetails.css'
+
 const MarketsDetails = ({ market }) => {
+
+  const handleClick = (value) => {
+    const url = 'api/cart'
+    axios({
+      method: 'post',
+      url: url,
+      data: {
+        name: value.name,
+        price: value.current_price,
+        amount: '1'
+      }
+    });
+    
+    console.log(value)
+  }
   return (    
     <table className="table table-hover">
       <thead>
@@ -32,6 +49,11 @@ const MarketsDetails = ({ market }) => {
           </td>
           <td>
             <p>{market.market_cap_change_24h}</p>
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary" onClick={() => handleClick(market)} value={market}>
+                Buy
+            </button>
           </td>
         </tr>
       </tbody>
