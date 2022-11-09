@@ -35,8 +35,13 @@ app.use("/api/markets", markets);
 const currencyRoute = require('./routes/currencyRoute');
 app.use("/api/currency", currencyRoute)
 
+//cart
 const cartRoute = require("./routes/cartRoute");
-app.use("/api/cart", cartRoute)
+app.use("/api/cart", cartRoute);
+
+//trending coin
+const trendingCoinsRoute = require("./routes/trendingCoinsRoute");
+app.use("/api/trending", trendingCoinsRoute);
 
 app.listen(process.env.PORT, '127.0.0.1', () => {
     console.log(`Server is listening on port http://localhost:${process.env.PORT}...`);

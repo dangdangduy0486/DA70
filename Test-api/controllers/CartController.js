@@ -29,6 +29,7 @@ const createCart = async (req, res) => {
         name,
         price,
         amount,
+        total
       });
       res.status(200).json(cartItem);
     } catch (error) {

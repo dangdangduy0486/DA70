@@ -1,18 +1,16 @@
 const config = require("../config");
 const axios = require("axios");
-const { response } = require("express");
 
 const axiosOptions = {
   headers: {
     "accept": "application/json",
     "Content-Type": "application/json; utf-8",
-    "FTX-KEY": "ArsOY7dObLjdWCCxDvC50v3v6tFhqyMlyKSo-tOp",
   },
 };
 
-const getAllMarkets = async () => {
+const getAllMarkets = async (vs_currency, page) => {
   const res = await axios
-    .get(config.FTX_URL(), axiosOptions)
+    .get(config.MARKET_URL(vs_currency, page), axiosOptions)
     .then((response) => {
       return response;
     })
@@ -22,10 +20,10 @@ const getAllMarkets = async () => {
   return res.data;
 };
 const marketsParser = async (req, res) => {
-    // if(!req.query.params){
-    //     return res.status(403).json({ error: "missing params" })
-    // }
-    const marketsData = await getAllMarkets();
+    if(!req.query.vs_currency, !req.query.page){
+        return res.status(403).json({ error: "missing something" })
+    }
+    const marketsData = await getAllMarkets(req.query.vs_currency, req.query.page);
     return res.status(200).json(marketsData);
 }
 module.exports = {

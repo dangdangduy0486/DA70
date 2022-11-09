@@ -11,6 +11,9 @@ const CartSchema = new Schema({
     amount: {
         type: String
     },
+    total: {
+        type: String
+    }
 
 })
 
