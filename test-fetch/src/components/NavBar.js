@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CurrencyDetails from "./CurrencyDetails";
+// import CurrencyDetails from "./CurrencyDetails";
 
-const NavBar = () => {
+const NavBar = (props) => {
   const [currencies, setCurrencies] = useState(null);
+
+  
+  // const [daTa, setData] = useState(null);
+  const handleSelectCurrency = (value) => {
+    console.log(value.symbol)
+    props.currencyFr(value.symbol)
+  }
 
   const url = "/api/currency";
   useEffect(() => {
@@ -16,28 +23,32 @@ const NavBar = () => {
         console.log(error);
       });
   }, []);
-  console.log(currencies);
+
   if (!currencies) return null;
   console.log(currencies);
+
   return (
     <>
       <div className="dropdown">
         <button
-          className="btn btn-secondary dropdown-toggle"
+          className="btn btn-outline-primary"
           type="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          Dropdown button
+          {props.vsCurrency.toUpperCase()}
         </button>
         <ul className="dropdown-menu">
-          {currencies &&
-            currencies.map((currency) => (
-              <CurrencyDetails key={currency._id} currency={currency} />
-            ))}
+        {currencies &&
+        currencies.map((currency) => (
+          <li className="dropdown-item">
+            <button onClick={() => handleSelectCurrency(currency)} value={currency}>
+              {currency.symbol} - {currency.name}
+            </button>
+          </li>
+      ))}
         </ul>
       </div>
-      <h1>hello</h1>
     </>
   );
 };

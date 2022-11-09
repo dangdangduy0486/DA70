@@ -1,30 +1,20 @@
-const CurrencyDetails = ( {currency} ) => {
-  //   currencies.forEach((currency) => {
-  //     const category = [];
-  //     category.push(currency.category);
-  //     // console.log(category)
-  //     category.map((ca) => console.log(ca));
-  //   });
-  // let cate = []
-  // cate.push(currency)
-  //   const categorizedData = cate.map((acc, curr) => {
-  //     const { category, name, symbol } = curr;
-
-  //     if (!acc[category]) {
-  //       acc[category] = {
-  //         items: [],
-  //       };
-  //     }
-  //     acc[category].items.push(name, symbol);
-
-  //     console.log('categorizedData', acc);
-  //     return acc;
-  //   }, {});
-  //   if (!categorizedData) return null;
+const CurrencyDetails = (  { currencies } ) => {
+  // props.currencyFr('hello')
+  const handleSelectCurrency = (value) => {
+    console.log(value.symbol)
+    // props.currencyFr('value.symbol')
+  }
 
   return (
     <>
-      <li className="dropdown-item"><p>{currency.symbol} - {currency.name}</p></li>
+      {currencies &&
+        currencies.map((currency) => (
+          <li className="dropdown-item">
+            <button onClick={() => handleSelectCurrency(currency)} value={currency}>
+              {currency.symbol} - {currency.name}
+            </button>
+          </li>
+      ))}
     </>
   );
 };
