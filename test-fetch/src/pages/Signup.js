@@ -1,167 +1,160 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../Css/signup.css";
 
 const Signup = () => {
-  const history = useNavigate();
-  const [inputs, setInputs] = useState({
-    name: "",
-    email: "",
-    password: "",
-    repeatPassword: "",
+  //
+
+  function Valiue(options) {
+    function validate(inputElement, rule) {
+      var errorMessage =
+        inputElement.parentElement.querySelector(".form-message");
+      var error = rule.test(inputElement.value);
+      if (error) {
+        errorMessage.innerText = error;
+        inputElement.parentElement.classList.add("invalid");
+      } else {
+        errorMessage.innerText = "";
+        inputElement.parentElement.classList.remove("invalid");
+      }
+    }
+    //get element of form
+    var formValue = document.querySelector(options.form);
+    if (formValue) {
+      options.rulues.forEach(function (rule) {
+        var inputElement = formValue.querySelector(rule.selector);
+        if (inputElement) {
+          inputElement.onblur = function () {
+            validate(inputElement, rule);
+            console.log("hihi");
+          };
+          inputElement.oninput = function () {
+            var errorMessage =
+              inputElement.parentElement.querySelector(".form-message");
+            errorMessage.innerText = "";
+            inputElement.parentElement.classList.remove("invalid");
+          };
+        }
+      });
+    }
+  }
+  Valiue.isRequired = function (selector) {
+    return {
+      selector: selector,
+      test: function (value) {
+        return value.trim() ? undefined : "Please enter your information!";
+      },
+    };
+  };
+  Valiue.isEmail = function (selector) {
+    return {
+      selector: selector,
+      test: function (value) {
+        var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return regex.test(value) ? undefined : "Please enter your email";
+      },
+    };
+  };
+  Valiue.minLength = function (selector, min) {
+    return {
+      selector: selector,
+      test: function (value) {
+        return value.length >= min
+          ? undefined
+          : ` Password must have more than ${min} characters.  `;
+      },
+    };
+  };
+  Valiue.checkPassword = function (selector, getPassword) {
+    return {
+      selector: selector,
+      test: function (value) {
+        return value === getPassword() ? undefined : "Value not same";
+      },
+    };
+  };
+  Valiue({
+    form: "#form_signup",
+    rulues: [
+      Valiue.isRequired("#fullname"),
+      Valiue.isRequired("#password"),
+      Valiue.isRequired("#email"),
+      Valiue.isEmail("#email"),
+      Valiue.minLength("#password", 8),
+      Valiue.checkPassword("#password_confi", function () {
+        return document.querySelector("#password").value;
+      }),
+    ],
   });
 
-  const handleChange = (e) => {
-    setInputs((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const url = "api/user/signup";
-
-  const signUpRequest = async () => {
-    const res = await axios
-      .post(url, {
-        name: inputs.name,
-        email: inputs.email,
-        password: inputs.password,
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    const data = await res.data;
-    return data;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (inputs.password === inputs.repeatPassword) {
-      signUpRequest().then(() => history("/login"));
-    }
-  };
-
   return (
-    <>
-      <section
-        className="vh-100% bg-image"
-        style={{
-          backgroundImage:
-            "url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp')",
-        }}
-      >
-        <div className="mask d-flex align-items-center h-100 gradient-custom-3">
-          <div className="container h-100">
-            <div className="row d-flex justify-content-center align-items-center h-100">
-              <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-                <div className="card" style={{ borderRadius: "15px" }}>
-                  <div className="card-body p-5">
-                    <h2 className="text-uppercase text-center mb-5">
-                      Create an account
-                    </h2>
-
-                    <form onSubmit={handleSubmit}>
-                      <div className="form-outline mb-4">
-                        <input
-                          type="text"
-                          id="form3Example1cg"
-                          className="form-control form-control-lg"
-                          onChange={handleChange}
-                          value={inputs.name}
-                          name="name"
-                        />
-                        <label className="form-label" htmlFor="form3Example1cg">
-                          Your Name
-                        </label>
-                      </div>
-
-                      <div className="form-outline mb-4">
-                        <input
-                          type="email"
-                          id="form3Example3cg"
-                          className="form-control form-control-lg"
-                          onChange={handleChange}
-                          value={inputs.email}
-                          name="email"
-                        />
-                        <label className="form-label" htmlFor="form3Example3cg">
-                          Your Email
-                        </label>
-                      </div>
-
-                      <div className="form-outline mb-4">
-                        <input
-                          type="password"
-                          id="form3Example4cg"
-                          className="form-control form-control-lg"
-                          onChange={handleChange}
-                          value={inputs.password}
-                          name="password"
-                        />
-                        <label className="form-label" htmlFor="form3Example4cg">
-                          Password
-                        </label>
-                      </div>
-
-                      <div className="form-outline mb-4">
-                        <input
-                          type="password"
-                          id="form3Example4cdg"
-                          className="form-control form-control-lg"
-                          onChange={handleChange}
-                          value={inputs.repeatPassword}
-                          name="repeatPassword"
-                        />
-                        <label
-                          className="form-label"
-                          htmlFor="form3Example4cdg"
-                        >
-                          Repeat your password
-                        </label>
-                      </div>
-
-                      <div className="form-check d-flex justify-content-center mb-5">
-                        <input
-                          className="form-check-input me-2"
-                          type="checkbox"
-                          value=""
-                          id="form2Example3cg"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="form2Example3g"
-                        >
-                          I agree all statements in{" "}
-                          <a href="#!" className="text-body">
-                            <u>Terms of service</u>
-                          </a>
-                        </label>
-                      </div>
-
-                      <div className="d-flex justify-content-center">
-                        <button
-                          type="submit"
-                          className="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
-                        >
-                          Register
-                        </button>
-                      </div>
-
-                      <p className="text-center text-muted mt-5 mb-0">
-                        Have already an account?{" "}
-                        <a href="/login" className="fw-bold text-body">
-                          <u>Login here</u>
-                        </a>
-                      </p>
-                    </form>
-                  </div>
-                </div>
+    <section className="main">
+      <div className="container h-100">
+        <div className="row d-flex justify-content-center align-items-center h-100">
+          <div className="col-12 col-md-9 col-lg-7 col-xl-6">
+            <form method="POST" className="form" id="form_signup">
+              <h3 className="heading text-center">Sign up</h3>
+              <p className="infor">Welcome to DBcoin</p>
+              <div className="spacer"></div>
+              <div className="form-group">
+                <label htmlFor="fullname" className="form-lable">
+                  Your name
+                </label>
+                <input
+                  id="fullname"
+                  name="fullname"
+                  type="text"
+                  placeholder="Enter your fullname"
+                  className="form-control"
+                ></input>
+                <span className="form-message"></span>
               </div>
-            </div>
+              <div className="form-group">
+                <label htmlFor="email" className="form-lable">
+                  Your email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="text"
+                  placeholder="Enter your email"
+                  className="form-control"
+                ></input>
+                <span className="form-message"></span>
+              </div>
+              <div className="form-group">
+                <label htmlFor="password" className="form-lable">
+                  Your password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  className="form-control"
+                ></input>
+                <span className="form-message"></span>
+              </div>
+              <div className="form-group">
+                <label htmlFor="password_confi" className="form-lable">
+                  Reenter your password
+                </label>
+                <input
+                  id="password_confi"
+                  name="password_confi"
+                  type="password"
+                  placeholder="Re-enter your password"
+                  className="form-control"
+                ></input>
+                <span className="form-message "></span>
+              </div>
+              <button className="form-submit">Sign up</button>
+            </form>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 
