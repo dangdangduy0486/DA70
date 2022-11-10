@@ -1,7 +1,41 @@
-img{
+:root {
+    --yellwo-color: rgb(255, 193, 7);
+}
+
+.markets{
+    margin-top: 56px;
+}
+img {
     width: 20px;
     height: 20px;
 }
-table{
+
+table {
     table-layout: fixed;
+}
+
+.imgCoin {
+    max-width: 2rem;
+    margin-right: 1em;
+}
+
+/* tr .contact {
+    display: flex;
+    justify-content: space-around;
+    padding: auto;
+  } */
+tr .contact button {
+    background-color: var(--yellwo-color);
+    color: white;
+    border: none;
+    margin-right: 1em;
+}
+
+tr .contact button:hover {
+    background-color: white;
+    color: black;
+}
+
+#market_rank {
+    width: 20px;
 }

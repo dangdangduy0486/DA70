@@ -2,30 +2,25 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import MarketsDetails from "../components/MarketsDetails";
 import NavBar from "../components/NavBar";
-import TrendingCoins from "../components/TrendingCoins"
+// import TrendingCoins from "../components/TrendingCoins"
 import "../Css/home.css";
+import CurrencyDetails from "../components/CurrencyDetails";
 
 const Home = () => {
   const [markets, setMarkets] = useState("");
-  const [vsCurrency, setVsCurrency] = useState("usd"); //setVsCurrency
+  const [vsCurrency, setVsCurrency] = useState("usd");
   const [currentPage, setCurrentPage] = useState(1);
-  // vsCurrency = 'usd'
-  // currentPage = 1;
-
-  // const handleCurrency = (data) => {
-  //   console.log(data)
-  // }
 
   const callback = (childData) => {
-    setVsCurrency(vsCurrency => vsCurrency = childData)
-  }
-  
+    setVsCurrency((vsCurrency) => (vsCurrency = childData));
+  };
+
   const handlePreviousPage = () => {
-    setCurrentPage(currentPage => currentPage - 1);
+    setCurrentPage((currentPage) => currentPage - 1);
     console.log(currentPage);
   };
   const handleNextPage = () => {
-    setCurrentPage(currentPage => currentPage + 1);
+    setCurrentPage((currentPage) => currentPage + 1);
     console.log(currentPage);
   };
   const url = "/api/markets";
@@ -47,17 +42,15 @@ const Home = () => {
 
   if (!markets) return null;
   console.log(markets);
-  
-  var amt = 12345;
-  var usd = new Intl.NumberFormat("en-US", { style: "currency", "currency":"usd" }).format(amt)
-  console.log(usd)
+
   return (
     <>
-      <NavBar currencyFr={callback} vsCurrency={vsCurrency}/>
+      <NavBar />
       <hr />
-      <TrendingCoins />
-      <hr />
-      <MarketsDetails markets={markets} symbol={vsCurrency}/>
+      <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} />
+      {/* <TrendingCoins /> */}
+      {/* <hr /> */}
+      <MarketsDetails markets={markets} symbol={vsCurrency} />
       <hr />
       <div className="pagination d-flex justify-content-center">
         <button

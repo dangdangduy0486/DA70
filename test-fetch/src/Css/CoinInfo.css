@@ -1,0 +1,44 @@
+.coindetail {
+  padding-top: 56px;
+}
+.width {
+  max-width: 600px;
+  margin: 0 auto;
+  width: 90%;
+  border: 1px solid black;
+}
+.pageinfo {
+  padding: 40px 0;
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+.pageinfo img {
+  width: 80px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+.pageinfo h1 {
+  font-size: 2em;
+  margin-top: 0.8em;
+  font-weight: 900;
+}
+.show-details {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.show-details h2 {
+  font-size: 1.5em;
+  margin-bottom: 1.4em;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+.show-details .show-detail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+}
