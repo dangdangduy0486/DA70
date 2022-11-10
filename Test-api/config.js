@@ -7,7 +7,10 @@ const MARKET_URL = (vs_currency, page) => `https://api.coingecko.com/api/v3/coin
 
 const TRENDING_COIN_URL = () => `https://api.coingecko.com/api/v3/search/trending`
 
+const COIN_INFO_URL = (id) => `https://api.coingecko.com/api/v3/coins/${id}`
+ 
 module.exports = {
     MARKET_URL,
-    TRENDING_COIN_URL
+    TRENDING_COIN_URL,
+    COIN_INFO_URL
 }   

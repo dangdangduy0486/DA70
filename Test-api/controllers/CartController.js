@@ -9,7 +9,7 @@ const getAllcartItems = async (req, res) => {
 };
 
 const createCart = async (req, res) => {
-  const { name, price, amount } = req.body;
+  const { name, price, amount, total } = req.body;
   if (!name || !price || !amount) {
     return res.status(403).json({ error: "missing something" });
   }
