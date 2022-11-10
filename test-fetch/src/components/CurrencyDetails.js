@@ -29,7 +29,7 @@ const CurrencyDetails = (props) => {
     <div id="currencyDetails">
       <button
         type="button"
-        class="btn btn-primary"
+        className="btn btn-primary"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
         id="currencyDetails"
@@ -39,7 +39,7 @@ const CurrencyDetails = (props) => {
       <div
         className="modal fade"
         id="exampleModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
