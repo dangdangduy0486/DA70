@@ -7,10 +7,20 @@ const Signup = () => {
   //
 
   function Valiue(options) {
+    var selectorRules = {};
+    //ham thuc hien validate
     function validate(inputElement, rule) {
       var errorMessage =
         inputElement.parentElement.querySelector(".form-message");
-      var error = rule.test(inputElement.value);
+      var error;
+      //lay ra cac rules cua selector (console.log ra check)
+      var rules = selectorRules[rule.selector];
+      //lap qua tung rule va kiem tra
+      //neu co loi thi dung viec kiem tra
+      for (var i = 0; i < rules.length; i++) {
+        error = rules[i](inputElement.value);
+        if (error) break;
+      }
       if (error) {
         errorMessage.innerText = error;
         inputElement.parentElement.classList.add("invalid");
@@ -18,16 +28,47 @@ const Signup = () => {
         errorMessage.innerText = "";
         inputElement.parentElement.classList.remove("invalid");
       }
+      return !error;
     }
     //get element of form
     var formValue = document.querySelector(options.form);
     if (formValue) {
+      formValue.onsubmit = function (e) {
+        e.preventDefault();
+
+        var isFormValid = true;
+
+        options.rulues.forEach(function (rule) {
+          var inputElement = formValue.querySelector(rule.selector);
+          var isValid = validate(inputElement, rule);
+          if (!isValid) {
+            isFormValid = false;
+          }
+        });
+
+        if (isFormValid) {
+          if (typeof options.onSubmit === "function") {
+            var formInput = formValue.querySelectorAll("[name]");
+            var formVa = Array.from(formInput).reduce(function (values, input) {
+              values[input.name] = input.value;
+              return values;
+            }, {});
+            options.onSubmit(formVa);
+          }
+        }
+      };
+
+      //lap qua rules va excute
       options.rulues.forEach(function (rule) {
+        if (Array.isArray(selectorRules[rule.selector])) {
+          selectorRules[rule.selector].push(rule.test);
+        } else {
+          selectorRules[rule.selector] = [rule.test];
+        }
         var inputElement = formValue.querySelector(rule.selector);
         if (inputElement) {
           inputElement.onblur = function () {
             validate(inputElement, rule);
-            console.log("hihi");
           };
           inputElement.oninput = function () {
             var errorMessage =
@@ -37,55 +78,71 @@ const Signup = () => {
           };
         }
       });
+      console.log(selectorRules);
     }
   }
-  Valiue.isRequired = function (selector) {
+  Valiue.isRequired = function (selector, message) {
     return {
       selector: selector,
       test: function (value) {
-        return value.trim() ? undefined : "Please enter your information!";
+        return value.trim()
+          ? undefined
+          : message || "Please enter your information!";
       },
     };
   };
-  Valiue.isEmail = function (selector) {
+  Valiue.isEmail = function (selector, message) {
     return {
       selector: selector,
       test: function (value) {
         var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        return regex.test(value) ? undefined : "Please enter your email";
+        return regex.test(value)
+          ? undefined
+          : message || "Please enter your email";
       },
     };
   };
-  Valiue.minLength = function (selector, min) {
+  Valiue.minLength = function (selector, min, message) {
     return {
       selector: selector,
       test: function (value) {
         return value.length >= min
           ? undefined
-          : ` Password must have more than ${min} characters.  `;
+          : message || ` Password must have more than ${min} characters.  `;
       },
     };
   };
-  Valiue.checkPassword = function (selector, getPassword) {
+  Valiue.checkPassword = function (selector, getPassword, message) {
     return {
       selector: selector,
       test: function (value) {
-        return value === getPassword() ? undefined : "Value not same";
+        return value === getPassword()
+          ? undefined
+          : message || "Value not same";
       },
     };
   };
   Valiue({
     form: "#form_signup",
     rulues: [
-      Valiue.isRequired("#fullname"),
-      Valiue.isRequired("#password"),
+      Valiue.isRequired("#fullname", "Nhap ten di"),
       Valiue.isRequired("#email"),
       Valiue.isEmail("#email"),
+      Valiue.isRequired("#password"),
       Valiue.minLength("#password", 8),
-      Valiue.checkPassword("#password_confi", function () {
-        return document.querySelector("#password").value;
-      }),
+      Valiue.isRequired("#password_confi"),
+      Valiue.checkPassword(
+        "#password_confi",
+        function () {
+          return document.querySelector("#password").value;
+        },
+        "Mat khau khong chinh xac"
+      ),
     ],
+    onSubmit: function (data) {
+      console.log(data);
+      //call api
+    },
   });
 
   return (
