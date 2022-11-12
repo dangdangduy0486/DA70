@@ -50,9 +50,7 @@ const NavBar = () => {
               </Link>
               <Link
                 style={{ textDecoration: "none" }}
-                to="/signup
-            "
-              >
+                to="/signup">
                 <Button variant="outline-warning">Signup</Button>{" "}
               </Link>
             </Nav>

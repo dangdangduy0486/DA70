@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "../Css/currencyDetails.css"
+import "../Css/currencyDetails.css";
 
 const CurrencyDetails = (props) => {
   const [currencies, setCurrencies] = useState(null);
@@ -66,6 +66,7 @@ const CurrencyDetails = (props) => {
                         onClick={() => handleSelectCurrency(currency)}
                         value={currency}
                         style={{ cursor: "pointer" }}
+                        key={currency._id}
                       >
                         {currency.symbol.toUpperCase()}
                       </div>

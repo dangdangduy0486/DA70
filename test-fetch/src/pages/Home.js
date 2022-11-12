@@ -26,7 +26,7 @@ const Home = () => {
   const url = "/api/markets";
   useEffect(() => {
     axios
-      .get(url, {
+      .get(url, { 
         params: {
           vs_currency: vsCurrency,
           page: currentPage,
@@ -50,7 +50,7 @@ const Home = () => {
       <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} />
       {/* <TrendingCoins /> */}
       {/* <hr /> */}
-      <MarketsDetails markets={markets} symbol={vsCurrency} />
+      <MarketsDetails markets={markets} symbol={vsCurrency} /> 
       <hr />
       <div className="pagination d-flex justify-content-center">
         <button
