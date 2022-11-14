@@ -1,8 +1,8 @@
 const express = require("express");
 const {
   signup,
+  verifyEmail,
   login,
-  verifyToken,
   getUser,
   allUsers,
   deleteUser,
@@ -13,12 +13,17 @@ const router = express.Router();
 //signup
 router.post("/signup", signup);
 
+//verify
+router.get("/verify/:userID/:token", verifyEmail)
+
 //login
 router.post("/login", login);
 
 //ADMIN ONLY!!
-router.get("/", verifyToken, getUser);
+router.get("/", getUser);
 
 router.delete("/", deleteUser);
+
+router.get("/allusers", allUsers);
 
 module.exports = router;

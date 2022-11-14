@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
   {
-    name: {
+    fullname: {
       type: String,
       required: true,
     },
@@ -20,8 +19,12 @@ const UserSchema = new Schema(
     },
     role: {
       type: String,
-      default: "member"
-    },  
+      default: "member",
+    },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
