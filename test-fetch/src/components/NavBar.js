@@ -10,6 +10,11 @@ import { faBitcoin } from "@fortawesome/free-brands-svg-icons";
 // import CurrencyDetails from "./CurrencyDetails";
 
 const NavBar = () => {
+  const user = localStorage.getItem("token");
+  const handleLogout = () => {
+		localStorage.removeItem("token");
+		window.location.reload();
+	};
   return (
     <>
       <Navbar expand="lg" className="bg-light fixed-top navbar">
@@ -44,16 +49,26 @@ const NavBar = () => {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
-            <Nav className="me-0">
-              <Link style={{ textDecoration: "none" }} to="/login">
-                <Nav.Link href="/Login">Login</Nav.Link>
-              </Link>
-              <Link
-                style={{ textDecoration: "none" }}
-                to="/signup">
-                <Button variant="outline-warning">Signup</Button>{" "}
-              </Link>
-            </Nav>
+            {user ? (
+              <>
+                <Nav className="me-0">
+                  <Link style={{ textDecoration: "none" }} to="/logout">
+                    <Button variant="outline-warning" onClick={handleLogout}>Logout</Button>
+                  </Link>
+                </Nav>
+              </>
+            ) : (
+              <>
+                <Nav className="me-0">
+                  <Link style={{ textDecoration: "none" }} to="/login">
+                    <Nav.Link href="/Login">Login</Nav.Link>
+                  </Link>
+                  <Link style={{ textDecoration: "none" }} to="/signup">
+                    <Button variant="outline-warning">Signup</Button>
+                  </Link>
+                </Nav>
+              </>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

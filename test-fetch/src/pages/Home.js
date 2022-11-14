@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import MarketsDetails from "../components/MarketsDetails";
 import NavBar from "../components/NavBar";
-// import TrendingCoins from "../components/TrendingCoins"
 import "../Css/home.css";
 import CurrencyDetails from "../components/CurrencyDetails";
+import Loading from "./loading/loading";
 
 const Home = () => {
   const [markets, setMarkets] = useState("");
   const [vsCurrency, setVsCurrency] = useState("usd");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   const callback = (childData) => {
     setVsCurrency((vsCurrency) => (vsCurrency = childData));
@@ -26,7 +28,7 @@ const Home = () => {
   const url = "/api/markets";
   useEffect(() => {
     axios
-      .get(url, { 
+      .get(url, {
         params: {
           vs_currency: vsCurrency,
           page: currentPage,
@@ -34,23 +36,25 @@ const Home = () => {
       })
       .then((response) => {
         setMarkets(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setIsError(true);
       });
-  }, [vsCurrency, currentPage]);
-
+  }, [isLoading, vsCurrency, currentPage]);
+  console.log(isLoading);
   if (!markets) return null;
   console.log(markets);
-
+  if (isLoading === true || isError) {
+    return <Loading />;
+  }
   return (
     <>
       <NavBar />
       <hr />
       <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} />
-      {/* <TrendingCoins /> */}
-      {/* <hr /> */}
-      <MarketsDetails markets={markets} symbol={vsCurrency} /> 
+      <MarketsDetails markets={markets} symbol={vsCurrency} />
       <hr />
       <div className="pagination d-flex justify-content-center">
         <button

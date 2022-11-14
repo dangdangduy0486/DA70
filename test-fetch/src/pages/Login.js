@@ -29,8 +29,8 @@ const Login = () => {
         console.log(error);
       });
     const data = await res.data;
-    console.log(data);
-  };
+    localStorage.setItem("token", data.data);
+  };  
 
   const handleSubmit = (e) => {
     e.preventDefault();

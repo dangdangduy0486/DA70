@@ -26,20 +26,10 @@ const TrendingCoins = () => {
   return (
     <>
       <div className="container trend">
-        {/* <div className="row">
-          {trendCoins.coins &&
-            trendCoins.coins.map((trendCoin) => (
-              <div className="col trendcoin">
-                <img src={trendCoin.item.thumb} alt="" />
-                {trendCoin.item.name} - {trendCoin.item.symbol}
-                <div>{trendCoin.item.price_btc.toFixed(4)}</div>
-              </div>
-            ))}
-        </div> */}
         <div className="cover_mid cover-gird">
           {trendCoins.coins &&
-            trendCoins.coins.map((coin) => (
-              <div className="girds">
+            trendCoins.coins.map((coin, index) => (
+              <div className="girds" key={index}>
                 <div className="gird_top">
                   <img src={coin.item.thumb} alt="coin" />
                   <div className="gird_first-head">

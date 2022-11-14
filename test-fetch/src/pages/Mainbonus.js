@@ -5,10 +5,6 @@ import { Link } from "react-router-dom";
 import "../Css/Mainbonus.css";
 import TrendingCoins from "../components/TrendingCoins";
 const Mainbonus = () => {
-  // const { response, loading } = useAxios(
-  //   "coins/markets?vs_currency=usd&ids=dogecoin%2Cbitcoin%2Cmonero%2Czcash&order=market_cap_desc&per_page=100&page=1&sparkline=false"
-  // );
-  // console.log(response);
 
   return (
     <div className="cover">

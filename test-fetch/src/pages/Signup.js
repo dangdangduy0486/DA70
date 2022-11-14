@@ -1,125 +1,67 @@
-import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import "../Css/signup.css";
-
+import { Link } from "react-router-dom";
 const Signup = () => {
   const history = useNavigate();
-  const initialValues = {
-    name: "",
-    email: "",
-    password: "",
-    repeatPassword: "",
-  };
-  const errorValues = {
-    nameError: "",
-    emailError: "",
-    passwordError: "",
-    repeatPasswordError: "",
-  };
-  const [formValues, setFormValues] = useState({ initialValues });
-  const [formErrors, setFormErrors] = useState({ errorValues });
-
-  const handleChange = (e) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-    isRequired([e.target.name]);
-  };
-
   const url = "api/user/signup";
-
-  const signUpRequest = async () => {
-    const res = await axios
-      .post(url, {
-        name: formValues.name,
-        email: formValues.email,
-        password: formValues.password,
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    const data = await res.data;
-    return data;
+  const onSubmit = async (values) => {
+    const { fullname, email, password } = values;
+    try {
+      await axios
+        .post(url, { fullname, email, password })
+        .then(() => {
+          history("/login");
+        })
+        .catch((err) => {
+          if (err && err.response) console.log("Error", err);
+        });
+    } catch (error) {
+      console.log("Error...");
+    }
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const isValid = validateForm();
-    console.log(isValid);
-
-    if (isValid) {
-      signUpRequest().then(() => history("/login"));
-    }
-    resetState();
-  };
-  const isRequired = (selector, message) => {
-    return {
-      selector: selector,
-      test: function (value) {
-        return value.trim()
-          ? undefined
-          : message || "Please enter your information!";
-      },
-    };
-  };
-  //Validation
-  const validateForm = () => {
-    let nameError = "";
-    let emailError = "";
-    let passwordError = "";
-    let repeatPasswordError = "";
-
-    if (!formValues.name) {
-      nameError = "Enter your name";
-    }
-
-    if (!formValues.email) {
-      emailError = "Enter your email";
-    }
-
-    if (!formValues.repeatPassword) {
-      repeatPasswordError = "Enter your password";
-    }
-
-    if (!formValues.password) {
-      passwordError = "Enter your password";
-    }
-
-    if (formValues.password !== formValues.repeatPassword) {
-      repeatPasswordError = "Enter your password";
-    }
-
-    if (nameError || emailError || passwordError || repeatPasswordError) {
-      setFormErrors({
-        nameError,
-        emailError,
-        passwordError,
-        repeatPasswordError,
-      });
-      return false;
-    }
-    return true;
-  };
-
-  const resetState = () => {
-    setFormValues({
-      name: "",
+  const formik = useFormik({
+    initialValues: {
+      fullname: "",
       email: "",
       password: "",
-      repeatPassword: "",
-    });
-  };
-
+      password_confi: "",
+    },
+    validationSchema: Yup.object({
+      fullname: Yup.string()
+        .required("Required")
+        .min(4, "Your name must more than 4 characters"),
+      email: Yup.string()
+        .required("Required")
+        .matches(
+          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+          "Please enter your email"
+        ),
+      password: Yup.string()
+        .required("Required")
+        .matches(
+          /^[A-Za-z]\w{7,14}$/,
+          "Input Password and Submit [7 to 15 characters which contain only characters, numeric digits, underscore and first character must be a letter "
+        ),
+      password_confi: Yup.string()
+        .required("Required")
+        .oneOf([Yup.ref("password"), null], "Password must be matched"),
+    }),
+    onSubmit,
+  });
   return (
     <>
-     <section className="main">
+      <section className="main">
         <div className="container h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-              <form onSubmit={handleSubmit} className="form" id="form_signup">
+              <form
+                className="form bg-dark text-center "
+                id="form_signup"
+                onSubmit={formik.handleSubmit}
+              >
                 <h3 className="heading text-center">Sign up</h3>
                 <p className="infor">Welcome to DBcoin</p>
                 <div className="spacer"></div>
@@ -128,17 +70,17 @@ const Signup = () => {
                     Your name
                   </label>
                   <input
-                    id="fullname"
+                    id="name"
                     name="fullname"
                     type="text"
                     placeholder="Enter your fullname"
                     className="form-control"
-                    onChange={handleChange}
-                    value={formValues.name || ""}
+                    value={formik.values.fullname}
+                    onChange={formik.handleChange}
                   ></input>
-                  <span className="text-danger">
-                    {formErrors.nameError ? formErrors.nameError : ""}
-                  </span>
+                  {formik.errors.fullname && (
+                    <span className="error">{formik.errors.fullname}*</span>
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="email" className="form-lable">
@@ -147,15 +89,15 @@ const Signup = () => {
                   <input
                     id="email"
                     name="email"
-                    type="text"
+                    type="email"
                     placeholder="Enter your email"
                     className="form-control"
-                    onChange={handleChange}
-                    value={formValues.email || ""}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
                   ></input>
-                  <span className="text-danger">
-                    {formErrors.emailError ? formErrors.emailError : ""}
-                  </span>
+                  {formik.errors.email && (
+                    <span className="error">{formik.errors.email}*</span>
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="password" className="form-lable">
@@ -167,12 +109,12 @@ const Signup = () => {
                     type="password"
                     placeholder="Enter your password"
                     className="form-control"
-                    onChange={handleChange}
-                    value={formValues.password || ""}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
                   ></input>
-                  <span className="text-danger">
-                    {formErrors.passwordError ? formErrors.passwordError : ""}
-                  </span>
+                  {formik.errors.password && (
+                    <span className="error">{formik.errors.password}*</span>
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="password_confi" className="form-lable">
@@ -184,18 +126,28 @@ const Signup = () => {
                     type="password"
                     placeholder="Re-enter your password"
                     className="form-control"
-                    onChange={handleChange}
-                    value={formValues.repeatPassword || ""}
+                    value={formik.values.password_confi}
+                    onChange={formik.handleChange}
                   ></input>
-                  <span className="text-danger">
-                    {formErrors.repeatPasswordError
-                      ? formErrors.repeatPasswordError
-                      : ""}
-                  </span>
+                  {formik.errors.password_confi && (
+                    <span className="error">
+                      {formik.errors.password_confi}*
+                    </span>
+                  )}
                 </div>
-                <button className="form-submit" type="submit">
+                <button
+                  className="form-submit btn btn-outline-light btn-lg px-5"
+                  type="submit"
+                >
                   Sign up
                 </button>
+                <div className="text-center mt-2">
+                  <span> Already have an account?</span>
+                  <span className="space"> </span>
+                  <Link className="text-white" to="/login">
+                    Login
+                  </Link>
+                </div>
               </form>
             </div>
           </div>
