@@ -5,7 +5,9 @@ import MarketsDetails from "../components/MarketsDetails";
 import NavBar from "../components/NavBar";
 import "../Css/markets.css";
 import CurrencyDetails from "../components/CurrencyDetails";
+
 import Loading from "./loading/loading";
+import CarouselCoins from "../components/CarouselCoins ";
 const Markets = () => {
   const [markets, setMarkets] = useState("");
   const [vsCurrency, setVsCurrency] = useState("usd");
@@ -47,6 +49,7 @@ const Markets = () => {
     <>
       <section className="markets">
         <NavBar />
+        <CarouselCoins />
         <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} />
         <MarketsDetails markets={markets} symbol={vsCurrency} />
         <hr />

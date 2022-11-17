@@ -1,5 +1,4 @@
 #currencyDetails {
-  margin-top: 56px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -8,6 +7,7 @@
   background-color: black;
   color: white;
   max-width: 100%;
+  margin-top: 5px;
 }
 .currency_item {
   margin-right: 2px;
