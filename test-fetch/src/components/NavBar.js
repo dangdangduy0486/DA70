@@ -7,14 +7,16 @@ import "../Css/NavBar.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBitcoin } from "@fortawesome/free-brands-svg-icons";
+import MenuProfile from "./MenuProfile";
 // import CurrencyDetails from "./CurrencyDetails";
 
 const NavBar = () => {
   const user = localStorage.getItem("token");
+  console.log(user);
   const handleLogout = () => {
-		localStorage.removeItem("token");
-		window.location.reload();
-	};
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
   return (
     <>
       <Navbar expand="lg" className="bg-light fixed-top navbar">
@@ -28,7 +30,7 @@ const NavBar = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Link style={{ textDecoration: "none" }} to="/market">
+              <Link style={{ textDecoration: "none" }} to="/markets">
                 <Nav.Link href="/market">Market</Nav.Link>
               </Link>
               <Link style={{ textDecoration: "none" }} to="/trend">
@@ -53,8 +55,11 @@ const NavBar = () => {
               <>
                 <Nav className="me-0">
                   <Link style={{ textDecoration: "none" }} to="/logout">
-                    <Button variant="outline-warning" onClick={handleLogout}>Logout</Button>
+                    <Button variant="outline-warning" onClick={handleLogout}>
+                      Logout
+                    </Button>
                   </Link>
+                  <MenuProfile />
                 </Nav>
               </>
             ) : (

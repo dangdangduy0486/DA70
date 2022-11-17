@@ -1,3 +1,20 @@
-#currencyDetails{
-    margin-top: 30px;
+#currencyDetails {
+  margin-top: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0.5rem;
+  background-color: black;
+  color: white;
+  max-width: 100%;
+}
+.currency_item {
+  margin-right: 2px;
+  padding: inherit;
+  border-radius: 2px;
+}
+.currency_item:hover {
+  background-color: white;
+  color: black;
 }

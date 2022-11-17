@@ -1,7 +1,7 @@
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownLong } from "@fortawesome/free-solid-svg-icons";
-import { faUpLong } from "@fortawesome/free-solid-svg-icons";
+import { faArrowTrendDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowTrendUp } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 
@@ -34,8 +34,12 @@ const MarketsDetails = ({ markets, symbol }) => {
           <th scope="col">1h</th>
           <th scope="col">24h</th>
           <th scope="col">7d</th>
-          <th scope="col">Volume</th>
-          <th scope="col">Market Cap</th>
+          <th scope="col" className="total_volume">
+            Volume
+          </th>
+          <th scope="col" className="market_cap">
+            Market Cap
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -73,7 +77,7 @@ const MarketsDetails = ({ markets, symbol }) => {
               <td>
                 <p>
                   {new Intl.NumberFormat("en-US", {
-                    style: "currency",  
+                    style: "currency",
                     currency: `${symbol}`,
                   }).format(market.current_price)}
                 </p>
@@ -87,9 +91,9 @@ const MarketsDetails = ({ markets, symbol }) => {
                   } `}
                 >
                   {market.price_change_percentage_1h_in_currency < 0 ? (
-                    <FontAwesomeIcon icon={faDownLong} />
+                    <FontAwesomeIcon icon={faArrowTrendDown} />
                   ) : (
-                    <FontAwesomeIcon icon={faUpLong} />
+                    <FontAwesomeIcon icon={faArrowTrendUp} />
                   )}
                   {market.price_change_percentage_1h_in_currency
                     ? market.price_change_percentage_1h_in_currency.toFixed(2)
@@ -106,9 +110,9 @@ const MarketsDetails = ({ markets, symbol }) => {
                   } `}
                 >
                   {market.price_change_percentage_24h_in_currency < 0 ? (
-                    <FontAwesomeIcon icon={faDownLong} />
+                    <FontAwesomeIcon icon={faArrowTrendDown} />
                   ) : (
-                    <FontAwesomeIcon icon={faUpLong} />
+                    <FontAwesomeIcon icon={faArrowTrendUp} />
                   )}
                   {market.price_change_percentage_24h_in_currency
                     ? market.price_change_percentage_24h_in_currency.toFixed(2)
@@ -125,9 +129,9 @@ const MarketsDetails = ({ markets, symbol }) => {
                   } `}
                 >
                   {market.price_change_percentage_7d_in_currency < 0 ? (
-                    <FontAwesomeIcon icon={faDownLong} />
+                    <FontAwesomeIcon icon={faArrowTrendDown} />
                   ) : (
-                    <FontAwesomeIcon icon={faUpLong} />
+                    <FontAwesomeIcon icon={faArrowTrendUp} />
                   )}
                   {market.price_change_percentage_7d_in_currency
                     ? market.price_change_percentage_7d_in_currency.toFixed(2)
@@ -135,7 +139,7 @@ const MarketsDetails = ({ markets, symbol }) => {
                   %
                 </p>
               </td>
-              <td>
+              <td className="total_volume">
                 <p>
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
@@ -143,7 +147,7 @@ const MarketsDetails = ({ markets, symbol }) => {
                   }).format(market.total_volume)}
                 </p>
               </td>
-              <td>
+              <td className="market_cap">
                 <p>
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",

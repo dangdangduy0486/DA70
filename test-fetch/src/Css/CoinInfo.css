@@ -1,5 +1,16 @@
+.coininfor {
+  min-height: 100%;
+}
 .coindetail {
-  padding-top: 56px;
+  color: white;
+  background-color: darkgrey;
+}
+.coindetail p {
+  margin-bottom: 0;
+  padding: 2rem;
+}
+.coindetail-title {
+  text-align: center;
 }
 .width {
   max-width: 600px;
@@ -41,4 +52,10 @@
   justify-content: space-between;
   padding: 20px 0;
   border-bottom: 1px solid #ddd;
+}
+.history-chart {
+  max-width: 500px;
+  border: 1px solid red;
+  background-color: white;
+  padding-top: 10px;
 }

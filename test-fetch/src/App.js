@@ -7,7 +7,13 @@ import Home from "./pages/Home";
 import CoinInfo from "./pages/CoinInfo";
 import Mainbonus from "./pages/Mainbonus";
 import EmailVerify from "./pages/emailVerify/emailVerify ";
-
+import Markets from "./pages/Markets";
+import Test from "./pages/Test";
+import UserInfor from "./pages/UserInfor";
+import Forgot from "./pages/Forgot";
+import UserCart from "./pages/UserCart";
+import UserBudget from "./pages/UserBudget";
+import NewPassword from "./pages/NewPassword";
 function App() {
   // const user = localStorage.getItem("token");
   return (
@@ -18,11 +24,20 @@ function App() {
             {/* {user && <Route path="/cart" exact element={<Cart />} />} */}
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/test" element={<Test />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/markets" element={<Home />} />
-            <Route path="/" element={<Mainbonus />} />
+            <Route path="/reset" element={<NewPassword />} />
+            <Route path="/userinfo" element={<UserInfor />} />
+            <Route path="/usercart" element={<UserCart />} />
+            <Route path="/userbudget" element={<UserBudget />} />
+            <Route path="/forgot" element={<Forgot />} />
+            <Route path="/markets" element={<Markets />} />
+            <Route path="/" element={<Home />} />
             <Route path="/coins/:coinID" element={<CoinInfo />} />
-            <Route path="/api/user/verify/:id/:token" element={<EmailVerify />} />
+            <Route
+              path="/api/user/verify/:id/:token"
+              element={<EmailVerify />}
+            />
           </Routes>
         </div>
       </BrowserRouter>

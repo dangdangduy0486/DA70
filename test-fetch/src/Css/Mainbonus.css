@@ -1,59 +1,35 @@
 :root {
   --yellwo-color: rgb(255, 193, 7);
 }
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-
 body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-.cover_bot {
-  display: grid;
-  margin: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
-}
-
-.cover_bot_item {
-  opacity: 0;
-}
-
-.cover_bot_item img {
-  width: 95%;
-  height: auto;
-}
-
-.cover {
+.cover_top {
   background: url("../coin2.png");
   background-size: cover;
-}
-
-.cover_top {
-
   color: white;
   padding: 4rem;
 }
 
-.cover_top>h1 {
+.cover_top > h1 {
   font-size: 3rem;
   font-weight: 700;
 }
-
-.cover_top>h1:nth-child(2) {
+.cover_top > h1:nth-child(2) {
   color: var(--yellwo-color);
 }
-
 .cover_top p {
   margin: 1rem 0rem;
 }
-
-.cover_top>.regis-button {
+.cover_top > .regis-button {
   padding: 0.5rem 2rem;
   margin: 0rem 2rem 0rem;
   text-decoration: none;
@@ -63,39 +39,33 @@ body {
   font-size: 1rem;
   color: white;
 }
-
-.cover_top>.regis-button:hover {
+.cover_top > .regis-button:hover {
   /* background-color: white;
   color: black; */
   animation: pulsate 1s ease-in-out;
 }
-
 @keyframes pulsate {
   0% {
     box-shadow: 0 0 1rem red, 0 0 1rem green;
   }
 }
-
 .cover_mid {
-  /* background-color: #f0f3f5; */
+  background-color: #f0f3f5;
   border-radius: 1rem;
   position: relative;
-  /* top: -1rem; */
+  top: -1rem;
 }
-
 .cover-gird {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(25em, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
   padding: 1em;
 }
-
 .cover-gird .gird_top {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: top;
 }
-
 .cover-gird .girds {
   margin: 1rem;
   /* background-color: #fff; */
@@ -106,42 +76,35 @@ body {
   background: #e0e0e0;
   box-shadow: 14px 14px 28px #bebebe, -14px -14px 28px #ffffff;
 }
-
 .cover-gird .gird_top img {
   width: 2em;
   height: 2em;
 }
-
 .girds .gird_top .gird_first-head h2 {
   font-size: 0.9rem;
   font-weight: 600;
   color: black;
 }
-
 .girds .gird_top .gird_first-head p {
   font-size: 0.7rem;
   font-weight: 600;
   color: rgb(178, 174, 174);
 }
-
 .girds .gird_mid {
   display: flex;
   justify-content: center;
 }
-
 .girds .gird_mid h1 {
   font-size: 1rem;
   font-weight: 600;
   color: black;
   align-self: center;
 }
-
 .girds .gird_mid p {
   color: rgb(178, 174, 174);
   font-size: 0.8rem;
   justify-self: center;
 }
-
 .girds .gird_mid .move {
   margin-right: 1rem;
   margin-left: 0.4rem;
@@ -156,22 +119,50 @@ body {
     height: 3rem;
     width: 3rem;
   }
-
   .girds .gird_mid {
     justify-content: center;
   }
-
-  .girds .gird_mid>p {
+  .girds .gird_mid > p {
     align-self: center;
   }
 }
-
 /* mobile <740 */
-@media only screen and (max-width: 46.1875em) {}
-
+@media only screen and (max-width: 46.1875em) {
+}
 /* tablet 740 -> 1024 */
 @media screen and (min-width=46.25em) and (max-width=63.9375em) {
-  .cover_top>h1 {
+  .cover_top > h1 {
     font-size: calc(1vw+1.5em);
   }
+}
+.cover_bottom {
+  width: 100%;
+  background: url("../images/Moon.svg");
+  min-height: 100vh;
+  background-size: cover;
+  margin-top: -1rem;
+  z-index: 1;
+  color: white;
+  padding: 50px;
+}
+.cover_bottom .container_bottom {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 50px;
+  min-height: 1;
+  margin: 0 auto;
+}
+.cover_bottom .bottom_left {
+  width: 50%;
+  min-height: 50vh;
+  background-image: url("https://images.unsplash.com/photo-1631286767149-5f9c1a56992b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Y29pbnxlbnwwfDJ8MHx8&auto=format&fit=crop&w=600&q=60");
+  background-size: cover;
+}
+.cover_bottom .bottom_right {
+  width: 50%;
+  min-height: 50vh;
+  text-align: center;
 }

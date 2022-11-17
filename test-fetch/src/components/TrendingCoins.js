@@ -20,16 +20,20 @@ const TrendingCoins = () => {
       });
   }, []);
   if (!trendCoins) return null;
-  console.log(trendCoins.coins);
+  var arrayTrend = [];
+  for (var i = 0; i < 4; i++) {
+    arrayTrend.push(trendCoins.coins[i]);
+  }
+  console.log(arrayTrend);
   //hello
 
   return (
     <>
       <div className="container trend">
         <div className="cover_mid cover-gird">
-          {trendCoins.coins &&
-            trendCoins.coins.map((coin, index) => (
-              <div className="girds" key={index}>
+          {arrayTrend &&
+            arrayTrend.map((coin) => (
+              <div className="girds">
                 <div className="gird_top">
                   <img src={coin.item.thumb} alt="coin" />
                   <div className="gird_first-head">
@@ -42,15 +46,11 @@ const TrendingCoins = () => {
                         : "text-danger"
                     }  "gird_first-head"`}
                   >
-                    <p>
-                      Rank-{Math.round(coin.item.market_cap_rank)}
-                    </p>
+                    <p>Rank-{Math.round(coin.item.market_cap_rank)}</p>
                   </div>
                 </div>
                 <div className="gird_mid">
-                  <h1>
-                    {coin.item.price_btc.toFixed(8)}
-                  </h1>
+                  <h1>{coin.item.price_btc.toFixed(8)}</h1>
                   <Link className="move" to={`/coins/${coin.item.id}`}>
                     <FontAwesomeIcon icon={faCircleRight} />
                   </Link>

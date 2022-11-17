@@ -2,95 +2,125 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../Css/login.css";
-
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Link } from "react-router-dom";
+import { faL } from "@fortawesome/free-solid-svg-icons";
+import Loading from "./loading/loading";
 const Login = () => {
   const history = useNavigate();
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setInputs((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const [isError, setIsError] = useState(false);
 
   const url = "api/user/login";
 
-  const loginRequest = async () => {
-    const res = await axios
-      .post(url, {
-        email: inputs.email,
-        password: inputs.password,
-      })
-      .catch((error) => {
-        console.log(error);
+  const onSubmit = async (values) => {
+    const { email, password } = values;
+    try {
+      const res = await axios.post(url, { email, password }).catch((err) => {
+        if (err && err.response) console.log("Error", err);
       });
-    const data = await res.data;
-    localStorage.setItem("token", data.data);
-  };  
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    loginRequest().then(() => history("/markets"));
+      const data = await res.data;
+      // console.log(res.config.data);
+      localStorage.setItem("token", data.data);
+      history("/");
+    } catch (error) {
+      console.log("Error...");
+      setIsError(true);
+    }
   };
 
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .required("Required")
+        .matches(
+          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+          "Please enter your email"
+        ),
+      password: Yup.string()
+        .required("Required")
+        .matches(
+          /^[A-Za-z]\w{7,14}$/,
+          "Input Password and Submit [7 to 15 characters which contain only characters, numeric digits, underscore and first character must be a letter "
+        ),
+    }),
+    onSubmit,
+  });
+  if (isError) {
+    return <Loading />;
+  }
   return (
     <>
       <section className="vh-100% gradient-custom">
-        <div className="container py-5 h-100">
-          <div className="row d-flex justify-content-center align-items-center h-100">
+        <div className="container py-5">
+          <div className="row d-flex justify-content-center align-items-center">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div
                 className="card bg-dark text-white"
                 style={{ borderRadius: "1rem" }}
               >
-                <form onSubmit={handleSubmit}>
-                  <div className="card-body p-5 text-center">
-                    <div className="mb-md-5 mt-md-4 pb-5">
+                <form
+                  className="form bg-dark text-center "
+                  id="form_signup"
+                  onSubmit={formik.handleSubmit}
+                >
+                  <div className="card-body p-3 text-center">
+                    <div className="mb-md-3 mt-md-4 pb-5">
                       <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
                       <p className="text-white-50 mb-5">
                         Please enter your email and password!
                       </p>
 
                       <div className="form-outline form-white mb-4">
-                        <input
-                          type="email"
-                          id="typeEmailX"
-                          className="form-control form-control-lg"
-                          onChange={handleChange}
-                          value={inputs.email}
-                          name="email"
-                        />
-                        <label className="form-label" htmlFor="typeEmailX">
-                          Email
+                        <label htmlFor="email" className="form-lable">
+                          Your email
                         </label>
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          placeholder="Enter your email"
+                          className="form-control"
+                          value={formik.values.email}
+                          onChange={formik.handleChange}
+                        ></input>
+                        {formik.errors.email && (
+                          <span className="error">{formik.errors.email}*</span>
+                        )}
                       </div>
 
                       <div className="form-outline form-white mb-4">
-                        <input
-                          type="password"
-                          id="typePasswordX"
-                          className="form-control form-control-lg"
-                          onChange={handleChange}
-                          value={inputs.password}
-                          name="password"
-                        />
-                        <label className="form-label" htmlFor="typePasswordX">
-                          Password
+                        <label htmlFor="password" className="form-lable">
+                          Your password
                         </label>
+                        <input
+                          id="password"
+                          name="password"
+                          type="password"
+                          placeholder="Enter your password"
+                          className="form-control"
+                          value={formik.values.password}
+                          onChange={formik.handleChange}
+                        ></input>
+                        {formik.errors.password && (
+                          <span className="error">
+                            {formik.errors.password}*
+                          </span>
+                        )}
                       </div>
 
                       <p className="small mb-5 pb-lg-2">
-                        <a className="text-white-50" href="#!">
+                        <Link className="text-white-50" to="/forgot">
                           Forgot password?
-                        </a>
+                        </Link>
                       </p>
 
                       <button
-                        className="btn btn-outline-light btn-lg px-5"
+                        className="form-submit btn btn-outline-light btn-lg px-5"
                         type="submit"
                       >
                         Login
@@ -112,9 +142,9 @@ const Login = () => {
                     <div>
                       <p className="mb-0">
                         Don't have an account?{" "}
-                        <a href="/signup" className="text-white-50 fw-bold">
+                        <Link to="/signup" className="text-white-50 fw-bold">
                           Sign Up
-                        </a>
+                        </Link>
                       </p>
                     </div>
                   </div>

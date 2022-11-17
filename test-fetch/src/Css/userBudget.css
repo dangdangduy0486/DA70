@@ -1,0 +1,6 @@
+.userBudget {
+  margin-top: 56px;
+  background: url("../images/Moon.svg");
+  min-height: 100vh;
+  background-size: cover;
+}
