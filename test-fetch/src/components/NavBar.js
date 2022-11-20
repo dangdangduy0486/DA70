@@ -6,7 +6,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import "../Css/NavBar.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBitcoin } from "@fortawesome/free-brands-svg-icons";
+import { faBitcoinSign } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import MenuProfile from "./MenuProfile";
 
 const NavBar = () => {
@@ -16,7 +17,6 @@ const NavBar = () => {
   console.log(email);
   const handleLogout = () => {
     localStorage.removeItem("token", "email");
-    // localStorage.removeItem("fulname");
     window.location.reload();
   };
   return (
@@ -25,7 +25,7 @@ const NavBar = () => {
         <Container>
           <Link style={{ textDecoration: "none" }} to="/">
             <Navbar.Brand>
-              <FontAwesomeIcon className="text-warning" icon={faBitcoin} />
+              <FontAwesomeIcon className="text-warning" icon={faBitcoinSign} />
               DBcoin
             </Navbar.Brand>
           </Link>
@@ -62,6 +62,15 @@ const NavBar = () => {
                     </Button>
                   </Link>
                   <MenuProfile email={email} />
+
+                  <FontAwesomeIcon
+                    icon={ faCartShopping }
+                    className="btn btn-primary ms-2"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight"
+                    aria-controls="offcanvasRight"
+                  />
                 </Nav>
               </>
             ) : (
