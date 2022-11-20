@@ -1,14 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import "../Css/menuprofile.css";
 import profile from "../images/profile.svg";
 import info from "../images/infor.svg";
-import { Link } from "react-router-dom";
-const MenuProfile = () => {
+const MenuProfile = ({email}) => {
+  const [userInfo, setUserInfo] = useState(null);
   function handleMenu() {
     let menuHand = document.querySelector(".sub-menu-wrap");
     menuHand.classList.toggle("open-menu");
-    console.log(menuHand);
   }
+  const url = `api/user/${email}`;
+  useEffect(() => {
+    axios.get(url)
+    .then((response) => {
+      setUserInfo(response.data)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }, [url])
+  console.log(userInfo)
+  if(!userInfo) return null;
   return (
     <>
       <img className="img_user" src={profile} alt="" onClick={handleMenu}></img>
@@ -21,7 +33,7 @@ const MenuProfile = () => {
           <hr />
           <Link to="/userinfo" className="sub-menu-link">
             <img src={info} alt="" />
-            <p>Your information</p>
+            <p>{userInfo.fullname}</p>
             <span></span>
           </Link>
           <hr />

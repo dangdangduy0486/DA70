@@ -8,13 +8,15 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBitcoin } from "@fortawesome/free-brands-svg-icons";
 import MenuProfile from "./MenuProfile";
-// import CurrencyDetails from "./CurrencyDetails";
 
 const NavBar = () => {
-  const user = localStorage.getItem("token");
-  console.log(user);
+  const token = localStorage.getItem("token");
+  console.log(token);
+  const email = localStorage.getItem("email");
+  console.log(email);
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("token", "email");
+    // localStorage.removeItem("fulname");
     window.location.reload();
   };
   return (
@@ -51,7 +53,7 @@ const NavBar = () => {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
-            {user ? (
+            {token ? (
               <>
                 <Nav className="me-0">
                   <Link style={{ textDecoration: "none" }} to="/logout">
@@ -59,7 +61,7 @@ const NavBar = () => {
                       Logout
                     </Button>
                   </Link>
-                  <MenuProfile />
+                  <MenuProfile email={email} />
                 </Nav>
               </>
             ) : (

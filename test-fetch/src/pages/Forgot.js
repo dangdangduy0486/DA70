@@ -1,8 +1,28 @@
 import React from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../Css/forgot.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
 const Forgot = () => {
+  const history = useNavigate();
+  const url = "api/user/forgot-password";
+
+  const onSubmit = async (values) => {
+    const { email } = values;
+    try {
+      await axios
+        .post(url, { email })
+        .then(() => history("/login"))
+        .catch((err) => {
+          if (err && err.response) console.log("Error", err);
+        });
+    } catch (error) {
+      console.log("Error...");
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -15,10 +35,9 @@ const Forgot = () => {
           "Please enter your email"
         ),
     }),
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit,
   });
+
   return (
     <section className="vh-100% gradient-custom">
       <div className="container py-5 h-100">
@@ -48,9 +67,6 @@ const Forgot = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                   ></input>
-                  {formik.errors.email && (
-                    <span className="error">{formik.errors.email}*</span>
-                  )}
                 </div>
                 <button
                   className="form-submit btn btn-outline-light btn-lg px-5"

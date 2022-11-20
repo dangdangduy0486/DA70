@@ -21,7 +21,9 @@ const Login = () => {
       });
       const data = await res.data;
       // console.log(res.config.data);
-      localStorage.setItem("token", data.data);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("email", data.email);
+
       history("/");
     } catch (error) {
       console.log("Error...");
