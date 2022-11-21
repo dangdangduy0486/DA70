@@ -15,6 +15,7 @@ import UserCart from "./pages/UserCart";
 import UserBudget from "./pages/UserBudget";
 import NewPassword from "./pages/NewPassword";
 import ExchangeRates from "./components/ExchangeRates";
+import Coverter from "./components/Coverter";
 function App() {
   // const user = localStorage.getItem("token");
   return (
@@ -27,7 +28,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/test" element={<Test />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/api/user/reset-password/:id" element={<NewPassword />} />
+            <Route
+              path="/api/user/reset-password/:id"
+              element={<NewPassword />}
+            />
             <Route path="/userinfo" element={<UserInfor />} />
             <Route path="/usercart" element={<UserCart />} />
             <Route path="/userbudget" element={<UserBudget />} />
@@ -42,6 +46,7 @@ function App() {
             {/*  */}
             <Route path="/exchange" element={<ExchangeRates />} />
             {/*  */}
+            <Route path="/converter" element={<Coverter />} />
           </Routes>
         </div>
       </BrowserRouter>

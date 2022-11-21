@@ -35,8 +35,8 @@ const NavBar = () => {
               <Link style={{ textDecoration: "none" }} to="/markets">
                 <Nav.Link href="/market">Market</Nav.Link>
               </Link>
-              <Link style={{ textDecoration: "none" }} to="/trend">
-                <Nav.Link href="/trend">Trend</Nav.Link>
+              <Link style={{ textDecoration: "none" }} to="/converter">
+                <Nav.Link href="/converter">Converter</Nav.Link>
               </Link>
 
               <NavDropdown title="About Us" id="basic-nav-dropdown">
@@ -65,6 +65,7 @@ const NavBar = () => {
                       Logout
                     </Button>
                   </Link>
+
                   <MenuProfile email={email} />
 
                   <FontAwesomeIcon
