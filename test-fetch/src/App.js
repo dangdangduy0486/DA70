@@ -16,6 +16,7 @@ import UserBudget from "./pages/UserBudget";
 import NewPassword from "./pages/NewPassword";
 import ExchangeRates from "./components/ExchangeRates";
 import Coverter from "./components/Coverter";
+import Charge from "./pages/Charge";
 function App() {
   // const user = localStorage.getItem("token");
   return (
@@ -47,6 +48,7 @@ function App() {
             <Route path="/exchange" element={<ExchangeRates />} />
             {/*  */}
             <Route path="/converter" element={<Coverter />} />
+            <Route path="/charge" element={<Charge />} />
           </Routes>
         </div>
       </BrowserRouter>

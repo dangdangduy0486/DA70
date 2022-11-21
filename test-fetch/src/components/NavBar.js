@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBitcoinSign } from "@fortawesome/free-solid-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faSackDollar } from "@fortawesome/free-solid-svg-icons";
 import MenuProfile from "./MenuProfile";
 
 const NavBar = () => {
@@ -65,9 +66,19 @@ const NavBar = () => {
                       Logout
                     </Button>
                   </Link>
-
+                  <span className="money">money</span>
                   <MenuProfile email={email} />
-
+                  <Link
+                    style={{ textDecoration: "none", alignSelf: "center" }}
+                    to="/charge"
+                  >
+                    <FontAwesomeIcon
+                      icon={faSackDollar}
+                      className="btn ms-2 btn-cart"
+                      variant="outline-warning"
+                      type="button"
+                    />
+                  </Link>
                   <FontAwesomeIcon
                     icon={faCartShopping}
                     className="btn ms-2 btn-cart"
