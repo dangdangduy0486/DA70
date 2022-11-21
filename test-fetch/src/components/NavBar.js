@@ -57,15 +57,20 @@ const NavBar = () => {
               <>
                 <Nav className="me-0">
                   <Link style={{ textDecoration: "none" }} to="/logout">
-                    <Button variant="outline-warning" onClick={handleLogout}>
+                    <Button
+                      className="btn"
+                      variant="outline-warning"
+                      onClick={handleLogout}
+                    >
                       Logout
                     </Button>
                   </Link>
                   <MenuProfile email={email} />
 
                   <FontAwesomeIcon
-                    icon={ faCartShopping }
-                    className="btn btn-primary ms-2"
+                    icon={faCartShopping}
+                    className="btn ms-2 btn-cart"
+                    variant="outline-warning"
                     type="button"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasRight"

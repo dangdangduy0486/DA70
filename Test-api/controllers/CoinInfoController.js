@@ -1,6 +1,5 @@
 const config = require("../config");
 const axios = require("axios");
-const { response } = require("express");
 
 const axiosOptions = {
   headers: {
@@ -26,7 +25,7 @@ const getCoinInfo = async (id) => {
 };
 //fetch
 const CoinParser = async (req, res) => {
-  if ((!req.query.id)) {
+  if (!req.query.id) {
     return res.status(403).json({ error: "missing something" });
   }
   const CoinInfo = await getCoinInfo(req.query.id);

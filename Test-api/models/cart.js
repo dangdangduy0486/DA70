@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CartSchema = new Schema({
+    userID: {
+        type: String
+    },
     name: {
         type: String
     },
@@ -13,6 +16,10 @@ const CartSchema = new Schema({
     },
     total: {
         type: String
+    },
+    status: {
+        type: String,
+        default: "PENDING",
     }
 
 })

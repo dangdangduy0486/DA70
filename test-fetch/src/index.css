@@ -13,6 +13,13 @@ code {
 }
 .pages {
   background-color: black;
-  margin-top: 56px;
   min-height: 100vh;
+}
+.offcanvas-header {
+  background-color: var(--yellwo-color);
+}
+ul {
+  list-style: decimal;
+}
+.btn {
 }

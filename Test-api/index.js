@@ -50,6 +50,10 @@ app.use("/api/trending", trendingCoinsRoute);
 const CoinInfoRoute = require("./routes/CoinInfoRoute");
 app.use("/api/coins", CoinInfoRoute);
 
+//exchange
+const exchangeRoute = require("./routes/exchangeRoute");
+app.use("/api/exchange", exchangeRoute);
+
 app.listen(process.env.PORT, "127.0.0.1", () => {
   console.log(
     `Server is listening on port http://localhost:${process.env.PORT}...`

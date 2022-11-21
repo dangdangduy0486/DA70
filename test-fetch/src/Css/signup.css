@@ -41,7 +41,6 @@ input::-webkit-input-placeholder {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  margin-top: -56px;
 }
 .form {
   padding: 32px 24px;

@@ -1,8 +1,11 @@
-const express = require('express');
-const { marketsParser, getAllMarkets } =  require('../controllers/marketsController');
+const express = require("express");
+const {
+  marketsParser,
+  getAllMarkets,
+} = require("../controllers/marketsController");
 
 const router = express.Router();
 
-router.get('/', marketsParser);
+router.get("/", marketsParser);
 
 module.exports = router;

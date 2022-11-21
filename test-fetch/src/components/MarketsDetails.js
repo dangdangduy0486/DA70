@@ -11,10 +11,10 @@ import "../Css/markestDetails.css";
 const MarketsDetails = ({ markets, symbol }) => {
   const [shopCart, setShopCart] = useState([
     {
-      // name: "",
-      // price: 0,
-      // amount: 0,
-      // total: 0,
+      name: null,
+      price: 0,
+      amount: 0,
+      total: 0,
     },
   ]);
   let updatedValue = {};
@@ -28,8 +28,12 @@ const MarketsDetails = ({ markets, symbol }) => {
     setShopCart([...shopCart, updatedValue]);
   };
   if (!shopCart) return null;
-  console.log(shopCart);
-
+  const shopCartList = [];
+  shopCart.forEach((el) => {
+    if (el.name !== null) {
+      shopCartList.push(el);
+    }
+  });
   return (
     <>
       <table className="table table-hover markets">
@@ -191,7 +195,7 @@ const MarketsDetails = ({ markets, symbol }) => {
         aria-labelledby="offcanvasRightLabel"
       >
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasRightLabel">
+          <h5 class="offcanvas-title text-center" id="offcanvasRightLabel">
             Cart information
           </h5>
           <button
@@ -202,17 +206,41 @@ const MarketsDetails = ({ markets, symbol }) => {
           ></button>
         </div>
         <div class="offcanvas-body">
-          <ul>
-            {shopCart.map((cartItem, index) => (
-                <li key={index}>
-                  <span>{cartItem.name}</span> ---
-                  <span>{cartItem.price}</span> ---
-                  <span>{cartItem.amount}</span> ---
-                  <span>{cartItem.total}</span>
-                  <span><button className="btn btn-primary">Buy</button></span>
-                </li>
-              ))}
-          </ul>
+          {shopCartList.length === 0 ? (
+            <>
+              <p>Your cart is empty</p>
+            </>
+          ) : (
+            <>
+              <form>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Amout</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {shopCartList.map((cartItem, index) => (
+                      <tr key={index}>
+                        <td>{cartItem.name}</td>
+                        <td>{cartItem.price}</td>
+                        <td className="number-input">
+                          <input type="number"></input>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <hr />
+                <div className="text-end fw-bold">Total:BTC</div>
+                <Button className="btn btn-buy" variant="outline-warning">
+                  Buy
+                </Button>
+              </form>
+            </>
+          )}
         </div>
       </div>
     </>
