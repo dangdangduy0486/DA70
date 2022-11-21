@@ -89,10 +89,7 @@ const MarketsDetails = ({ markets, symbol }) => {
                 </td>
                 <td>
                   <p>
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: `${symbol}`,
-                    }).format(market.current_price)}
+                    {market.current_price}-{`${symbol}`}
                   </p>
                 </td>
                 <td>
@@ -156,18 +153,12 @@ const MarketsDetails = ({ markets, symbol }) => {
                 </td>
                 <td className="total_volume">
                   <p>
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: `${symbol}`,
-                    }).format(market.total_volume)}
+                    {(market.total_volume)}-{`${symbol}`}
                   </p>
                 </td>
                 <td className="market_cap">
                   <p>
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: `${symbol}`,
-                    }).format(market.market_cap)}
+                    {market.market_cap}-{`${symbol}`}
                   </p>
                 </td>
                 <td className="contact">

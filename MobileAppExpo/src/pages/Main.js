@@ -3,12 +3,13 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import "../Css/Mainbonus.css";
-import Loading from "./loading/loading";
-const Mainbonus = () => {
+// import Loading from "./loading/loading";
+const Main = () => {
   const [trendCoins, setTrendingCoins] = useState(null);
-  const url = "api/trending";
-  const [isError, setIsError] = useState(false);
+  const url = "https://api.coingecko.com/api/v3/exchange_rates";
+//   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     axios
@@ -21,7 +22,9 @@ const Mainbonus = () => {
         setIsError(true);
       });
   }, []);
-  if (!trendCoins || isError) return <Loading />;
+//   if (!trendCoins || isError) return null
+  if (!trendCoins) return null
+//   <Loading />;
   return (
     <>
       <div className="cover">
@@ -82,5 +85,8 @@ const Mainbonus = () => {
     </>
   );
 };
+const styles = StyleSheet.create({  
 
-export default Mainbonus;
+})
+
+export default Main;

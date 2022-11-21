@@ -14,6 +14,7 @@ import Forgot from "./pages/Forgot";
 import UserCart from "./pages/UserCart";
 import UserBudget from "./pages/UserBudget";
 import NewPassword from "./pages/NewPassword";
+import ExchangeRates from "./components/ExchangeRates";
 function App() {
   // const user = localStorage.getItem("token");
   return (
@@ -38,6 +39,9 @@ function App() {
               path="/api/user/verify/:id/:token"
               element={<EmailVerify />}
             />
+            {/*  */}
+            <Route path="/exchange" element={<ExchangeRates />} />
+            {/*  */}
           </Routes>
         </div>
       </BrowserRouter>
