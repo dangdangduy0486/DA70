@@ -19,17 +19,17 @@ const getTrendingCoins = async () => {
       .catch((err) => {
         console.log(err);
       });
-      return res.data;
+    return res.data;
   } catch (err) {
     console.log(err);
   }
 };
 //fetch
 const TredingCoinsParser = async (req, res) => {
-    const TredingCoinsData = await getTrendingCoins();
-    return res.status(200).json(TredingCoinsData);
-}
+  const TredingCoinsData = await getTrendingCoins();
+  return res.status(200).json(TredingCoinsData);
+};
 module.exports = {
   getTrendingCoins,
-  TredingCoinsParser
+  TredingCoinsParser,
 };

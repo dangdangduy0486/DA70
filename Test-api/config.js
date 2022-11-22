@@ -4,7 +4,8 @@ const TRENDING_COIN_URL = () => `https://api.coingecko.com/api/v3/search/trendin
 
 const COIN_INFO_URL = (id) => `https://api.coingecko.com/api/v3/coins/${id}`
  
-const EXCHANGE_RATES = () => `https://currency-exchange.p.rapidapi.com/exchange`
+const EXCHANGE_RATES = (vs_currency, ids) => `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${vs_currency}&ids=${ids}&order=market_cap_desc&per_page=100&page=1&sparkline=false`
+// `https://currency-exchange.p.rapidapi.com/exchange`
 
 module.exports = {
     MARKET_URL,

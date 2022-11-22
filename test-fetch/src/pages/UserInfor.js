@@ -1,10 +1,11 @@
 import React from "react";
-import NavBar from "../components/NavBar";
-import "../Css/userInfo.css";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+
 import profile from "../images/profile.svg";
+import NavBar from "../components/NavBar";
+import "../Css/userInfo.css";
 const UserInfor = () => {
   const location = useLocation();
   const userInfo = location.state.userInfo;
@@ -57,6 +58,13 @@ const UserInfor = () => {
           </div>
         </div>
       </section>
+      {userInfo.role === "admin" ? (
+        <>
+          <button>Users management</button>
+          <button>Order Request</button>
+          <button>Recharge Request</button>
+        </>
+      ) : null}
     </>
   );
 };

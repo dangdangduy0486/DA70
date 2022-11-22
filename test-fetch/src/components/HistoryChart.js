@@ -28,7 +28,9 @@ ChartJS.register(
 
 const HistoryChart = (coinID) => {
   const [chartValue, setChartValue] = useState(null);
-  const url = `https://api.coingecko.com/api/v3/coins/${coinID.coinID}/market_chart?vs_currency=usd&days=7`;
+  const [days, setDays] = useState(7);
+
+  const url = `https://api.coingecko.com/api/v3/coins/${coinID.coinID}/market_chart?vs_currency=usd&days=${days}`;
   useEffect(() => {
     axios
       .get(url)
@@ -42,6 +44,9 @@ const HistoryChart = (coinID) => {
   if (!chartValue) {
     return <Loading />;
   }
+  const handleChangeDays = (e) => {
+    setDays(e.target.value);
+  };
 
   const coinChartData = chartValue.prices.map((value) => ({
     x: value[0],
@@ -65,9 +70,94 @@ const HistoryChart = (coinID) => {
   };
 
   return (
-    <div className="history">
-      <Line options={options} data={data} />
-    </div>
+    <>
+      <div
+        class="btn-group"
+        role="group"
+        aria-label="Basic radio toggle button group"
+      >
+        <input
+          type="radio"
+          class="btn-check"
+          name="7days"
+          id="7days"
+          autocomplete="off"
+          onClick={handleChangeDays}
+          value={7}
+        />
+        <label class="btn btn-outline-primary" for="7days">
+          7d
+        </label>
+
+        <input
+          type="radio"
+          class="btn-check"
+          name="14days"
+          id="14days"
+          autocomplete="off"
+          onClick={handleChangeDays}
+          value={14}
+        />
+        <label class="btn btn-outline-primary" for="14days">
+          14d
+        </label>
+
+        <input
+          type="radio"
+          class="btn-check"
+          name="30days"
+          id="30days"
+          autocomplete="off"
+          onClick={handleChangeDays}
+          value={30}
+        />
+        <label class="btn btn-outline-primary" for="30days">
+          30d
+        </label>
+
+        <input
+          type="radio"
+          class="btn-check"
+          name="90days"
+          id="90days"
+          autocomplete="off"
+          onClick={handleChangeDays}
+          value={90}
+        />
+        <label class="btn btn-outline-primary" for="90days">
+          90d
+        </label>
+
+        <input
+          type="radio"
+          class="btn-check"
+          name="180days"
+          id="180days"
+          autocomplete="off"
+          onClick={handleChangeDays}
+          value={180}
+        />
+        <label class="btn btn-outline-primary" for="180days">
+          180d
+        </label>
+
+        <input
+          type="radio"
+          class="btn-check"
+          name="maxdays"
+          id="maxdays"
+          autocomplete="off"
+          onClick={handleChangeDays}
+          value={"max"}
+        />
+        <label class="btn btn-outline-primary" for="maxdays">
+          max
+        </label>
+      </div>
+      <div className="history">
+        <Line options={options} data={data} />
+      </div>
+    </>
   );
 };
 export default HistoryChart;

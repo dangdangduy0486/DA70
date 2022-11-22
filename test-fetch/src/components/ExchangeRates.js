@@ -2,8 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const ExchangeRates = () => {
-  const [exchangeFrom, setExchangeFrom] = useState("btc");
-  const [exchangeTo, setExchangeTo] = useState("eth");
+  const [exchangeFrom, setExchangeFrom] = useState("usd");
+  const [exchangeTo, setExchangeTo] = useState("bitcoin");
   const [exchangeResult, setExchangeResult] = useState(null);
   const [currencies, setCurrencies] = useState(null);
 
@@ -17,10 +17,10 @@ const ExchangeRates = () => {
   const handleExchange = (e) => {
     e.preventDefault();
     axios
-      .get(url, {
+      .post(url, {
         params: {
-          from: exchangeFrom,
-          to: exchangeTo,
+          vs_currency: exchangeFrom,
+          ids: exchangeTo,
         },
       })
       .then((response) => {

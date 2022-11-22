@@ -30,9 +30,8 @@ const userRoutes = require("./routes/userRoutes");
 app.use("/api/user", userRoutes);
 
 //markets
-const markets = require("./routes/marketsRoute");
-app.use("/api/markets", markets);
-// app.get('/api/markets', markets.marketsParser)
+const marketsRoute = require("./routes/marketsRoute");
+app.use("/api/markets", marketsRoute);
 
 //currency
 const currencyRoute = require("./routes/currencyRoute");
