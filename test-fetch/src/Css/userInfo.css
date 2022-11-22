@@ -5,6 +5,7 @@
   box-sizing: border-box;
   background: url("../images/Moon.svg");
   background-size: cover;
+  width: 100%;
 }
 .userinfo_container {
   display: flex;

@@ -1,13 +1,12 @@
 import NavBar from "../components/NavBar";
+import RequestReceipt from "../components/RequestReceipt";
 import "../Css/userCart.css";
 const UserCart = () => {
   return (
     <>
       <NavBar />
       <section className="userCart">
-        <div>
-          <h3>hihi</h3>
-        </div>
+        <RequestReceipt />
       </section>
     </>
   );

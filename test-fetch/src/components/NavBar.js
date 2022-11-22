@@ -23,7 +23,7 @@ const NavBar = () => {
   return (
     <>
       <Navbar expand="lg" className="bg-light fixed-top navbar">
-        <Container>
+        <Container fluid>
           <Link style={{ textDecoration: "none" }} to="/">
             <Navbar.Brand>
               <FontAwesomeIcon className="text-warning" icon={faBitcoinSign} />

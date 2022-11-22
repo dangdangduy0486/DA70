@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-
+import UserManagement from "../components/UserManagement";
 import profile from "../images/profile.svg";
 import NavBar from "../components/NavBar";
 import "../Css/userInfo.css";
@@ -12,16 +12,14 @@ const UserInfor = () => {
 
   return (
     <>
-      {userInfo.role === "admin" ? (
-        <>
-          <button>Users management</button>
-          <button>Order Request</button>
-          <button>Recharge Request</button>
-        </>
-      ) : (
-        <>
-          <NavBar />
-          <section className="page_userinfo ">
+      <NavBar />
+      <section className="page_userinfo ">
+        {userInfo.role === "admin" ? (
+          <>
+            <UserManagement />
+          </>
+        ) : (
+          <>
             <div className="userinfo_container">
               <div className="card">
                 <div className="card-header">
@@ -65,9 +63,9 @@ const UserInfor = () => {
                 </div>
               </div>
             </div>
-          </section>
-        </>
-      )}
+          </>
+        )}
+      </section>
     </>
   );
 };
