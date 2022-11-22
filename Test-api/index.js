@@ -25,6 +25,10 @@ mongoose
     console.log(error);
   });
 
+//admin
+const adminRoute = require("./routes/adminRoute");
+app.use("/api/admin", adminRoute)
+
 //user
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/user", userRoutes);
@@ -36,10 +40,6 @@ app.use("/api/markets", marketsRoute);
 //currency
 const currencyRoute = require("./routes/currencyRoute");
 app.use("/api/currency", currencyRoute);
-
-//cart
-const cartRoute = require("./routes/cartRoute");
-app.use("/api/cart", cartRoute);
 
 //trending coin
 const trendingCoinsRoute = require("./routes/trendingCoinsRoute");

@@ -6,9 +6,8 @@ const {
   forgotPassword,
   resetPasswordRequest,
   resetPassword,
-  getUser,
-  allUsers,
-  deleteUser,
+  getUserInfo,
+  editUserInfo
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -32,14 +31,9 @@ router.get("/reset-password/:userID", resetPasswordRequest);
 router.patch("/reset-password/:userID", resetPassword);
 
 //get user info
-router.get("/:email", getUser);
+router.get("/user-info/:email", getUserInfo);
 
-// //get user info
-// router.get("/:email", getUser);
-
-//ADMIN ONLY!!
-router.delete("/", deleteUser);
-
-router.get("/admin/allusers", allUsers);
+//update user
+router.patch("/update-user-info/:email", editUserInfo);
 
 module.exports = router;

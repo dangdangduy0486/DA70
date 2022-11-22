@@ -9,6 +9,7 @@ const CryptoJS = require("crypto-js");
 const sendEmail = require("../utils/sendEmail");
 const User = require("../models/User");
 const Token = require("../models/token");
+const Order = require("../models/order");
 
 const generateMD5 = () => {
   const expire = Math.ceil(Date.now() / 1000) + 25200;
@@ -21,6 +22,7 @@ const generateMD5 = () => {
   return base64;
 };
 
+//signup
 const signup = async (req, res) => {
   try {
     let user = await User.findOne({ email: req.body.email });
@@ -50,6 +52,7 @@ const signup = async (req, res) => {
   }
 };
 
+//verify email
 const verifyEmail = async (req, res) => {
   try {
     const user = await User.findOne({
@@ -82,12 +85,13 @@ const verifyEmail = async (req, res) => {
   }
 };
 
+//login
 const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user)
-      return res.status(401).send({ 
-        message: "Invalid Email or Password" 
+      return res.status(401).send({
+        message: "Invalid Email or Password",
       });
 
     const validPassword = await bcrypt.compare(
@@ -225,7 +229,7 @@ const resetPassword = async (req, res) => {
 };
 
 //get info
-const getUser = async (req, res) => {
+const getUserInfo = async (req, res) => {
   try {
     let user = await User.findOne({
       email: req.params.email,
@@ -239,7 +243,7 @@ const getUser = async (req, res) => {
     res.status(200).send({
       email: user.email,
       fullname: user.fullname,
-      role: user.role
+      role: user.role,
     });
   } catch (err) {
     res.status(500).send({
@@ -248,23 +252,82 @@ const getUser = async (req, res) => {
   }
 };
 
-//ADMIN ONLY !!!
-//get all users
-const allUsers = async (req, res) => {
-  const users = await User.find({ role: "member" });
+//update info
+const editUserInfo = async (req, res) => {
+  try {
+    let user = await User.findOneAndUpdate(
+      {
+        email: req.params.email,
+      },
+      {
+        ...req.body,
+      }
+    );
 
-  return res.status(200).json({ users });
+    if (!user)
+      return res.status(400).send({
+        message: "Invalid link",
+      });
+
+    res.status(200).send({
+      message: "Update user information successfully!!!",
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: "Internal Server Error",
+    });
+  }
 };
 
-//delete user
-const deleteUser = async (req, res) => {
-  const { email } = req.body;
+//send request order
+const requestOrder = async (req, res) => {
+  try {
+    let user = await User.findOne({
+      email: req.params.email,
+    });
 
-  if (!email) {
-    return res.status(400).json({ message: "Missing something here!!!" });
-  } else {
-    await User.findOneAndDelete({ email: email });
-    return res.status(200).json({ message: "Delete success" });
+    if (!user)
+      return res.status(400).send({
+        message: "Invalid link",
+      });
+
+    await Order.create({
+      ...req.body,
+    });
+
+    res.status(200).send({
+      message: "Send request successfully!!!",
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+//get request order
+const getResquestOrder = async (req, res) => {
+  try {
+    let user = await User.findOne({
+      email: req.params.email,
+    });
+
+    if (!user)
+      return res.status(400).send({
+        message: "Invalid link",
+      });
+
+    const order = await Order.findOne({
+      userID: user.id,
+    });
+
+    res.status(200).send({
+      order,
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: "Internal Server Error",
+    });
   }
 };
 
@@ -275,7 +338,8 @@ module.exports = {
   forgotPassword,
   resetPasswordRequest,
   resetPassword,
-  getUser,
-  allUsers,
-  deleteUser,
+  getUserInfo,
+  editUserInfo,
+  requestOrder,
+  getResquestOrder,
 };
