@@ -239,6 +239,7 @@ const getUser = async (req, res) => {
     res.status(200).send({
       email: user.email,
       fullname: user.fullname,
+      role: user.role
     });
   } catch (err) {
     res.status(500).send({

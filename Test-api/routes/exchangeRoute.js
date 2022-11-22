@@ -3,6 +3,6 @@ const { exchangeRatesParser } = require("../controllers/exchangeController");
 
 const router = express.Router();
 
-router.get("/", exchangeRatesParser);
+router.post("/", exchangeRatesParser);
 
 module.exports = router;

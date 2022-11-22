@@ -12,7 +12,7 @@ module.exports = async (email, subject, text) => {
   const accessToken = OAuth2_client.getAccessToken();
   try {
     const transporter = nodemailer.createTransport({
-      // host: process.env.HOST,
+      host: process.env.HOST,
       service: process.env.SERVICE,
       post: Number(process.env.EMAIL_PORT),
       secure: Boolean(process.env.SECURE),
@@ -20,10 +20,13 @@ module.exports = async (email, subject, text) => {
         type: "OAuth2",
         user: process.env.USER,
         pass: process.env.PASSWORD,
+        // clientId : "113798732064467693505 ",
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken: process.env.REFRESH_TOKEN,
         accessToken: accessToken,
+        expires: 1484314697598,
+        // privateKey: "8ff04bb9ebfb7258fea45c9a1940360edcdfa290"
       },
     });
     await transporter.sendMail({
