@@ -105,6 +105,62 @@ const NavBar = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <div
+        class="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="offcanvasRight"
+        aria-labelledby="offcanvasRightLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title text-center" id="offcanvasRightLabel">
+            Cart information
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          {/* {shopCartList.length === 0 ? (
+            <>
+              <p>Your cart is empty</p>
+            </>
+          ) : ( */}
+          <>
+            <form>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Amout</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* {shopCartList.map((cartItem, index) => (
+                      <tr key={index}>
+                        <td>{cartItem.name}</td>
+                        <td>{cartItem.price}</td>
+                        <td className="number-input">
+                          <input type="number"></input>
+                        </td>
+                      </tr>
+                    ))} */}
+                  <p>hihi</p>
+                </tbody>
+              </table>
+              <hr />
+              <div className="text-end fw-bold">Total:BTC</div>
+              <Button className="btn btn-buy" variant="outline-warning">
+                Buy
+              </Button>
+            </form>
+          </>
+          {/* )} */}
+        </div>
+      </div>
     </>
   );
 };
