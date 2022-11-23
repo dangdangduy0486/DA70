@@ -1,10 +1,13 @@
 .btn-cart {
-    border: 1px solid var(--yellwo-color);
-    align-self: center;
-  }
-  .btn-cart:hover {
-    background-color: var(--yellwo-color);
-    color: white;
-    animation: bounceIn; /* referring directly to the animation's @keyframe declaration */
-    animation-duration: 0.6s;
-  }
+  border: 1px solid var(--yellwo-color);
+  align-self: center;
+}
+.btn-cart:hover {
+  background-color: var(--yellwo-color);
+  color: white;
+  animation: bounceIn; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 0.6s;
+}
+.money {
+  margin: 5px 0 0 10px;
+}

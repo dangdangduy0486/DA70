@@ -4,8 +4,8 @@
   padding: 0;
   box-sizing: border-box;
   background: url("../images/Moon.svg");
-  min-height: 100vh;
   background-size: cover;
+  width: 100%;
 }
 .userinfo_container {
   display: flex;

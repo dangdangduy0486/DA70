@@ -153,7 +153,7 @@ const MarketsDetails = ({ markets, symbol }) => {
                 </td>
                 <td className="total_volume">
                   <p>
-                    {(market.total_volume)}-{`${symbol}`}
+                    {market.total_volume}-{`${symbol}`}
                   </p>
                 </td>
                 <td className="market_cap">
@@ -179,7 +179,7 @@ const MarketsDetails = ({ markets, symbol }) => {
             ))}
         </tbody>
       </table>
-      <div
+      {/* <div
         class="offcanvas offcanvas-end"
         tabindex="-1"
         id="offcanvasRight"
@@ -233,7 +233,7 @@ const MarketsDetails = ({ markets, symbol }) => {
             </>
           )}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

@@ -21,5 +21,9 @@ code {
 ul {
   list-style: decimal;
 }
-.btn {
+.bao {
+  display: flex;
+  min-height: inherit;
+  width: 100%;
+  justify-content: center;
 }

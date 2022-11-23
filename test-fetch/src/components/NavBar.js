@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBitcoinSign } from "@fortawesome/free-solid-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faSackDollar } from "@fortawesome/free-solid-svg-icons";
 import MenuProfile from "./MenuProfile";
 
 const NavBar = () => {
@@ -22,7 +23,7 @@ const NavBar = () => {
   return (
     <>
       <Navbar expand="lg" className="bg-light fixed-top navbar">
-        <Container>
+        <Container fluid>
           <Link style={{ textDecoration: "none" }} to="/">
             <Navbar.Brand>
               <FontAwesomeIcon className="text-warning" icon={faBitcoinSign} />
@@ -35,8 +36,8 @@ const NavBar = () => {
               <Link style={{ textDecoration: "none" }} to="/markets">
                 <Nav.Link href="/market">Market</Nav.Link>
               </Link>
-              <Link style={{ textDecoration: "none" }} to="/trend">
-                <Nav.Link href="/trend">Trend</Nav.Link>
+              <Link style={{ textDecoration: "none" }} to="/converter">
+                <Nav.Link href="/converter">Converter</Nav.Link>
               </Link>
 
               <NavDropdown title="About Us" id="basic-nav-dropdown">
@@ -65,8 +66,19 @@ const NavBar = () => {
                       Logout
                     </Button>
                   </Link>
+                  <span className="money">money</span>
                   <MenuProfile email={email} />
-
+                  <Link
+                    style={{ textDecoration: "none", alignSelf: "center" }}
+                    to="/charge"
+                  >
+                    <FontAwesomeIcon
+                      icon={faSackDollar}
+                      className="btn ms-2 btn-cart"
+                      variant="outline-warning"
+                      type="button"
+                    />
+                  </Link>
                   <FontAwesomeIcon
                     icon={faCartShopping}
                     className="btn ms-2 btn-cart"
@@ -93,6 +105,62 @@ const NavBar = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <div
+        class="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="offcanvasRight"
+        aria-labelledby="offcanvasRightLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title text-center" id="offcanvasRightLabel">
+            Cart information
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          {/* {shopCartList.length === 0 ? (
+            <>
+              <p>Your cart is empty</p>
+            </>
+          ) : ( */}
+          <>
+            <form>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Amout</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* {shopCartList.map((cartItem, index) => (
+                      <tr key={index}>
+                        <td>{cartItem.name}</td>
+                        <td>{cartItem.price}</td>
+                        <td className="number-input">
+                          <input type="number"></input>
+                        </td>
+                      </tr>
+                    ))} */}
+                  <p>hihi</p>
+                </tbody>
+              </table>
+              <hr />
+              <div className="text-end fw-bold">Total:BTC</div>
+              <Button className="btn btn-buy" variant="outline-warning">
+                Buy
+              </Button>
+            </form>
+          </>
+          {/* )} */}
+        </div>
+      </div>
     </>
   );
 };
