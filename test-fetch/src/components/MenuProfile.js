@@ -11,7 +11,7 @@ const MenuProfile = ({ email }) => {
     let menuHand = document.querySelector(".sub-menu-wrap");
     menuHand.classList.toggle("open-menu");
   }
-  const url = `api/user/${email}`;
+  const url = `api/user/user-info/${email}`;
   useEffect(() => {
     axios
       .get(url)

@@ -43,6 +43,24 @@ const CoinInfo = () => {
     );
     setCurrency1(currency1);
   }
+  const email = localStorage.getItem("email");
+  const handleCreateOrder = () => {
+    const url = `/api/user/create-order/${email}`;
+    const res = 
+    axios
+    .post(url, {
+      name: coinInfo.name,
+      price: coinInfo.market_data.current_price[currency1],
+      amount: amount1,
+      currency: currency2,
+      total: amount2,
+    })
+    .then(() =>{
+      alert("Buy coin successfull!!!");
+    })
+    return res.data;
+  };
+
   const url = "/api/coins/";
   useEffect(() => {
     axios
@@ -60,6 +78,7 @@ const CoinInfo = () => {
         setIsError(true);
       });
   }, [coinID]);
+  console.log(coinInfo);
   if (!coinInfo || isError || isLoading) return <Loading />;
 
   return (
@@ -90,7 +109,9 @@ const CoinInfo = () => {
                   amount={amount2}
                   currency={currency2}
                 />
-                <Button variant="outline-warning">Buy</Button>
+                <Button variant="outline-warning" onClick={handleCreateOrder}>
+                  Buy
+                </Button>
               </div>
             </div>
           </div>

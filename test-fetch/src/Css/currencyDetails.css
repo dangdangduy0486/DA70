@@ -1,4 +1,4 @@
-#currencyDetails {
+/* #currencyDetails {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,4 +17,51 @@
 .currency_item:hover {
   background-color: white;
   color: black;
+} */
+/* modal */
+
+.currency-modal-content {
+  position: relative;
+  background-color: #f9f9f9;
+  border: 1px solid #999;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px;
+  outline: 0;
+  -webkit-box-shadow: 0 3px 9px rgb(0 0 0 / 50%);
+  box-shadow: 0 3px 9px rgb(0 0 0 / 50%);
+  background-clip: padding-box;
+}
+.close-currenncy-modal {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+}
+.chapter-list-modal input {
+  width: 82%;
+  font-size: 16px;
+}
+
+.currency-modal-header {
+  min-height: 16.428571429px;
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.currency-list-modal .currency-list {
+  height: calc(100vh - 200px);
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.currency-list-modal .currency-list p {
+  border: solid 1px #ddd;
+  padding: 5px 3px;
+  display: inline-block;
+  margin: 0 5px 5px;
+  width: 105px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
 }
