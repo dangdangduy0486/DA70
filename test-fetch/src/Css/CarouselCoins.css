@@ -5,7 +5,6 @@
   overflow: hidden;
   position: relative;
   width: auto;
-  margin-top: 56px;
 }
 
 @keyframes scroll {
@@ -31,4 +30,13 @@
 .carouselImg {
   width: 40px;
   height: 40px;
+}
+@media screen and (max-width: 695px) {
+  .slider {
+    height: 50%;
+  }
+  .carouselImg {
+    width: 20px;
+    height: 20px;
+  }
 }

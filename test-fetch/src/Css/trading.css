@@ -1,0 +1,19 @@
+.tradingtopeople {
+  margin-top: 56px;
+  margin-bottom: 2rem;
+}
+.table-striped-rows tr:nth-child(2n) td {
+  background-color: #fbfbfb;
+}
+.table-striped-rows tr {
+  text-align: center;
+}
+.table-striped-rows td:nth-last-child(1) {
+  text-align: center;
+}
+.table-striped-rows thead {
+  background-color: #f1f1f1;
+}
+.table-striped-rows tr:first-child th {
+  text-align: center;
+}

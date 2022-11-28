@@ -4,7 +4,15 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import "../Css/Mainbonus.css";
+import { Carousel } from "antd";
 import Loading from "./loading/loading";
+import Footer from "../components/Footer";
+// const contentStyle = {
+//   height: "160px",
+//   color: "#fff",
+//   textAlign: "center",
+//   background: "#364d79",
+// };
 const Mainbonus = () => {
   const [trendCoins, setTrendingCoins] = useState(null);
   const url = "api/trending";
@@ -65,19 +73,60 @@ const Mainbonus = () => {
             ))}
         </div>
         <div className="cover_bottom">
-          <div className="container_bottom">
-            <div className="bottom_left"></div>
-            <div className="bottom_right">
-              <h5>Big results require big ambitions.</h5>
-              <h2>Cryptocurrency</h2>
-              <p>
-                Each success only buys an admission ticket to a more difficult
-                problem.
-              </p>
-              <button>Details</button>
-            </div>
+          <div className="cover_carousel">
+            <Carousel autoplay>
+              <div>
+                <div className="carousel carousel_1">
+                  <h1>Cryptocurrency</h1>
+                  <hr />
+                  <p>
+                    <span>"</span> The ability to create something which is not
+                    duplicable in the digital world has enormous value… <br />
+                    Lot’s of people will build businesses on top of that..
+                    <span>"</span>
+                  </p>
+                  <h6>Eric Schmidt</h6>
+                </div>
+              </div>
+              <div>
+                <div className="carousel carousel_2">
+                  <h1>Cryptocurrency</h1>
+                  <hr />
+                  <p>
+                    <span>"</span> Bitcoin is exciting because it shows how
+                    cheap it can be. <br /> Bitcoin is better than currency… for
+                    large transactions, currency can get pretty inconvenient.
+                    <span>"</span>
+                  </p>
+                  <h6>Bill Gates</h6>
+                </div>
+              </div>
+              <div>
+                <div className="carousel carousel_3 ">
+                  <h1>Cryptocurrency</h1>
+                  <hr />
+                  <p>
+                    <span>"</span> As people move into Bitcoin for payments and
+                    receipts they stop using <br /> US Dollars, Euros and
+                    Chinese Yuan which in the long-term devalues these
+                    currencies.
+                    <span>"</span>
+                  </p>
+                  <h6>John McAfee</h6>
+                </div>
+              </div>
+            </Carousel>
           </div>
         </div>
+        <div className="letstart">
+          <div>
+            <h1>Increase your income</h1>
+            <Link className="letstart_button" to="/markets">
+              <p>Get Start</p>
+            </Link>
+          </div>
+        </div>
+        <Footer className="footer_main" />
       </div>
     </>
   );

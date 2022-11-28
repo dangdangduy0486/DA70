@@ -22,13 +22,20 @@ const Cart = () => {
             <td>1</td>
             <td>
               <span>Bitcoin</span>
-              <span><img src="https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png?1547033579" alt="..."/></span>
+              <span>
+                <img
+                  src="https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png?1547033579"
+                  alt="..."
+                />
+              </span>
             </td>
             <td>0.11</td>
             <td></td>
-            <td><strong className="text-warning">PENDING</strong>
-            <strong className="text-danger">DENIED</strong>
-            <strong className="text-success">APPROVED</strong></td>
+            <td>
+              <strong className="text-warning">PENDING</strong>
+              <strong className="text-danger">DENIED</strong>
+              <strong className="text-success">APPROVED</strong>
+            </td>
             <td>
               <Button></Button>
             </td>

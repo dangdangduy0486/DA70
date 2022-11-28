@@ -18,6 +18,8 @@ import ExchangeRates from "./components/ExchangeRates";
 import Coverter from "./components/Coverter";
 import Charge from "./pages/Charge";
 import UserManagement from "./components/UserManagement";
+import Aboutus from "./pages/Aboutus";
+import TradingToP from "./pages/TradingToP";
 function App() {
   // const user = localStorage.getItem("token");
   return (
@@ -30,6 +32,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/test" element={<Test />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/aboutus" element={<Aboutus />} />
+            <Route path="/trading" element={<TradingToP />} />
             <Route
               path="/api/user/reset-password/:id"
               element={<NewPassword />}

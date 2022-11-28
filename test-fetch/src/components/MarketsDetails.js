@@ -36,7 +36,7 @@ const MarketsDetails = ({ markets, symbol }) => {
   });
   return (
     <>
-      <table className="table table-hover markets">
+      {/* <table className="table table-hover table_markets">
         <thead>
           <tr>
             <th scope="col" id="market_rank">
@@ -53,17 +53,16 @@ const MarketsDetails = ({ markets, symbol }) => {
             <th scope="col" className="market_cap">
               Market Cap
             </th>
-            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           {markets &&
             markets.map((market) => (
               <tr key={market.market_cap_rank}>
-                <th>
+                <th data-label="#">
                   <p>{market.market_cap_rank}</p>
                 </th>
-                <td>
+                <td data-label="Coin">
                   <div className="d-flex justify-content-center">
                     <Link
                       style={{
@@ -87,12 +86,12 @@ const MarketsDetails = ({ markets, symbol }) => {
                     </Link>
                   </div>
                 </td>
-                <td>
+                <td data-label="Price">
                   <p>
                     {market.current_price}-{`${symbol}`}
                   </p>
                 </td>
-                <td>
+                <td data-label="1h">
                   <p
                     className={`${
                       market.price_change_percentage_1h_in_currency > 0
@@ -111,7 +110,7 @@ const MarketsDetails = ({ markets, symbol }) => {
                     %
                   </p>
                 </td>
-                <td>
+                <td data-label="24h">
                   <p
                     className={`${
                       market.price_change_percentage_24h_in_currency > 0
@@ -132,7 +131,7 @@ const MarketsDetails = ({ markets, symbol }) => {
                     %
                   </p>
                 </td>
-                <td>
+                <td data-label="7d">
                   <p
                     className={`${
                       market.price_change_percentage_7d_in_currency > 0
@@ -151,89 +150,140 @@ const MarketsDetails = ({ markets, symbol }) => {
                     %
                   </p>
                 </td>
-                <td className="total_volume">
+                <td data-label="Volume" className="total_volume">
                   <p>
                     {market.total_volume}-{`${symbol}`}
                   </p>
                 </td>
-                <td className="market_cap">
+                <td data-label="Market Cap" className="market_cap">
                   <p>
                     {market.market_cap}-{`${symbol}`}
                   </p>
                 </td>
-                <td className="contact">
-                  <Link>
-                    <Button
-                      className="buy"
-                      onClick={() => handleClick(market)}
-                      value={market}
+              </tr>
+            ))}
+        </tbody>
+      </table> */}
+      <table className="table_markets">
+        <thead>
+          <th id="market_rank">#</th>
+          <th>Coin</th>
+          <th>Price</th>
+          <th>1h</th>
+          <th>24h</th>
+          <th>7d</th>
+          <th className="total_volume">Volume</th>
+          <th className="market_cap">Market Cap</th>
+        </thead>
+        <tbody>
+          {markets &&
+            markets.map((market) => (
+              <tr key={market.market_cap_rank}>
+                <td data-label="#">
+                  <p>{market.market_cap_rank}</p>
+                </td>
+                <td data-label="Coin">
+                  <div className="coin_box">
+                    <Link
+                      style={{
+                        textDecoration: "none",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      to={`/coins/${market.id}`}
                     >
-                      Buy
-                    </Button>
-                  </Link>
-                  <Link to={`/coins/${market.id}`}>
-                    <Button className="view">View</Button>
-                  </Link>
+                      <img
+                        className="imgCoin"
+                        src={market.image}
+                        alt="{coin.image}"
+                      />
+                      <p style={{ color: "black", marginBottom: 0 }}>
+                        {market.name}
+                      </p>
+                      <span className="text-center text-black ">
+                        ({market.symbol})
+                      </span>
+                    </Link>
+                  </div>
+                </td>
+                <td data-label="Price">
+                  <p>
+                    {market.current_price}-{`${symbol}`}
+                  </p>
+                </td>
+                <td data-label="1h">
+                  <p
+                    className={`${
+                      market.price_change_percentage_1h_in_currency > 0
+                        ? "text-success"
+                        : "text-danger"
+                    } `}
+                  >
+                    {market.price_change_percentage_1h_in_currency < 0 ? (
+                      <FontAwesomeIcon icon={faArrowTrendDown} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowTrendUp} />
+                    )}
+                    {market.price_change_percentage_1h_in_currency
+                      ? market.price_change_percentage_1h_in_currency.toFixed(2)
+                      : "?"}
+                    %
+                  </p>
+                </td>
+                <td data-label="24h">
+                  <p
+                    className={`${
+                      market.price_change_percentage_24h_in_currency > 0
+                        ? "text-success"
+                        : "text-danger"
+                    } `}
+                  >
+                    {market.price_change_percentage_24h_in_currency < 0 ? (
+                      <FontAwesomeIcon icon={faArrowTrendDown} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowTrendUp} />
+                    )}
+                    {market.price_change_percentage_24h_in_currency
+                      ? market.price_change_percentage_24h_in_currency.toFixed(
+                          2
+                        )
+                      : "?"}
+                    %
+                  </p>
+                </td>
+                <td data-label="7d">
+                  <p
+                    className={`${
+                      market.price_change_percentage_7d_in_currency > 0
+                        ? "text-success"
+                        : "text-danger"
+                    } `}
+                  >
+                    {market.price_change_percentage_7d_in_currency < 0 ? (
+                      <FontAwesomeIcon icon={faArrowTrendDown} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowTrendUp} />
+                    )}
+                    {market.price_change_percentage_7d_in_currency
+                      ? market.price_change_percentage_7d_in_currency.toFixed(2)
+                      : "?"}
+                    %
+                  </p>
+                </td>
+                <td data-label="Volume" className="total_volume">
+                  <p>
+                    {market.total_volume}-{`${symbol}`}
+                  </p>
+                </td>
+                <td data-label="Market Cap" className="market_cap">
+                  <p>
+                    {market.market_cap}-{`${symbol}`}
+                  </p>
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
-      {/* <div
-        class="offcanvas offcanvas-end"
-        tabindex="-1"
-        id="offcanvasRight"
-        aria-labelledby="offcanvasRightLabel"
-      >
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title text-center" id="offcanvasRightLabel">
-            Cart information
-          </h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="offcanvas-body">
-          {shopCartList.length === 0 ? (
-            <>
-              <p>Your cart is empty</p>
-            </>
-          ) : (
-            <>
-              <form>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Price</th>
-                      <th>Amout</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {shopCartList.map((cartItem, index) => (
-                      <tr key={index}>
-                        <td>{cartItem.name}</td>
-                        <td>{cartItem.price}</td>
-                        <td className="number-input">
-                          <input type="number"></input>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <hr />
-                <div className="text-end fw-bold">Total:BTC</div>
-                <Button className="btn btn-buy" variant="outline-warning">
-                  Buy
-                </Button>
-              </form>
-            </>
-          )}
-        </div>
-      </div> */}
     </>
   );
 };
