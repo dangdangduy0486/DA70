@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Tabs, Table, Input } from "antd";
+import { Tabs, Table, Input, Form, Button, Select } from "antd";
 import { FloatButton } from "antd";
 import "../Css/trading.css";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 const TradingToP = () => {
   const [searchName, setSearchName] = useState("");
+  const onFinish = (e) => {
+    console.log(e);
+  };
   return (
     <>
       <NavBar />
@@ -271,6 +274,86 @@ const TradingToP = () => {
                 },
               ]}
             ></Table>
+            <FloatButton.BackTop />
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Create" key="3" className="tabs_create">
+            <Tabs defaultActiveKey="1">
+              <Tabs.TabPane tab="I want to Buy" key="1">
+                <Form
+                  className="p-3"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 10,
+                  }}
+                  onFinish={onFinish}
+                >
+                  <Form.Item label="Name" name="name">
+                    <Input placeholder="name" required></Input>
+                  </Form.Item>
+                  <Form.Item label="Price" name="price">
+                    <Input type="number" placeholder="Price" required></Input>
+                  </Form.Item>
+                  <Form.Item label="Amount" name="amount">
+                    <Input type="number" placeholder="Amount" required></Input>
+                  </Form.Item>
+                  <Form.Item label="Currency">
+                    <Select>
+                      <Select.Option value="demo">Demo</Select.Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    wrapperCol={{
+                      offset: 8,
+                      span: 10,
+                    }}
+                  >
+                    <Button block type="primary" htmlType="submit">
+                      Post
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="I want to Sell" key="2">
+                <Form
+                  className="p-3"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 10,
+                  }}
+                  onFinish={onFinish}
+                >
+                  <Form.Item label="Name" name="name">
+                    <Input placeholder="name" required></Input>
+                  </Form.Item>
+                  <Form.Item label="Price" name="price">
+                    <Input type="number" placeholder="Price" required></Input>
+                  </Form.Item>
+                  <Form.Item label="Amount" name="amount">
+                    <Input type="number" placeholder="Amount" required></Input>
+                  </Form.Item>
+                  <Form.Item label="Currency">
+                    <Select>
+                      <Select.Option value="demo">Demo</Select.Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    wrapperCol={{
+                      offset: 8,
+                      span: 10,
+                    }}
+                  >
+                    <Button block type="primary" htmlType="submit">
+                      Post
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Tabs.TabPane>
+            </Tabs>
+            <form></form>
             <FloatButton.BackTop />
           </Tabs.TabPane>
         </Tabs>

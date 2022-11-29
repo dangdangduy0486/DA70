@@ -11,7 +11,7 @@
 .money {
   margin: 5px 0 0 10px;
 }
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 992px) {
   .meune_collapse1 {
     text-align: center;
   }
@@ -33,6 +33,6 @@
   .menu-right {
     position: absolute;
     top: 8px;
-    right: 0;
+    right: 0.5rem;
   }
 }
