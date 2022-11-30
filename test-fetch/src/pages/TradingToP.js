@@ -279,41 +279,34 @@ const TradingToP = () => {
           <Tabs.TabPane tab="Create" key="3" className="tabs_create">
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab="I want to Buy" key="1">
-                <Form
-                  className="p-3"
-                  labelCol={{
-                    span: 8,
-                  }}
-                  wrapperCol={{
-                    span: 10,
-                  }}
-                  onFinish={onFinish}
-                >
-                  <Form.Item label="Name" name="name">
-                    <Input placeholder="name" required></Input>
-                  </Form.Item>
-                  <Form.Item label="Price" name="price">
-                    <Input type="number" placeholder="Price" required></Input>
-                  </Form.Item>
-                  <Form.Item label="Amount" name="amount">
-                    <Input type="number" placeholder="Amount" required></Input>
-                  </Form.Item>
-                  <Form.Item label="Currency">
-                    <Select>
-                      <Select.Option value="demo">Demo</Select.Option>
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
-                    wrapperCol={{
-                      offset: 8,
-                      span: 10,
-                    }}
-                  >
-                    <Button block type="primary" htmlType="submit">
-                      Post
-                    </Button>
-                  </Form.Item>
-                </Form>
+                <form className="p-3">
+                  <div className="form_buy">
+                    <div className="form_buy_swap">
+                      <h5>Tai San</h5>
+                      <select>
+                        <option value="hi">hi</option>
+                      </select>
+                    </div>
+                    <h6 className="form_buy_swap"></h6>
+                    <div className="form_buy_swap">
+                      <h5>voi Fiat</h5>
+                      <select>
+                        <option value="hi">hi</option>
+                      </select>
+                    </div>
+                  </div>
+                  <hr />
+                  <div className="form_buy">
+                    <div className="form_buy_text">
+                      <p>Gia cua ban</p>
+                      <p>1023,555</p>
+                    </div>
+                    <div className="form_buy_text">
+                      <p>Gia cua ban</p>
+                      <p>1023,555</p>
+                    </div>
+                  </div>
+                </form>
               </Tabs.TabPane>
               <Tabs.TabPane tab="I want to Sell" key="2">
                 <Form

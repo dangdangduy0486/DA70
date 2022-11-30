@@ -40,7 +40,16 @@
 .tabs_create {
   padding: 1rem;
 }
-
+.form_buy {
+  display: flex;
+  justify-content: center;
+}
+.form_buy_swap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+}
 @media screen and (max-width: 480px) {
   .tradingtopeople * {
     font-size: 10px;
