@@ -9,11 +9,9 @@ const cookieParser = require("cookie-parser");
 const app = express();
 
 // app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
-app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(express.static("public"));
+app.use(cookieParser());
 
 //MongoDB
 mongoose
@@ -25,13 +23,9 @@ mongoose
     console.log(error);
   });
 
-//admin
-const adminRoute = require("./routes/adminRoute");
-app.use("/api/admin", adminRoute)
-
-//user
-const userRoutes = require("./routes/userRoutes");
-app.use("/api/user", userRoutes);
+//auth
+const authRoute = require("./routes/authRoute");
+app.use("/api/auth", authRoute);
 
 //markets
 const marketsRoute = require("./routes/marketsRoute");
@@ -49,9 +43,33 @@ app.use("/api/trending", trendingCoinsRoute);
 const CoinInfoRoute = require("./routes/CoinInfoRoute");
 app.use("/api/coins", CoinInfoRoute);
 
+//verify;
+const VerifyJWT = require("./middleware/verifyJWT");
+app.use(VerifyJWT);
+// token validate request
+
+//user
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/user", userRoutes);
+
 //exchange
 const exchangeRoute = require("./routes/exchangeRoute");
 app.use("/api/exchange", exchangeRoute);
+
+//admin
+const adminRoute = require("./routes/adminRoute");
+app.use("/api/admin", adminRoute);
+
+app.use("*", (req, res) => {
+  res.status(404).send({
+    success: "false",
+    message: "Page not found",
+    error: {
+      statusCode: 404,
+      message: "You reached a route that is not defined on this server",
+    },
+  });
+});
 
 app.listen(process.env.PORT, "127.0.0.1", () => {
   console.log(

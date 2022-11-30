@@ -28,5 +28,4 @@ const marketsParser = async (req, res) => {
 }
 module.exports = {
     marketsParser,
-    getAllMarkets
 };

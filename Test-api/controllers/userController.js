@@ -22,124 +22,6 @@ const generateMD5 = () => {
   return base64;
 };
 
-//signup
-const signup = async (req, res) => {
-  try {
-    let user = await User.findOne({ email: req.body.email });
-    if (user)
-      return res
-        .status(409)
-        .send({ message: "User with given email already Exist!" });
-
-    const salt = await bcrypt.genSalt(Number(process.env.SALT));
-    const hashPassword = await bcrypt.hash(req.body.password, salt);
-
-    user = await User.create({ ...req.body, password: hashPassword });
-    const token = await Token.create({
-      userID: user._id,
-      token: generateMD5(),
-    });
-
-    const url = `${process.env.BASE_URL}api/user/verify/${user.id}/${token.token}`;
-    await sendEmail(user.email, "Verify Email", url);
-
-    res
-      .status(201)
-      .send({ message: "An Email sent to your account please verify" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: "Internal Server Error" });
-  }
-};
-
-//verify email
-const verifyEmail = async (req, res) => {
-  try {
-    const user = await User.findOne({
-      _id: req.params.userID,
-    });
-
-    if (!user)
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-
-    const token = await Token.findOne({
-      userID: user._id,
-      token: req.params.token,
-    });
-
-    if (!token)
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-
-    await User.findOneAndUpdate({ _id: user._id }, { verified: true });
-    res.status(200).send({
-      message: "Email verified successfully",
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: "Internal Server Error",
-    });
-  }
-};
-
-//login
-const login = async (req, res, next) => {
-  try {
-    const user = await User.findOne({ email: req.body.email });
-    if (!user)
-      return res.status(401).send({
-        message: "Invalid Email or Password",
-      });
-
-    const validPassword = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
-    if (!validPassword)
-      return res.status(401).send({ message: "Invalid Email or Password" });
-
-    if (!user.verified) {
-      let token = await Token.findOne({ userID: user._id });
-      if (!token) {
-        token = await Token.create({
-          userID: user._id,
-          // token: crypto.randomBytes(32).toString("hex"),
-          token: generateMD5(),
-        });
-        const url = `${process.env.BASE_URL}api/user/verify/${user.id}/${token.token}`;
-        await sendEmail(user.email, "Verify Email", url);
-      }
-
-      return res
-        .status(400)
-        .send({ message: "An Email sent to your account please verify" });
-    }
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "30s",
-    });
-
-    res.cookie(String(user._id), token, {
-      path: "/",
-      expires: new Date(Date.now() + 1000 * 30),
-      httpOnly: true,
-      sameSite: "lax",
-    });
-
-    res.status(200).send({
-      message: "logged in successfully",
-      token: token,
-      email: user.email,
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: "Internal Server Error",
-    });
-  }
-};
-
 //forgot password
 const forgotPassword = async (req, res) => {
   try {
@@ -291,12 +173,24 @@ const requestOrder = async (req, res) => {
         message: "Invalid link",
       });
 
-    await Order.create({
-      ...req.body,
+    const { name, price, amount, currency, total } = req.body;
+    // if (!name || !price || !amount || !currency || !total) {
+    //   return res.status(400).send({
+    //     message: "Missing something!!",
+    //   });
+    // }
+    const order = await Order.create({
+      userID: user.id,
+      name,
+      price,
+      amount,
+      currency,
+      total,
     });
 
     res.status(200).send({
       message: "Send request successfully!!!",
+      order,
     });
   } catch (err) {
     res.status(500).send({
@@ -317,8 +211,8 @@ const getResquestOrder = async (req, res) => {
         message: "Invalid link",
       });
 
-    const order = await Order.findOne({
-      userID: user.id,
+    const order = await Order.find({
+      userID: user._id,
     });
 
     res.status(200).send({
@@ -332,9 +226,6 @@ const getResquestOrder = async (req, res) => {
 };
 
 module.exports = {
-  signup,
-  verifyEmail,
-  login,
   forgotPassword,
   resetPasswordRequest,
   resetPassword,

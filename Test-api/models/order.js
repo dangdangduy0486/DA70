@@ -14,6 +14,9 @@ const OrderSchema = new Schema({
   amount: {
     type: String,
   },
+  currency: {
+    type: String,
+  },
   total: {
     type: String,
   },

@@ -13,6 +13,9 @@ const tokenSchema = new Schema({
     type: String,
     required: true,
   },
+  id: {
+    type: String
+  },
   createAt: {
     type: Date,
     default: Date.now,
