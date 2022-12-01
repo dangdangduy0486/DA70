@@ -4,11 +4,11 @@ import "../Css/currencyDetails.css";
 
 const CurrencyDetails = (props) => {
   const [currencies, setCurrencies] = useState(null);
-  const [ selectedCurrency, setSelectedCurrency ] = useState(null)
+  const [selectedCurrency, setSelectedCurrency] = useState(null);
 
   const handleSelectCurrency = (value) => {
     props.currencyFr(value.symbol);
-    setSelectedCurrency(value.symbol)
+    setSelectedCurrency(value.symbol);
   };
 
   const url = "/api/currency";
@@ -28,7 +28,7 @@ const CurrencyDetails = (props) => {
 
   return (
     <>
-      {/* <div id="currencyDetails">
+      <div id="currencyDetails">
         {currencies &&
           currencies.map((currency) => (
             <div
@@ -39,8 +39,8 @@ const CurrencyDetails = (props) => {
               {currency.symbol.toUpperCase()}
             </div>
           ))}
-      </div> */}
-      <button
+      </div>
+      {/* <button
         type="button"
         class="btn btn-outline-secondary"
         data-bs-toggle="modal"
@@ -93,7 +93,7 @@ const CurrencyDetails = (props) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

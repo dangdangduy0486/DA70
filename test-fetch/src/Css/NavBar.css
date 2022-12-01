@@ -11,3 +11,28 @@
 .money {
   margin: 5px 0 0 10px;
 }
+@media screen and (max-width: 992px) {
+  .meune_collapse1 {
+    text-align: center;
+  }
+  .money {
+    display: none;
+  }
+  .btn-cart {
+    display: none;
+  }
+  .menu-right {
+    flex-direction: row;
+  }
+  .menu-profile {
+    width: 100%;
+  }
+  .navbar .container-fluid {
+    justify-content: initial;
+  }
+  .menu-right {
+    position: absolute;
+    top: 8px;
+    right: 0.5rem;
+  }
+}

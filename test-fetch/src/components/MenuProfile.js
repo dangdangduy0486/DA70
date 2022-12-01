@@ -42,13 +42,13 @@ const MenuProfile = ({ email }) => {
           <hr />
           <Link to="/usercart" className="sub-menu-link">
             <img src={info} alt="" />
-            <p>Your cart</p>
+            <p>Order</p>
             <span></span>
           </Link>
           <hr />
           <Link to="/userbudget" className="sub-menu-link">
             <img src={info} alt="" />
-            <p>Your budget</p>
+            <p>Wallet</p>
             <span></span>
           </Link>
         </div>

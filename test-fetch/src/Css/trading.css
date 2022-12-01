@@ -1,0 +1,57 @@
+.tradingtopeople {
+  margin-top: 56px;
+  margin-bottom: 2rem;
+}
+.table-striped-rows tr:nth-child(2n) td {
+  background-color: #fbfbfb;
+}
+.table-striped-rows tr {
+  text-align: center;
+}
+.table-striped-rows td:nth-last-child(1) {
+  text-align: center;
+}
+.table-striped-rows thead {
+  background-color: #f1f1f1;
+}
+.table-striped-rows tr:first-child th {
+  text-align: center;
+}
+.ant-tabs-nav {
+  background-color: black;
+}
+.ant-tabs-tab {
+  color: var(--yellwo-color);
+  letter-spacing: 2px;
+  margin: 0 0.5rem;
+}
+.ant-tabs-tab-btn {
+  color: var(--yellwo-color);
+  text-shadow: var(--yellwo-color);
+}
+
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--yellwo-color);
+  text-shadow: 0 0 0.25px var(--yellwo-color);
+}
+.ant-tabs .ant-tabs-ink-bar {
+  background-color: var(--yellwo-color);
+}
+.tabs_create {
+  padding: 1rem;
+}
+.form_buy {
+  display: flex;
+  justify-content: center;
+}
+.form_buy_swap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+}
+@media screen and (max-width: 480px) {
+  .tradingtopeople * {
+    font-size: 10px;
+  }
+}

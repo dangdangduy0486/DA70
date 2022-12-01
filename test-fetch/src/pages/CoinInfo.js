@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import axios from "axios";
 import "../Css/CoinInfo.css";
+import Footer from "../components/Footer";
 import CurrencyInput from "../components/CurrencyInput";
 import NavBar from "../components/NavBar";
 import Loading from "./loading/loading";
@@ -43,24 +44,6 @@ const CoinInfo = () => {
     );
     setCurrency1(currency1);
   }
-  const email = localStorage.getItem("email");
-  const handleCreateOrder = () => {
-    const url = `/api/user/create-order/${email}`;
-    const res = 
-    axios
-    .post(url, {
-      name: coinInfo.name,
-      price: coinInfo.market_data.current_price[currency1],
-      amount: amount1,
-      currency: currency2,
-      total: amount2,
-    })
-    .then(() =>{
-      alert("Buy coin successfull!!!");
-    })
-    return res.data;
-  };
-
   const url = "/api/coins/";
   useEffect(() => {
     axios
@@ -78,59 +61,60 @@ const CoinInfo = () => {
         setIsError(true);
       });
   }, [coinID]);
-  console.log(coinInfo);
   if (!coinInfo || isError || isLoading) return <Loading />;
 
   return (
     <>
       <NavBar />
       <section className="coininfor">
+        <div className="coindetail-title">
+          <img src={coinInfo.image.small} alt={coinInfo.name} />
+          <h1 className="text-2xl mb-2 capitalize font-bold">
+            {coinInfo.name}
+          </h1>
+        </div>
         <div className=" history-chart">
           <div className="div1">
             <HistoryChart coinID={coinID} />
           </div>
           <div className="div2">
-            <div>
-              <div className="coin_trade">
-                <h2>Converter Coin</h2>
-                <h5>From</h5>
-                <CurrencyInput
-                  onAmountChange={handleAmount1Change}
-                  onCurrencyChange={handleCurrency1Change}
-                  currencies={Object.keys(rates)}
-                  amount={amount1}
-                  currency={currency1}
-                />
-                <h5>To</h5>
-                <CurrencyInput
-                  onAmountChange={setAmount2}
-                  onCurrencyChange={setCurrency2}
-                  currencies={Object.keys(rates)}
-                  amount={amount2}
-                  currency={currency2}
-                />
-                <Button variant="outline-warning" onClick={handleCreateOrder}>
-                  Buy
-                </Button>
-              </div>
+            <div className="coin_trade">
+              <h2>Converter Coin</h2>
+              <h5>From</h5>
+              <CurrencyInput
+                onAmountChange={handleAmount1Change}
+                onCurrencyChange={handleCurrency1Change}
+                currencies={Object.keys(rates)}
+                amount={amount1}
+                currency={currency1}
+                className="currencyInput"
+              />
+              <h5>To</h5>
+              <CurrencyInput
+                onAmountChange={setAmount2}
+                onCurrencyChange={setCurrency2}
+                currencies={Object.keys(rates)}
+                amount={amount2}
+                currency={currency2}
+                className="currencyInput"
+              />
+              <Button variant="outline-warning">Buy</Button>
             </div>
           </div>
         </div>
         <Container fluid className="coindetail">
           <div className="">
-            <div className="coindetail-title">
-              <img src={coinInfo.image.small} alt={coinInfo.name} />
-              <h1 className="text-2xl mb-2 capitalize font-bold">
-                {coinInfo.name}
-              </h1>
-            </div>
+            <h3 className="text-center">
+              What is <span>{coinInfo.name}</span> ?
+            </h3>
             <p
-              className="mt-6 text-gray-500 [&>a]:text-blue-600 [&>a]:underline"
+              className="text-gray-500 [&>a]:text-blue-600 [&>a]:underline"
               dangerouslySetInnerHTML={{ __html: coinInfo.description.en }}
             ></p>
           </div>
         </Container>
       </section>
+      <Footer />
     </>
   );
 };
