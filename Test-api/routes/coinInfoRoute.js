@@ -1,8 +1,11 @@
-const express = require('express');
-const { getCoinInfo, CoinParser } =  require('../controllers/CoinInfoController');
-
+const express = require("express");
 const router = express.Router();
 
-router.get('/', CoinParser);
+const {
+  getCoinInfo,
+  CoinParser,
+} = require("../controllers/CoinInfoController");
+
+router.get("/", CoinParser);
 
 module.exports = router;

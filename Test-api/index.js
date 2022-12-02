@@ -23,6 +23,11 @@ mongoose
     console.log(error);
   });
 
+///
+const coinQueryRoute = require("./routes/coinQueryRoute");
+app.use("/api/coin-query", coinQueryRoute);
+///
+
 //auth
 const authRoute = require("./routes/authRoute");
 app.use("/api/auth", authRoute);

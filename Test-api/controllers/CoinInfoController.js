@@ -32,6 +32,5 @@ const CoinParser = async (req, res) => {
   return res.status(200).json(CoinInfo);
 };
 module.exports = {
-  getCoinInfo,
   CoinParser,
 };

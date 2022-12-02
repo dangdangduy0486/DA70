@@ -1,9 +1,0 @@
-.container_charge {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  flex-direction: column;
-  background: url("../images/Moon.svg");
-  background-size: cover;
-}

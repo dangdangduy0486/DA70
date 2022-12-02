@@ -2,13 +2,19 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import success from "../../images/success.png";
-import "./emailVerify.css";
+import "./EmailVerify.css";
 import Loading from "../loading/loading";
 const EmailVerify = () => {
   const [validUrl, setValidUrl] = useState(true);
   const url = "";
+  const token = localStorage.getItem("token");
+  const opts = {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  };
   useEffect(() => {
-    axios.get(url).catch((error) => {
+    axios.get(url, opts).catch((error) => {
       console.log(error);
       setValidUrl(false);
     });
