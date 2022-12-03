@@ -20,6 +20,7 @@ import Charge from "./pages/Charge";
 import UserManagement from "./components/UserManagement";
 import Aboutus from "./pages/Aboutus";
 import TradingToP from "./pages/TradingToP";
+import Overview from "./components/Overview";
 function App() {
   // const user = localStorage.getItem("token");
   return (
@@ -28,6 +29,7 @@ function App() {
         <div className="pages">
           <Routes>
             {/* {user && <Route path="/cart" exact element={<Cart />} />} */}
+            <Route path="/overview" element={<Overview />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
             <Route path="/test" element={<Test />} />

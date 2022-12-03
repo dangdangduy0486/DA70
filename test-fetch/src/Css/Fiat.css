@@ -1,13 +1,12 @@
-.container_overview {
+.container_fiat {
   background-color: white;
   min-height: 100vh;
 }
-.container_overview span {
+.container_fiat span {
   color: var(--yellwo-color);
 }
-.container_overview h1 {
+.container_fiat h1 {
   text-align: center;
-
   padding: 1rem;
 }
 .container_estimate {
