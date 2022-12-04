@@ -24,8 +24,8 @@ mongoose
   });
 
 ///
-const coinQueryRoute = require("./routes/coinQueryRoute");
-app.use("/api/coin-query", coinQueryRoute);
+// const coinQueryRoute = require("./routes/coinQueryRoute");
+// app.use("/api/coin-query", coinQueryRoute);
 ///
 
 //auth
@@ -49,8 +49,8 @@ const CoinInfoRoute = require("./routes/CoinInfoRoute");
 app.use("/api/coins", CoinInfoRoute);
 
 //verify;
-const VerifyJWT = require("./middleware/verifyJWT");
-app.use(VerifyJWT);
+// const VerifyJWT = require("./middleware/verifyJWT");
+// app.use(VerifyJWT);
 // token validate request
 
 //user

@@ -122,17 +122,17 @@ const login = async (req, res, next) => {
         .status(400)
         .send({ message: "An Email sent to your account please verify" });
     }
-
     const token = jwt.sign(
       {
         email: user.email,
-        userID: user._id,
+        userID: user.id,
       },
       process.env.JWT_ACCESS_TOKEN,
       {
         expiresIn: "1d",
       }
     );
+    console.log(token);
 
     await Token.create({
       userID: user._id,

@@ -1,0 +1,45 @@
+.container_overview {
+  background-color: white;
+  min-height: 100vh;
+}
+.container_overview span {
+  color: var(--yellwo-color);
+}
+.container_overview h1 {
+  text-align: center;
+  font-weight: bold;
+  padding: 1rem;
+}
+.container_estimate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid black;
+}
+.container_amount {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.container_select {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  justify-content: space-around;
+}
+.container_myasset {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+.myasset_details {
+  display: flex;
+  flex-direction: column;
+}
+.myasset_detail {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem;
+}

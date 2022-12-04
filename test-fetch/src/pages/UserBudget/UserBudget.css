@@ -3,4 +3,29 @@
   background: url("../../images/Moon.svg");
   min-height: 100vh;
   background-size: cover;
+  margin-bottom: 32px;
+}
+
+.userBudget {}
+
+.userBudget .ant-tabs-nav {
+  min-height: 100vh;
+}
+
+.userBudget .ant-tabs-tab {
+  color: var(--yellwo-color);
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.userBudget .ant-tabs .ant-tabs-tab.ant-tabs-tab-active {
+  background-color: var(--yellwo-color);
+}
+
+.userBudget .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: white;
+}
+
+.userBudget .ant-tabs-left>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane {
+  padding-left: 0;
 }

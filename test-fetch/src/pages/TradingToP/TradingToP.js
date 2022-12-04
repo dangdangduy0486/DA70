@@ -1,14 +1,74 @@
 import React, { useState } from "react";
 import { Tabs, Table, Input, Form, Button, Select } from "antd";
+import axios from "axios";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useEffect } from "react";
 import { FloatButton } from "antd";
-import "./TradingToP.css";
-import NavBar from "../../components/NavBar/NavBar";
-import Footer from "../../components/Footer/Footer";
+import "../Css/trading.css";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 const TradingToP = () => {
+  const [assetChoose, setAssetChoose] = useState("bitcoin");
+  const [fiatChoose, setFiatChoose] = useState("vnd");
+  const [rates, setRates] = useState([]);
+  const [lowRate, setLowRate] = useState([]);
+  const assets = [
+    { id: "bitcoin", name: "Bitcoin", symbol: "btc" },
+    { id: "ethereum", name: "Ethereum", symbol: "eth" },
+    { id: "binancecoin", name: "BNB", symbol: "bnb" },
+  ];
+  const fiats = ["usd", "aed", "aud", "bdt", "bhd", "vnd"];
   const [searchName, setSearchName] = useState("");
-  const onFinish = (e) => {
-    console.log(e);
+  // const onFinish = (e) => {
+  //   console.log(e);
+  // };
+  useEffect(() => {
+    axios
+      .get(`https://api.coingecko.com/api/v3/coins/${assetChoose}`)
+      .then((response) => {
+        setLowRate(response.data.market_data.low_24h);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [assetChoose, fiatChoose]);
+  useEffect(() => {
+    axios
+      .get("https://api.coingecko.com/api/v3/simple/price", {
+        params: {
+          ids: assetChoose,
+          vs_currencies: fiatChoose,
+        },
+      })
+      .then((response) => {
+        setRates(response.data[assetChoose]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [assetChoose, fiatChoose]);
+  function calculator(num1, num2) {
+    return (num1 + num2) / 2;
+  }
+  // console.log(rates);
+  const onSubmit = async (values) => {
+    const { assetChoose, fiatChoose, yourprice } = values;
+    console.log(values);
   };
+  const formik = useFormik({
+    initialValues: {
+      assetChoose: "",
+      fiatChoose: "",
+      yourprice: "",
+    },
+    validationSchema: Yup.object({
+      yourprice: Yup.number()
+        .min(lowRate[fiatChoose], "Your price must higher")
+        .max(rates[fiatChoose], "Your price must lower"),
+    }),
+    onSubmit,
+  });
   return (
     <>
       <NavBar />
@@ -279,74 +339,158 @@ const TradingToP = () => {
           <Tabs.TabPane tab="Create" key="3" className="tabs_create">
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab="I want to Buy" key="1">
-                <form className="p-3">
-                  <div className="form_buy">
+                <form className="p-3 form_buy" onSubmit={formik.handleSubmit}>
+                  <h4 className="ads_title">
+                    Post your <br></br>
+                    <span>advertisement</span>
+                  </h4>
+                  <div className="container_swap">
                     <div className="form_buy_swap">
-                      <h5>Tai San</h5>
-                      <select>
-                        <option value="hi">hi</option>
+                      <label htmlFor="assetChoose">Asset</label>
+                      <select
+                        id="assetChoose"
+                        name="assetChoose"
+                        value={formik.values.assetChoose}
+                        onChange={(e) => {
+                          const selectCoin = e.target.value;
+                          setAssetChoose(selectCoin);
+                          formik.setFieldValue("assetChoose", e.target.value);
+                        }}
+                      >
+                        {assets.map((asset) => (
+                          <option value={asset.id}>
+                            {asset.symbol.toUpperCase()}
+                          </option>
+                        ))}
                       </select>
                     </div>
-                    <h6 className="form_buy_swap"></h6>
                     <div className="form_buy_swap">
-                      <h5>voi Fiat</h5>
-                      <select>
-                        <option value="hi">hi</option>
+                      <label htmlFor="fiatChoose">with Fiat</label>
+                      <select
+                        id="fiatChoose"
+                        name="fiatChoose"
+                        value={formik.values.fiatChoose}
+                        // value={fiatChoose}
+                        onChange={(e) => {
+                          const selectCoin = e.target.value;
+                          setFiatChoose(selectCoin);
+                          formik.setFieldValue("fiatChoose", e.target.value);
+                        }}
+                      >
+                        {fiats.map((fiat) => (
+                          <option value={fiat}>{fiat.toUpperCase()}</option>
+                        ))}
                       </select>
                     </div>
                   </div>
-                  <hr />
-                  <div className="form_buy">
+
+                  <div className="container_swap">
                     <div className="form_buy_text">
-                      <p>Gia cua ban</p>
-                      <p>1023,555</p>
+                      <h6>Lowest Price</h6>
+                      <p className="text-center">{lowRate[fiatChoose]}</p>
                     </div>
                     <div className="form_buy_text">
-                      <p>Gia cua ban</p>
-                      <p>1023,555</p>
+                      <h6>Highest Price</h6>
+                      <p className="text-center">{rates[fiatChoose]}</p>
                     </div>
                   </div>
+
+                  <div className="input_price">
+                    <label htmlFor="yourprice">Enter your price</label>
+                    <input
+                      type="number"
+                      id="yourprice"
+                      name="yourprice"
+                      placeholder="Enter your price"
+                      value={formik.values.yourprice}
+                      onChange={formik.handleChange}
+                    ></input>
+                    {formik.errors.yourprice && (
+                      <span className="error">{formik.errors.yourprice}*</span>
+                    )}
+                  </div>
+                  <button type="submit" className="btn_post">
+                    Post
+                  </button>
                 </form>
               </Tabs.TabPane>
               <Tabs.TabPane tab="I want to Sell" key="2">
-                <Form
-                  className="p-3"
-                  labelCol={{
-                    span: 8,
-                  }}
-                  wrapperCol={{
-                    span: 10,
-                  }}
-                  onFinish={onFinish}
-                >
-                  <Form.Item label="Name" name="name">
-                    <Input placeholder="name" required></Input>
-                  </Form.Item>
-                  <Form.Item label="Price" name="price">
-                    <Input type="number" placeholder="Price" required></Input>
-                  </Form.Item>
-                  <Form.Item label="Amount" name="amount">
-                    <Input type="number" placeholder="Amount" required></Input>
-                  </Form.Item>
-                  <Form.Item label="Currency">
-                    <Select>
-                      <Select.Option value="demo">Demo</Select.Option>
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
-                    wrapperCol={{
-                      offset: 8,
-                      span: 10,
-                    }}
-                  >
-                    <Button block type="primary" htmlType="submit">
-                      Post
-                    </Button>
-                  </Form.Item>
-                </Form>
+                <form className="p-3 form_buy" onSubmit={formik.handleSubmit}>
+                  <h4 className="ads_title">
+                    Post your <br></br>
+                    <span>advertisement</span>
+                  </h4>
+                  <div className="container_swap">
+                    <div className="form_buy_swap">
+                      <label htmlFor="assetChoose">Asset</label>
+                      <select
+                        id="assetChoose"
+                        name="assetChoose"
+                        value={formik.values.assetChoose}
+                        onChange={(e) => {
+                          const selectCoin = e.target.value;
+                          setAssetChoose(selectCoin);
+                          formik.setFieldValue("assetChoose", e.target.value);
+                        }}
+                      >
+                        {assets.map((asset) => (
+                          <option value={asset.id}>
+                            {asset.symbol.toUpperCase()}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="form_buy_swap">
+                      <label htmlFor="fiatChoose">with Fiat</label>
+                      <select
+                        id="fiatChoose"
+                        name="fiatChoose"
+                        value={formik.values.fiatChoose}
+                        // value={fiatChoose}
+                        onChange={(e) => {
+                          const selectCoin = e.target.value;
+                          setFiatChoose(selectCoin);
+                          formik.setFieldValue("fiatChoose", e.target.value);
+                        }}
+                      >
+                        {fiats.map((fiat) => (
+                          <option value={fiat}>{fiat.toUpperCase()}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="container_swap">
+                    <div className="form_buy_text">
+                      <h6>Lowest Price</h6>
+                      <p className="text-center">{lowRate[fiatChoose]}</p>
+                    </div>
+                    <div className="form_buy_text">
+                      <h6>Highest Price</h6>
+                      <p className="text-center">{rates[fiatChoose]}</p>
+                    </div>
+                  </div>
+
+                  <div className="input_price">
+                    <label htmlFor="yourprice">Enter your price</label>
+                    <input
+                      type="number"
+                      id="yourprice"
+                      name="yourprice"
+                      placeholder="Enter your price"
+                      value={formik.values.yourprice}
+                      onChange={formik.handleChange}
+                    ></input>
+                    {formik.errors.yourprice && (
+                      <span className="error">{formik.errors.yourprice}*</span>
+                    )}
+                  </div>
+                  <button type="submit" className="btn_post">
+                    Post
+                  </button>
+                </form>
               </Tabs.TabPane>
             </Tabs>
-            <form></form>
             <FloatButton.BackTop />
           </Tabs.TabPane>
         </Tabs>

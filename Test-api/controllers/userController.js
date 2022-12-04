@@ -2,8 +2,6 @@ require("dotenv").config();
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Joi = require("joi");
-const passwordComplexity = require("joi-password-complexity");
 const CryptoJS = require("crypto-js");
 
 const sendEmail = require("../utils/sendEmail");
