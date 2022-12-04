@@ -14,7 +14,7 @@ const AcceptTrading = () => {
           <div className="container_form">
             <h5 className="text-center">Confirm transaction information</h5>
             <div className="infor_transaction">
-              <div className="name_transaction">
+              {/* <div className="name_transaction">
                 <div>Name :</div>
                 <div>Minh Bao</div>
               </div>
@@ -29,7 +29,9 @@ const AcceptTrading = () => {
               <div className="amount_transasction">
                 <div>Amount</div>
                 <div>10</div>
-              </div>
+              </div> */}
+              <h1>hih</h1>
+              <h2>hi</h2>
             </div>
           </div>
         </form>
