@@ -9,21 +9,17 @@ import Mainbonus from "./pages/MainBonus/MainBonus";
 import EmailVerify from "./pages/EmailVerify/EmailVerify ";
 // import Markets from "./pages/Markets/Markets";
 import Test from "./pages/Test";
-import UserInfor from "./pages/UserInfo/UserInfor";
-import Forgot from "./pages/Forgot/Forgot";
-import UserCart from "./pages/UserCart/UserCart";
-import UserBudget from "./pages/UserBudget/UserBudget";
-import NewPassword from "./pages/NewPassword/NewPassword";
-import ExchangeRates from "./components/ExchangeRates/ExchangeRates";
-import Coverter from "./components/Converter/Converter";
-import Charge from "./pages/Charge/Charge";
-import UserManagement from "./components/UserManagement/UserManagement";
-import Aboutus from "./pages/AboutUs/AboutUs";
-import TradingToP from "./pages/TradingToP/TradingToP";
-
-import Layout from "./pages/test/Layout";
-import Markets from "./components/testRedux/Markets";
-
+import UserInfor from "./pages/UserInfor";
+import Forgot from "./pages/Forgot";
+import UserCart from "./pages/UserCart";
+import UserBudget from "./pages/UserBudget";
+import NewPassword from "./pages/NewPassword";
+import ExchangeRates from "./components/ExchangeRates";
+import Coverter from "./components/Coverter";
+import Charge from "./pages/Charge";
+import UserManagement from "./components/UserManagement";
+import Aboutus from "./pages/Aboutus";
+import TradingToP from "./pages/TradingToP";
 function App() {
   // const user = localStorage.getItem("token");
   return (
@@ -32,9 +28,9 @@ function App() {
       <Markets />
       {/* <BrowserRouter>
         <div className="pages">
-          <Routes> */}
-      {/* {user && <Route path="/cart" exact element={<Cart />} />} */}
-      {/* <Route path="/cart" element={<Cart />} />
+          <Routes>
+            {/* {user && <Route path="/cart" exact element={<Cart />} />} */}
+            <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
             <Route path="/test" element={<Test />} />
             <Route path="/signup" element={<Signup />} />
