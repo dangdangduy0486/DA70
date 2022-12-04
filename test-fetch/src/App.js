@@ -21,6 +21,7 @@ import UserManagement from "./components/UserManagement";
 import Aboutus from "./pages/Aboutus";
 import TradingToP from "./pages/TradingToP";
 import Overview from "./components/Overview";
+import AcceptTrading from "./pages/AcceptTrading";
 function App() {
   // const user = localStorage.getItem("token");
   return (
@@ -31,6 +32,7 @@ function App() {
             {/* {user && <Route path="/cart" exact element={<Cart />} />} */}
             <Route path="/overview" element={<Overview />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/accepttrading" element={<AcceptTrading />} />
             <Route path="/login" element={<Login />} />
             <Route path="/test" element={<Test />} />
             <Route path="/signup" element={<Signup />} />

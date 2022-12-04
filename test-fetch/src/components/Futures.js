@@ -1,33 +1,23 @@
 import React from "react";
-import NavBar from "./NavBar";
+import "../Css/Futures.css";
 
 const Futures = () => {
   return (
     <>
-      <NavBar />
-      <section className="userBudget">
-        <Tabs defaultActiveKey="1" tabPosition="left" className="userBudget">
-          <Tabs.TabPane tab="Overview" key="1">
-            <Overview />
-          </Tabs.TabPane>
-          <Tabs.TabPane tab=" Fiat and Spot" key="2" id="fiatspot">
-            Content of Tab Pane 2
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab={<Link to="/userbudget/futures">Futures</Link>}
-            key="3"
-          >
-            <h1>thanhcong</h1>
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Funding" key="4">
-            Content of Tab Pane 3
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Transaction History" key="5">
-            Content of Tab Pane 3
-          </Tabs.TabPane>
-        </Tabs>
+      <section className="container_futures">
+        <h1>
+          Wallet <span>Futures</span>
+        </h1>
+        <div className="bg-light container_futures_detail vh-100 p-3">
+          <h5 className="p-3">Estimated Balance</h5>
+          <div className="container_amount">
+            <div className="container_select">
+              <div className="me-2">0.00USDT</div>
+            </div>
+            <div>= $000.000</div>
+          </div>
+        </div>
       </section>
-      <Footer />
     </>
   );
 };

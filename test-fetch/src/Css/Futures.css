@@ -1,0 +1,11 @@
+.container_futures {
+  background-color: white;
+  min-height: 100vh;
+}
+.container_futures span {
+  color: var(--yellwo-color);
+}
+.container_futures h1 {
+  text-align: center;
+  padding: 1rem;
+}

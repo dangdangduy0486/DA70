@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Fiat from "../components/Fiat";
 import Funding from "../components/Funding";
+import Futures from "../components/Futures";
 const UserBudget = () => {
   // const history = useHistory();
   // const handleTabClick = (key) => {
@@ -31,7 +32,7 @@ const UserBudget = () => {
             <Fiat />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Futures" key="3">
-            Content of Tab Pane 3
+            <Futures />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Funding" key="4">
             <Funding />
