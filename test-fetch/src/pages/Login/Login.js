@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { Link } from "react-router-dom";
 
 // import * as Request from "../../utils/request";
-import Loading from "../loading/loading";
+import Loading from "../Loading/Loading";
 import "./Login.css";
 
 const Login = () => {
@@ -21,7 +21,7 @@ const Login = () => {
     },
   };
   const onSubmit = async (values) => {
-    const { email, password } = values;
+    let { email, password } = values;
     try {
       const res = await axios
         .post(url, { email, password }, opts)
@@ -29,10 +29,15 @@ const Login = () => {
           if (err && err.response) console.log("Error", err);
         });
       setResData(res.data);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("email", res.data.email);
+      localStorage.setItem("id", res.data.userID);
+      localStorage.setItem("role", res.data.role);
+      console.log(res.data.token);
       navigate("/", { state: { data: Resdata } });
     } catch (error) {
-      console.log("Error...");
-      setIsError(true);
+      console.log("error");
+      // setIsError(true);
     }
   };
 

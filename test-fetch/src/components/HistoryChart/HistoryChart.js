@@ -13,7 +13,7 @@ import {
 import { Line } from "react-chartjs-2";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import Loading from "../../pages/loading/loading";
+import Loading from "../../pages/Loading/Loading";
 
 ChartJS.register(
   CategoryScale,

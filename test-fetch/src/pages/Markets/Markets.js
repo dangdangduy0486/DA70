@@ -6,7 +6,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import "./Markets.css";
 import CurrencyDetails from "../../components/CurrencyDetails/CurrencyDetails";
 import { FloatButton } from "antd";
-import Loading from "../loading/loading";
+import Loading from "../Loading/Loading";
 import CarouselCoins from "../../components/CarouselCoins/CarouselCoins ";
 import Footer from "../../components/Footer/Footer";
 const Markets = () => {

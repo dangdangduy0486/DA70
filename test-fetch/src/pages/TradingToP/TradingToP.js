@@ -5,9 +5,10 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useEffect } from "react";
 import { FloatButton } from "antd";
-import "../Css/trading.css";
-import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
+import "./TradingToP.css";
+import NavBar from "../../components/NavBar/NavBar";
+import Footer from "../../components/Footer/Footer";
+
 const TradingToP = () => {
   const [assetChoose, setAssetChoose] = useState("bitcoin");
   const [fiatChoose, setFiatChoose] = useState("vnd");

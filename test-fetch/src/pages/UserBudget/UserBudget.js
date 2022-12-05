@@ -1,7 +1,15 @@
 import React from "react";
-import NavBar from "../components/NavBar";
-import "../Css/userBudget.css";
+import Footer from "../../components/Footer/Footer";
+import NavBar from "../../components/NavBar/NavBar";
+import { Tabs } from "antd";
+import Overview from "../../components/Overview";
+import { BankOutlined } from "@ant-design/icons";
+import "./UserBudget.css";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import Fiat from "../../components/Fiat";
+import Funding from "../../components/Funding";
+import Futures from "../../components/Futures";
 const UserBudget = () => {
   // const history = useHistory();
   // const handleTabClick = (key) => {

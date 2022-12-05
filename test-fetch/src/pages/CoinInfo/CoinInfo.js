@@ -6,7 +6,7 @@ import "./CoinInfo.css";
 import Footer from "../../components/Footer/Footer";
 import CurrencyInput from "../../components/CurrencyInput/CurrencyInput";
 import NavBar from "../../components/NavBar/NavBar";
-import Loading from "../loading/loading";
+import Loading from "../Loading/Loading";
 import Button from "react-bootstrap/esm/Button";
 import HistoryChart from "../../components/HistoryChart/HistoryChart";
 

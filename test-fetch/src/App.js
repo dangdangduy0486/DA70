@@ -5,28 +5,27 @@ import Signup from "./pages/SignUp/SignUp";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home/Home";
 import CoinInfo from "./pages/CoinInfo/CoinInfo";
-import Mainbonus from "./pages/MainBonus/MainBonus";
+// import Mainbonus from "./pages/MainBonus/MainBonus";
 import EmailVerify from "./pages/EmailVerify/EmailVerify ";
-// import Markets from "./pages/Markets/Markets";
+import Markets from "./pages/Markets/Markets";
 import Test from "./pages/Test";
-import UserInfor from "./pages/UserInfor";
-import Forgot from "./pages/Forgot";
-import UserCart from "./pages/UserCart";
-import UserBudget from "./pages/UserBudget";
-import NewPassword from "./pages/NewPassword";
-import ExchangeRates from "./components/ExchangeRates";
-import Coverter from "./components/Coverter";
-import Charge from "./pages/Charge";
-import UserManagement from "./components/UserManagement";
-import Aboutus from "./pages/Aboutus";
-import TradingToP from "./pages/TradingToP";
+import UserInfor from "./pages/UserInfo/UserInfor";
+import Forgot from "./pages/Forgot/Forgot";
+import UserCart from "./pages/UserCart/UserCart";
+import UserBudget from "./pages/UserBudget/UserBudget";
+import NewPassword from "./pages/NewPassword/NewPassword";
+import ExchangeRates from "./components/ExchangeRates/ExchangeRates";
+import Coverter from "./components/Converter/Converter";
+import Charge from "./pages/Charge/Charge";
+import UserManagement from "./components/UserManagement/UserManagement";
+import Aboutus from "./pages/AboutUs/AboutUs";
+import TradingToP from "./pages/TradingToP/TradingToP";
+import Request from "./pages/Request/Request";
 function App() {
   // const user = localStorage.getItem("token");
   return (
     <div className="App">
-      <h1>Test redux</h1>
-      <Markets />
-      {/* <BrowserRouter>
+      <BrowserRouter>
         <div className="pages">
           <Routes>
             {/* {user && <Route path="/cart" exact element={<Cart />} />} */}
@@ -45,9 +44,9 @@ function App() {
             <Route path="/userbudget" element={<UserBudget />} />
             <Route path="/forgot" element={<Forgot />} />
             <Route path="/markets" element={<Markets />} />
-            <Route path="/" element={<Home />} /> */}
-      {/* <Route path="/layout" element={<Layout />} /> */}
-      {/* <Route path="/coins/:coinID" element={<CoinInfo />} />
+            <Route path="/" element={<Home />} />
+            {/* <Route path="/layout" element={<Layout />} /> */}
+            <Route path="/coins/:coinID" element={<CoinInfo />} />
             <Route
               path="/api/auth/verify/:id/:token"
               element={<EmailVerify />}
@@ -55,10 +54,11 @@ function App() {
             <Route path="/exchange" element={<ExchangeRates />} />
             <Route path="/converter" element={<Coverter />} />
             <Route path="/charge" element={<Charge />} />
-            <Route path="/usermanage" element={<UserManagement />} /> */}
-      {/* </Routes>
+            <Route path="/usermanage" element={<UserManagement />} />
+            <Route path="/request" element={<Request />} />
+          </Routes>
         </div>
-      </BrowserRouter> */}
+      </BrowserRouter>
     </div>
   );
 }

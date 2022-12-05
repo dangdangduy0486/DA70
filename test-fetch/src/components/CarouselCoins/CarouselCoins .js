@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import "./CarouselCoins.css";
-import Loading from "../../pages/loading/loading";
+import Loading from "../../pages/Loading/Loading";
 
 const CarouselCoins = () => {
   const [trendCoins, setTrendingCoins] = useState(null);

@@ -6,7 +6,7 @@ import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 
 import "./MainBonus.css";
 import { Carousel } from "antd";
-import Loading from "../loading/loading";
+import Loading from "../Loading/Loading";
 import Footer from "../../components/Footer/Footer";
 // const contentStyle = {
 //   height: "160px",

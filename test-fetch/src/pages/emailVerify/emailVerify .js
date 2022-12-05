@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import success from "../../images/success.png";
 import "./EmailVerify.css";
-import Loading from "../loading/loading";
+import Loading from "../Loading/Loading";
 const EmailVerify = () => {
   const [validUrl, setValidUrl] = useState(true);
   const url = "";

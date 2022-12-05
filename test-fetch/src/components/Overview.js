@@ -1,8 +1,10 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import "../Css/Overview.css";
 
 const Overview = () => {
+  const [walletAmout, setWalletAmount] = useState(null);
   const [assetChoose, setAssetChoose] = useState("bitcoin");
   const [assetChoose2, setAssetChoose2] = useState("BTC");
   const assets = [
@@ -10,6 +12,25 @@ const Overview = () => {
     { id: "ethereum", name: "Ethereum", symbol: "eth" },
     { id: "binancecoin", name: "BNB", symbol: "bnb" },
   ];
+
+  useEffect(() => {
+    try {
+      const id = localStorage.getItem("id");
+      const url = `api/wallet/get_wallet/${id}`;
+      axios
+        .get(url)
+        .then((response) => {
+          setWalletAmount(response.data);
+        })
+        .catch((error) => {
+          console.log("errorrr");
+        });
+    } catch (error) {
+      console.log("error");
+    }
+  }, []);
+  if (!walletAmout) return null;
+  console.log(walletAmout);
 
   return (
     <>
@@ -50,7 +71,17 @@ const Overview = () => {
             <div className="myasset_details">
               <div className="myasset_detail">
                 <div>Fiat and Spot</div>
-                <div>0000.0BTC</div>
+                <div>USD</div>
+              </div>
+              <div>
+                {walletAmout.wallet &&
+                  walletAmout.wallet.map((w) => (
+                    <ul style={{ listStyleType: "disc" }}>
+                      <li>{w.currencyID}</li>
+                      <li>{w.amount}</li>
+                      <li>{w.status}</li>
+                    </ul>
+                  ))}
               </div>
               <div className="myasset_detail">
                 <div>Funding</div>
