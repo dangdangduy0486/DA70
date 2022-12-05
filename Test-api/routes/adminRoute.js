@@ -5,8 +5,8 @@ const {
   deleteUser,
   getAllOrders,
   responseOrders,
-  editOrder,
-  deleteOrder,
+  // editOrder,
+  // deleteOrder,
   responseWallet,
 } = require("../controllers/adminController");
 
@@ -28,10 +28,10 @@ router.get("/all-order/:id", getAllOrders);
 router.patch("/response-order/:id", responseOrders);
 
 //edit order
-router.patch("/update-order/:id", editOrder);
+// router.patch("/update-order/:id", editOrder);
 
 //delete order
-router.patch("/delete-order/:id", deleteOrder);
+// router.patch("/delete-order/:id", deleteOrder);
 
 //response request recharge
 router.patch("/response_wallet/:id", responseWallet);

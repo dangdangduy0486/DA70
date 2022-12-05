@@ -5,7 +5,10 @@ const OrderSchema = new Schema({
   userID: {
     type: String,
   },
-  name: {
+  purchaseUnit: {
+    type: String,
+  },
+  sellUnit: {
     type: String,
   },
   price: {
@@ -14,7 +17,10 @@ const OrderSchema = new Schema({
   amount: {
     type: String,
   },
-  currency: {
+  sender: {
+    type: String,
+  },
+  reciever: {
     type: String,
   },
   total: {

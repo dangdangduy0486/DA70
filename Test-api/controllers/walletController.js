@@ -17,13 +17,7 @@ const rechargeRequest = async (req, res) => {
       });
     }
 
-    if (
-      !req.body.purchaseUnit ||
-      !req.body.sellUnit ||
-      !req.body.amount ||
-      !req.body.sender ||
-      !req.body.reciever
-    ) {
+    if (!req.body.purchaseUnit || !req.body.amount || !req.body.sender) {
       return res.status(401).send({
         message: "Missing something",
       });

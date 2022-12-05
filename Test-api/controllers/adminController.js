@@ -166,17 +166,33 @@ const responseOrders = async (req, res) => {
       });
     }
 
-    orders = await Order.findOneAndUpdate(
+    await Request.findOneAndUpdate(
       {
-        _id: req.params.orderID,
+        _id: req.params.requestID,
       },
       {
         status: req.body.status,
       }
     );
 
+    const request = await Request.findOne({
+      _id: req.body.requestID,
+    });
+
+    const order = await Order.create({
+      userID: request.userID,
+      purchaseUnit: req.body.purchaseUnit,
+      sellUnit: req.body.sellUnit,
+      price: req.body.price,
+      amount: req.body.amount,
+      sender: req.body.sender,
+      reciever: req.body.reciever,
+      total: req.body.total,
+    });
+
     return res.status(200).send({
-      message: "Update successfully!!!",
+      message: "Recharge success!!",
+      order,
     });
   } catch (error) {
     res.status(500).send({
@@ -187,77 +203,77 @@ const responseOrders = async (req, res) => {
 };
 
 //edit order
-const editOrder = async (req, res) => {
-  try {
-    const user = await User.findOne({
-      _id: req.params.id,
-    });
+// const editOrder = async (req, res) => {
+//   try {
+//     const user = await User.findOne({
+//       _id: req.params.id,
+//     });
 
-    if (!user) {
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-    }
+//     if (!user) {
+//       return res.status(400).send({
+//         message: "Invalid link",
+//       });
+//     }
 
-    if (user.role !== "admin") {
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-    }
+//     if (user.role !== "admin") {
+//       return res.status(400).send({
+//         message: "Invalid link",
+//       });
+//     }
 
-    orders = await Order.findOneAndUpdate(
-      {
-        _id: req.params.orderID,
-      },
-      {
-        ...req.body,
-      }
-    );
+//     orders = await Order.findOneAndUpdate(
+//       {
+//         _id: req.params.orderID,
+//       },
+//       {
+//         ...req.body,
+//       }
+//     );
 
-    return res.status(200).send({
-      message: "Update successfully!!!",
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: "Internal Server Error",
-      error,
-    });
-  }
-};
+//     return res.status(200).send({
+//       message: "Update successfully!!!",
+//     });
+//   } catch (error) {
+//     res.status(500).send({
+//       message: "Internal Server Error",
+//       error,
+//     });
+//   }
+// };
 
 //deleta order
-const deleteOrder = async (req, res) => {
-  try {
-    const user = await User.findOne({
-      _id: req.params.id,
-    });
+// const deleteOrder = async (req, res) => {
+//   try {
+//     const user = await User.findOne({
+//       _id: req.params.id,
+//     });
 
-    if (!user) {
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-    }
+//     if (!user) {
+//       return res.status(400).send({
+//         message: "Invalid link",
+//       });
+//     }
 
-    if (user.role !== "admin") {
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-    }
+//     if (user.role !== "admin") {
+//       return res.status(400).send({
+//         message: "Invalid link",
+//       });
+//     }
 
-    orders = await Order.findByIdAndDelete({
-      _id: req.params.orderID,
-    });
+//     orders = await Order.findByIdAndDelete({
+//       _id: req.params.orderID,
+//     });
 
-    return res.status(200).send({
-      message: "Delete successfully!!!",
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: "Internal Server Error",
-      error,
-    });
-  }
-};
+//     return res.status(200).send({
+//       message: "Delete successfully!!!",
+//     });
+//   } catch (error) {
+//     res.status(500).send({
+//       message: "Internal Server Error",
+//       error,
+//     });
+//   }
+// };
 
 //response wallet
 const responseWallet = async (req, res) => {
@@ -291,44 +307,38 @@ const responseWallet = async (req, res) => {
       _id: req.body.requestID,
     });
 
-    if (request.status === "approved") {
-      // console.log(request);
-      const existsWallet = await Wallet.findOne({
-        userID: request.userID,
-      });
-      if (existsWallet) {
-        if (existsWallet.currencyID === request.purchaseUnit) {
-          let amount =
-            parseFloat(existsWallet.amount) + parseFloat(request.amount);
-          const wallet = await Wallet.findOneAndUpdate(
-            {
-              _id: existsWallet.id,
-            },
-            {
-              amount: amount,
-            }
-          );
+    const existsWallet = await Wallet.findOne({
+      userID: request.userID,
+    });
+    if (existsWallet) {
+      if (existsWallet.currencyID === request.purchaseUnit) {
+        let amount =
+          parseFloat(existsWallet.amount) + parseFloat(request.amount);
+        const wallet = await Wallet.findOneAndUpdate(
+          {
+            _id: existsWallet.id,
+          },
+          {
+            amount: amount,
+          }
+        );
 
-          return res.status(200).send({
-            message: "Recharge success!!!!",
-            wallet,
-          });
-        }
+        return res.status(200).send({
+          message: "Recharge success!!!!",
+          wallet,
+        });
       }
-
-      const wallet = await Wallet.create({
-        userID: request.userID,
-        currencyID: request.purchaseUnit,
-        amount: request.amount,
-      });
-
-      return res.status(200).send({
-        message: "Recharge success!!",
-        wallet,
-      });
     }
+
+    const wallet = await Wallet.create({
+      userID: request.userID,
+      currencyID: request.purchaseUnit,
+      amount: request.amount,
+    });
+
     return res.status(200).send({
-      message: "Response success!!",
+      message: "Recharge success!!",
+      wallet,
     });
   } catch (error) {
     res.status(500).send({
@@ -344,7 +354,7 @@ module.exports = {
   deleteUser,
   getAllOrders,
   responseOrders,
-  editOrder,
-  deleteOrder,
+  // editOrder,
+  // deleteOrder,
   responseWallet,
 };
