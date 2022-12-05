@@ -5,19 +5,27 @@ import NavBar from "../../components/NavBar/NavBar";
 import "./Charge.css";
 const Charge = () => {
   const [currencyID, setCurrencyId] = useState("usd");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(null);
 
   const handleOnChange = (event) => {
     setAmount(event.target.value);
   };
-
-  const handleSubmit = async () => {
+  const id = localStorage.getItem("id");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const url = "api/wallet/recharge/63720ec244381dc057656629";
-      await axios.post(url, {
-        currencyID: currencyID,
-        amount: amount,
-      });
+      const url = `api/wallet/recharge_request/${id}`;
+      await axios
+        .post(url, {
+          requestType: "recharge",
+          purchaseUnit: currencyID,
+          sellUnit: "a",
+          amount: amount,
+          sender: "VCB",
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {
       console.log("error");
     }
@@ -58,6 +66,7 @@ const Charge = () => {
                   <button
                     className="form-submit btn btn-outline-light btn-lg px-5"
                     type="submit"
+                    onClick={handleSubmit}
                   >
                     Charge
                   </button>
