@@ -8,6 +8,8 @@ const sendEmail = require("../utils/sendEmail");
 const User = require("../models/User");
 const Token = require("../models/token");
 const Order = require("../models/order");
+const Wallet = require("../models/wallet");
+const Request = require("../models/request");
 
 const generateMD5 = () => {
   const expire = Math.ceil(Date.now() / 1000) + 25200;
@@ -223,6 +225,42 @@ const getResquestOrder = async (req, res) => {
   }
 };
 
+//get recharge request
+const getRequest = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      _id: req.params.id,
+    });
+
+    if (!user) {
+      return res.status(400).send({
+        message: "Invalid link",
+      });
+    }
+
+    if (user.role !== "admin") {
+      const request = await Request.find({
+        userID: user.id,
+      });
+
+      return res.status(200).send({
+        request,
+      });
+    }
+
+    const request = await Request.find({});
+
+    return res.status(200).send({
+      request,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};
+
 module.exports = {
   forgotPassword,
   resetPasswordRequest,
@@ -231,4 +269,5 @@ module.exports = {
   editUserInfo,
   requestOrder,
   getResquestOrder,
+  getRequest,
 };

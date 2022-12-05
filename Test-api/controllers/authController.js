@@ -132,7 +132,6 @@ const login = async (req, res, next) => {
         expiresIn: "1d",
       }
     );
-    console.log(token);
 
     await Token.create({
       userID: user._id,
@@ -152,6 +151,8 @@ const login = async (req, res, next) => {
       message: "logged in successfully",
       token: token,
       email: user.email,
+      userID: user.id,
+      role: user.role,
     });
   } catch (error) {
     res.status(500).send({

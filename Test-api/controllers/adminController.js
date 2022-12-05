@@ -3,6 +3,8 @@ const axios = require("axios");
 
 const User = require("../models/User");
 const Order = require("../models/order");
+const Wallet = require("../models/wallet");
+const Request = require("../models/request");
 
 //get all users
 const allUsers = async (req, res) => {
@@ -107,7 +109,6 @@ const deleteUser = async (req, res) => {
     return res.status(200).json({
       message: "Delete success",
     });
-
   } catch (error) {
     res.status(500).send({
       message: "Internal Server Error",
@@ -258,6 +259,85 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+//response wallet
+const responseWallet = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      _id: req.params.id,
+    });
+
+    if (!user || user.role !== "admin") {
+      return res.status(400).send({
+        message: "Invalid link",
+      });
+    }
+
+    if (!req.body.requestID || !req.body.status) {
+      return res.status(401).send({
+        message: "Missing something",
+      });
+    }
+    //response request
+    await Request.findOneAndUpdate(
+      {
+        _id: req.body.requestID,
+      },
+      {
+        status: req.body.status,
+      }
+    );
+
+    const request = await Request.findOne({
+      _id: req.body.requestID,
+    });
+
+    if (request.status === "approved") {
+      // console.log(request);
+      const existsWallet = await Wallet.findOne({
+        userID: request.userID,
+      });
+      if (existsWallet) {
+        if (existsWallet.currencyID === request.purchaseUnit) {
+          let amount =
+            parseFloat(existsWallet.amount) + parseFloat(request.amount);
+          const wallet = await Wallet.findOneAndUpdate(
+            {
+              _id: existsWallet.id,
+            },
+            {
+              amount: amount,
+            }
+          );
+
+          return res.status(200).send({
+            message: "Recharge success!!!!",
+            wallet,
+          });
+        }
+      }
+
+      const wallet = await Wallet.create({
+        userID: request.userID,
+        currencyID: request.purchaseUnit,
+        amount: request.amount,
+      });
+
+      return res.status(200).send({
+        message: "Recharge success!!",
+        wallet,
+      });
+    }
+    return res.status(200).send({
+      message: "Response success!!",
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};
+
 module.exports = {
   allUsers,
   editUser,
@@ -266,4 +346,5 @@ module.exports = {
   responseOrders,
   editOrder,
   deleteOrder,
+  responseWallet,
 };

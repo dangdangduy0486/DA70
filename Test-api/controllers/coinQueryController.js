@@ -25,55 +25,6 @@ const getCoinInfo = async (coinID) => {
   }
 };
 
-const autoSaveCoinInfo = async (req, res) => {
-  try {
-    const coin = await Coin.find({});
-    // for (let i = 0; i < coin.length; i++) {
-    //   const CoinInfo = await getCoinInfo(coin[i].coinID);
-    //   if (coin[i].image.thumb !== "") {
-    //     continue;
-    //   } else {
-    //     await Coin.findOneAndUpdate(
-    //       {
-    //         coinID: CoinInfo.id,
-    //       },
-    //       {
-    //         images: {
-    //           thumb: CoinInfo.image.thumb,
-    //           small: CoinInfo.image.small,
-    //           large: CoinInfo.image.large,
-    //         },
-    //       }
-    //     );
-    //   }
-    // }
-    let i = 0;
-    setInterval(async () => {
-      const CoinInfo = await getCoinInfo(coin[i].coinID);
-      await Coin.findOneAndUpdate(
-        {
-          coinID: CoinInfo.id,
-        },
-        {
-          images: {
-            thumb: CoinInfo.image.thumb,
-            small: CoinInfo.image.small,
-            large: CoinInfo.image.large,
-          },
-        }
-      );
-    }, 30000);
-    res.status(200).send({
-      message: "Update coin success",
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: "Internal Server Error",
-      error: error,
-    });
-  }
-};
-
 const CoinParser = async (req, res) => {
   if (!req.query.coinID) {
     return res.status(403).json({ error: "missing something" });
@@ -112,5 +63,4 @@ const getCoinQuery = async (req, res) => {
 module.exports = {
   CoinParser,
   getCoinQuery,
-  autoSaveCoinInfo,
 };

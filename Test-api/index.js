@@ -23,9 +23,9 @@ mongoose
     console.log(error);
   });
 
-///
-// const coinQueryRoute = require("./routes/coinQueryRoute");
-// app.use("/api/coin-query", coinQueryRoute);
+//
+const coinQueryRoute = require("./routes/coinQueryRoute");
+app.use("/api/coin-query", coinQueryRoute);
 ///
 
 //auth
@@ -64,6 +64,10 @@ app.use("/api/exchange", exchangeRoute);
 //admin
 const adminRoute = require("./routes/adminRoute");
 app.use("/api/admin", adminRoute);
+
+//wallet
+const walletRoute = require("./routes/walletRoute");
+app.use("/api/wallet", walletRoute);
 
 app.use("*", (req, res) => {
   res.status(404).send({
