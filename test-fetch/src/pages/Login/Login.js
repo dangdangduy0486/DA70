@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 // import * as Request from "../../utils/request";
 import Loading from "../Loading/Loading";
 import "./Login.css";
+import NavBar from "../../components/NavBar/NavBar";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ const Login = () => {
   }
   return (
     <>
+      <NavBar />
       <section className="vh-100% gradient-custom">
         <div className="container py-5">
           <div className="row d-flex justify-content-center align-items-center">
@@ -81,7 +83,7 @@ const Login = () => {
                   onSubmit={formik.handleSubmit}
                 >
                   <div className="card-body p-3 text-center">
-                    <div className="mb-md-3 mt-md-4 pb-5">
+                    <div className="mb-md-3 mt-md-4">
                       <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
                       <p className="text-white-50 mb-5">
                         Please enter your email and password!
@@ -125,7 +127,7 @@ const Login = () => {
                         )}
                       </div>
 
-                      <p className="small mb-5 pb-lg-2">
+                      <p className="small mb-2 pb-lg-2">
                         <Link className="text-white-50" to="/forgot">
                           Forgot password?
                         </Link>

@@ -6,7 +6,7 @@ import Cart from "./pages/Cart";
 import Home from "./pages/Home/Home";
 import CoinInfo from "./pages/CoinInfo/CoinInfo";
 // import Mainbonus from "./pages/MainBonus/MainBonus";
-import EmailVerify from "./pages/EmailVerify/EmailVerify ";
+import EmailVerify from "./pages/emailVerify/EmailVerify";
 import Markets from "./pages/Markets/Markets";
 import Test from "./pages/Test";
 import UserInfor from "./pages/UserInfo/UserInfor";

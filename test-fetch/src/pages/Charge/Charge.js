@@ -14,7 +14,7 @@ const Charge = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = `api/wallet/recharge_request/${id}`;
+      const url = `api/wallet/request/${id}`;
       await axios
         .post(url, {
           requestType: "recharge",

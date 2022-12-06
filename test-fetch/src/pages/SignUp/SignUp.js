@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./SignUp.css";
+import NavBar from "../../components/NavBar/NavBar";
 import { Link } from "react-router-dom";
 const Signup = () => {
   const history = useNavigate();
@@ -59,10 +60,11 @@ const Signup = () => {
   });
   return (
     <>
+      <NavBar />
       <section className="main">
         <div className="container h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div className="col-12 col-md-9 col-lg-7 col-xl-6 p-1">
               <form
                 className="form bg-dark text-center "
                 id="form_signup"

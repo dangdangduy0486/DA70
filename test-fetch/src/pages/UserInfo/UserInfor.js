@@ -1,7 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import UserManagement from "../../components/UserManagement/UserManagement";
 import profile from "../../images/profile.svg";
 import NavBar from "../../components/NavBar/NavBar";

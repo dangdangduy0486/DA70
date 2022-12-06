@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import success from "../../images/success.png";
-import "./EmailVerify.css";
+import "./emailVerify.css";
 import Loading from "../Loading/Loading";
 const EmailVerify = () => {
   const [validUrl, setValidUrl] = useState(true);
