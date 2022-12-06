@@ -69,6 +69,14 @@ app.use("/api/admin", adminRoute);
 const walletRoute = require("./routes/walletRoute");
 app.use("/api/wallet", walletRoute);
 
+//order
+const orderRoute = require("./routes/orderRoute");
+app.use("/api/order", orderRoute);
+
+//get request
+const requestRoute = require("./routes/requestRoute");
+app.use("/api/request", requestRoute);
+
 app.use("*", (req, res) => {
   res.status(404).send({
     success: "false",

@@ -34,6 +34,6 @@ router.patch("/response-order/:id", responseOrders);
 // router.patch("/delete-order/:id", deleteOrder);
 
 //response request recharge
-router.patch("/response_wallet/:id", responseWallet);
+router.patch("/response-wallet/:id", responseWallet);
 
 module.exports = router;

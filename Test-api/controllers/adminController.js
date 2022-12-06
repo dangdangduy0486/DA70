@@ -166,33 +166,50 @@ const responseOrders = async (req, res) => {
       });
     }
 
-    await Request.findOneAndUpdate(
+    const request = await Request.findOneAndUpdate(
       {
-        _id: req.params.requestID,
+        _id: req.body.requestID,
       },
       {
         status: req.body.status,
       }
     );
 
-    const request = await Request.findOne({
-      _id: req.body.requestID,
-    });
+    if (request.status === "approved") {
+      const request = await Request.findOne({
+        _id: req.body.requestID,
+      });
 
-    const order = await Order.create({
-      userID: request.userID,
-      purchaseUnit: req.body.purchaseUnit,
-      sellUnit: req.body.sellUnit,
-      price: req.body.price,
-      amount: req.body.amount,
-      sender: req.body.sender,
-      reciever: req.body.reciever,
-      total: req.body.total,
-    });
+      const order = await Order.create({
+        userID: request.userID,
+        purchaseUnit: request.purchaseUnit,
+        sellUnit: request.sellUnit,
+        price: request.price,
+        amount: request.amount,
+        sender: request.sender,
+        reciever: request.reciever,
+        total: "",
+      });
 
+      let amount = parseFloat(wallet.amount) - parseFloat(req.body.amount);
+
+      await Wallet.findOneAndUpdate(
+        {
+          userID: user.id,
+          currencyID: req.body.purchaseUnit,
+        },
+        {
+          amount: amount,
+        }
+      );
+
+      return res.status(200).send({
+        message: "Recharge success!!",
+        order,
+      });
+    }
     return res.status(200).send({
-      message: "Recharge success!!",
-      order,
+      message: "Request denided!!",
     });
   } catch (error) {
     res.status(500).send({
@@ -307,38 +324,44 @@ const responseWallet = async (req, res) => {
       _id: req.body.requestID,
     });
 
-    const existsWallet = await Wallet.findOne({
-      userID: request.userID,
-    });
-    if (existsWallet) {
-      if (existsWallet.currencyID === request.purchaseUnit) {
-        let amount =
-          parseFloat(existsWallet.amount) + parseFloat(request.amount);
-        const wallet = await Wallet.findOneAndUpdate(
-          {
-            _id: existsWallet.id,
-          },
-          {
-            amount: amount,
-          }
-        );
+    if (request.status === "approved") {
+      const existsWallet = await Wallet.findOne({
+        userID: request.userID,
+      });
+      if (existsWallet) {
+        if (existsWallet.currencyID === request.purchaseUnit) {
+          let amount =
+            parseFloat(existsWallet.amount) + parseFloat(request.amount);
 
-        return res.status(200).send({
-          message: "Recharge success!!!!",
-          wallet,
-        });
+          const wallet = await Wallet.findOneAndUpdate(
+            {
+              _id: existsWallet.id,
+            },
+            {
+              amount: amount,
+            }
+          );
+
+          return res.status(200).send({
+            message: "Recharge success!!!!",
+            wallet,
+          });
+        }
       }
+
+      const wallet = await Wallet.create({
+        userID: request.userID,
+        currencyID: request.purchaseUnit,
+        amount: request.amount,
+      });
+
+      return res.status(200).send({
+        message: "Recharge success!!",
+        wallet,
+      });
     }
-
-    const wallet = await Wallet.create({
-      userID: request.userID,
-      currencyID: request.purchaseUnit,
-      amount: request.amount,
-    });
-
     return res.status(200).send({
-      message: "Recharge success!!",
-      wallet,
+      message: "Recharge denided!!",
     });
   } catch (error) {
     res.status(500).send({

@@ -6,10 +6,10 @@ const {
   getOrders,
 } = require("../controllers/orderController");
 
-//get request order
-router.get("/order_request/:id", requestSpotOrder);
+//post request order
+router.post("/request/:id", requestSpotOrder);
 
-//get Request
-router.get("/get_request_order/:id", getOrders);
+//get order info
+router.get("/info/:id", getOrders);
 
 module.exports = router;

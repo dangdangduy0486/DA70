@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 const User = require("../models/User");
 const Wallet = require("../models/wallet");
 const Request = require("../models/request");
