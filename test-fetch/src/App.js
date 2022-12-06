@@ -39,7 +39,7 @@ function App() {
               path="/api/user/reset-password/:id"
               element={<NewPassword />}
             />
-            <Route path="/userinfo" element={<UserInfor />} />
+            <Route path="/user-info" element={<UserInfor />} />
             <Route path="/usercart" element={<UserCart />} />
             <Route path="/userbudget" element={<UserBudget />} />
             <Route path="/forgot" element={<Forgot />} />
