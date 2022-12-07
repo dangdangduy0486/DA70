@@ -5,9 +5,7 @@ import "./AboutUs.css";
 import Duy from "../../images/duy.jpg";
 import Bao from "../../images/bao.jpg";
 import Bitcoin from "../../images/bitcoin.png";
-import Bitcoin_thumb from "../../images/bitcoin_thumb.png";
-import Ethereum from "../../images/ethereum.png";
-import Ethereum_thumb from "../../images/ethereum_thumb.png";
+
 const Aboutus = () => {
   // function changeImage() {
   //   console.log(document.querySelector(".bitcoin1").src);
@@ -18,7 +16,7 @@ const Aboutus = () => {
       <section className="aboutus">
         <div className="aboutus_main">
           <div className="aboutus_container">
-            {/* <img src={Duy} alt="duy" className="profile_img" /> */}
+            <img src={Duy} alt="duy" className="profile_img" />
             <div className="about-detail">
               <h1>Đặng Đăng Duy</h1>
               <h5>
@@ -36,7 +34,7 @@ const Aboutus = () => {
             </div>
           </div>
           <div className="aboutus_container">
-            {/* <img src={Bao} alt="bao" className="profile_img" /> */}
+            <img src={Bao} alt="bao" className="profile_img" />
             <div className="about-detail">
               <h1>Cao Minh Bảo</h1>
               <h5>

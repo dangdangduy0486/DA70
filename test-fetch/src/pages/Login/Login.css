@@ -1,28 +1,11 @@
 .gradient-custom {
-  /* fallback for old browsers */
-  /* background: #6a11cb; */
-  background: url("../../images/Moon.svg");
   min-height: 100vh;
   background-size: cover;
-  /* Chrome 10-25, Safari 5.1-6 */
-  /* background: -webkit-linear-gradient(
-    to right,
-    rgba(106, 17, 203, 1),
-    rgba(37, 117, 252, 1)
-  );
-
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  /* background: linear-gradient(
-    to right,
-    rgba(106, 17, 203, 1),
-    rgba(37, 117, 252, 1)
-  ); */
-  min-height: 100vh;
   color: #333;
   font-size: 10px;
   font-family: "Open Sans", sans-serif;
+  margin-top: 56px;
 }
-
 .form-submit {
   width: 100%;
 }

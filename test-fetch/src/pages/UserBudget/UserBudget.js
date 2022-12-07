@@ -2,14 +2,14 @@ import React from "react";
 import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
 import { Tabs } from "antd";
-import Overview from "../../components/Overview";
 import { BankOutlined } from "@ant-design/icons";
 import "./UserBudget.css";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import Fiat from "../../components/Fiat";
+import Fiat from "../../components/Fiat/Fiat";
 import Funding from "../../components/Funding";
 import Futures from "../../components/Futures";
+import Overview from "../../components/Overview/Overview";
 const UserBudget = () => {
   // const history = useHistory();
   // const handleTabClick = (key) => {

@@ -114,25 +114,7 @@
 .aboutus_coin .coin_box1 img {
   width: 100%;
 }
-.thumb {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  display: flex;
-  transform: translateX(-50%);
-}
-.thumb li {
-  list-style: none;
-  display: inline-block;
-  margin: 0 0.5rem;
-  cursor: pointer;
-}
-.thumb li:hover {
-  transform: translateY(-1rem);
-}
-.thumb img {
-  max-width: 70px;
-}
+
 .circle_coin {
   position: absolute;
   top: 0;
