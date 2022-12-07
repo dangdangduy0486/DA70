@@ -304,6 +304,8 @@ const responseWallet = async (req, res) => {
         message: "Invalid link",
       });
     }
+    // console.log(req.body.requestID);
+    // console.log(req.body.status);
 
     if (!req.body.requestID || !req.body.status) {
       return res.status(401).send({
