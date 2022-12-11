@@ -13,7 +13,9 @@ import {
 import { Line } from "react-chartjs-2";
 import moment from "moment";
 import { useEffect, useState } from "react";
+
 import Loading from "../../pages/Loading/Loading";
+import { useGetCoinsHistoryChartQuery } from "../../features/coins/coinsApiSlice";
 
 ChartJS.register(
   CategoryScale,
@@ -27,34 +29,38 @@ ChartJS.register(
 );
 
 const HistoryChart = (coinID) => {
-  const [chartValue, setChartValue] = useState(null);
+  // const [chartValue, setChartValue] = useState(null);
   const [days, setDays] = useState(7);
 
-  const url = `https://api.coingecko.com/api/v3/coins/${coinID.coinID}/market_chart?vs_currency=usd&days=${days}`;
-  const token = localStorage.getItem("token");
-  const opts = {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-  useEffect(() => {
-    axios
-      .get(url, opts)
-      .then((response) => {
-        setChartValue(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  // const url = `https://api.coingecko.com/api/v3/coins/${coinID.coinID}/market_chart?vs_currency=usd&days=${days}`;
+  // const token = localStorage.getItem("token");
+  // const opts = {
+  //   headers: {
+  //     Authorization: token ? `Bearer ${token}` : "",
+  //   },
+  // };
+  // useEffect(() => {
+  //   axios
+  //     .get(url, opts)
+  //     .then((response) => {
+  //       setChartValue(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // });
+  const { data, error, isLoading } = useGetCoinsHistoryChartQuery({
+    coinID: coinID.coinID,
+    days: days,
   });
-  if (!chartValue) {
-    return <Loading />;
-  }
+  console.log(data);
+  if (!data || error || isLoading) return <Loading />;
+
   const handleChangeDays = (e) => {
     setDays(e.target.value);
   };
 
-  const coinChartData = chartValue.prices.map((value) => ({
+  const coinChartData = data.prices.map((value) => ({
     x: value[0],
     y: value[1].toFixed(2),
   }));
@@ -62,7 +68,7 @@ const HistoryChart = (coinID) => {
   const options = {
     responsive: true,
   };
-  const data = {
+  const dt = {
     labels: coinChartData.map((value) => moment(value.x).format("MMM DD")),
     datasets: [
       {
@@ -161,7 +167,7 @@ const HistoryChart = (coinID) => {
         </label>
       </div>
       <div className="history">
-        <Line options={options} data={data} />
+        <Line options={options} data={dt} />
       </div>
     </>
   );

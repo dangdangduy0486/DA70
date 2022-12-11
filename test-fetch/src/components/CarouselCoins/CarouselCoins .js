@@ -5,30 +5,32 @@ import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import "./CarouselCoins.css";
 import Loading from "../../pages/Loading/Loading";
+import { useGetTrendingCoinsQuery } from "../../features/coins/coinsApiSlice";
 
 const CarouselCoins = () => {
   const [trendCoins, setTrendingCoins] = useState(null);
-  const url = "api/trending";
-  const token = localStorage.getItem("token");
-  const opts = {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-  useEffect(() => {
-    axios
-      .get(url, opts)
-      .then((res) => {
-        setTrendingCoins(res.data);
-        carousel();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-  if (!trendCoins) {
-    return <Loading />;
-  }
+  // const url = "api/trending";
+  // const token = localStorage.getItem("token");
+  // const opts = {
+  //   headers: {
+  //     Authorization: token ? `Bearer ${token}` : "",
+  //   },
+  // };
+  // useEffect(() => {
+  //   axios
+  //     .get(url, opts)
+  //     .then((res) => {
+  //       setTrendingCoins(res.data);
+  //       carousel();
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  const { data, error, isLoading } = useGetTrendingCoinsQuery();
+
+  if (!data || error || isLoading) return <Loading />;
 
   function carousel() {
     let carouselSlider = document.getElementsByClassName("carousel__slider");
@@ -91,8 +93,8 @@ const CarouselCoins = () => {
     <>
       <section className="slider">
         <div className="slide-track">
-          {trendCoins.coins &&
-            trendCoins.coins.map((coin, index) => (
+          {data.coins &&
+            data.coins.map((coin, index) => (
               <div className="slide" key={index}>
                 <span>
                   <img

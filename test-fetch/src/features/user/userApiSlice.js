@@ -9,7 +9,29 @@ export const userApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
+    getUserReciepts: build.query({
+      query: (email) => {
+        return {
+          url: `/api/user/get-order/${email}`,
+        };
+      },
+    }),
+    getUserWallet: build.query({
+      query: ({ email }) => {
+        console.log(email);
+        return {
+          url: `api/wallet/info`,
+          params: {
+            email,
+          },
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetUserQuery } = userApiSlice;
+export const {
+  useGetUserQuery,
+  useGetUserRecieptsQuery,
+  useGetUserWalletQuery,
+} = userApiSlice;

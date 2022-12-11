@@ -1,27 +1,37 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+
 import "./Fiat.css";
+import { useGetUserWalletQuery } from "../../features/user/userApiSlice";
+import Loading from "../../pages/Loading/Loading";
+import useAuth from "../../hooks/useAuth";
+
 const Fiat = () => {
   const [walletAmout, setWalletAmount] = useState(null);
-  useEffect(() => {
-    try {
-      const id = localStorage.getItem("id");
-      const url = `api/wallet/info/${id}`;
-      axios
-        .get(url)
-        .then((response) => {
-          setWalletAmount(response.data);
-        })
-        .catch((error) => {
-          console.log("errorrr");
-        });
-    } catch (error) {
-      console.log("error");
-    }
-  }, []);
-  if (!walletAmout) return null;
-  console.log(walletAmout);
-  var map = walletAmout.wallet.reduce(function (map, invoice) {
+  // useEffect(() => {
+  //   try {
+  // const id = localStorage.getItem("id");
+  //     const url = `api/wallet/info/${id}`;
+  //     axios
+  //       .get(url)
+  //       .then((response) => {
+  //         setWalletAmount(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log("errorrr");
+  //       });
+  //   } catch (error) {
+  //     console.log("error");
+  //   }
+  // }, []);
+  // if (!walletAmout) return null;
+  const { email } = useAuth();
+  console.log(email);
+
+  const { data, error, isLoading } = useGetUserWalletQuery({ email });
+
+  if (!data || error || isLoading) return <Loading />;
+  var map = data.wallet.reduce(function (map, invoice) {
     var name = invoice.currencyID;
     var amount1 = invoice.amount * 1;
     var price = +amount1;

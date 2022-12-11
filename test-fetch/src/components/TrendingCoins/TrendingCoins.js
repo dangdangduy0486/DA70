@@ -3,34 +3,37 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+
+import Loading from "../../pages/Loading/Loading";
+import { useGetTrendingCoinsQuery } from "../../features/coins/coinsApiSlice";
 import "./TrendingCoins.css";
 
 const TrendingCoins = () => {
   const [trendCoins, setTrendingCoins] = useState(null);
-  const url = "api/trending";
-  const token = localStorage.getItem("token");
-  const opts = {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-  useEffect(() => {
-    axios
-      .get(url, opts)
-      .then((res) => {
-        setTrendingCoins(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-  if (!trendCoins) return null;
+  // const url = "api/trending";
+  // const token = localStorage.getItem("token");
+  // const opts = {
+  //   headers: {
+  //     Authorization: token ? `Bearer ${token}` : "",
+  //   },
+  // };
+  // useEffect(() => {
+  //   axios
+  //     .get(url, opts)
+  //     .then((res) => {
+  //       setTrendingCoins(res.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+  const { data, error, isLoading } = useGetTrendingCoinsQuery();
+
+  if (!data || error || isLoading) return <Loading />;
   var arrayTrend = [];
   for (var i = 0; i < 4; i++) {
-    arrayTrend.push(trendCoins.coins[i]);
+    arrayTrend.push(data.coins[i]);
   }
-  console.log(arrayTrend);
-  //hello
 
   return (
     <>

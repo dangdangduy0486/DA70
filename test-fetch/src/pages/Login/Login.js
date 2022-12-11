@@ -19,20 +19,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  // const [Resdata, setResData] = useState(null);
-  // const url = "api/auth/login";
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [login, { isLoading }] = useLoginMutation();
-
-  // const token = localStorage.getItem("token");
-  // const opts = {
-  //   headers: {
-  //     Authorization: token ? `Bearer ${token}` : "",
-  //   },
-  // };
 
   useEffect(() => {
     userRef.current.focus();

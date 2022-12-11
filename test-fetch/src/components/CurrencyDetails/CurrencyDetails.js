@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./CurrencyDetails.css";
-import { useGetCurrenciesQuery } from "../../features/currencies/currenciesApiSlice";
+import { useGetCurrenciesQuery } from "../../features/coins/coinsApiSlice";
 
 const CurrencyDetails = (props) => {
   const [currencies, setCurrencies] = useState(null);

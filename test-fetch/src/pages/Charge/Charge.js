@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
+import Loading from "../Loading/Loading";
+import { useGetCoinsExchangeRatesQuery } from "../../features/coins/coinsApiSlice";
 import "./Charge.css";
 
 const Charge = () => {
@@ -12,14 +15,17 @@ const Charge = () => {
   const walletOption = ["Fiat and spot", "Futures", "Funding"];
   const currencyOption = ["USD", "VND", "YPN", "EUR"];
 
-  useEffect(() => {
-    axios
-      .get(`https://api.coingecko.com/api/v3/exchange_rates`)
-      .then((response) => {
-        setCurrency(response.data.rates);
-      });
-  }, []);
-  console.log(currency);
+  // useEffect(() => {
+  //   axios
+  //     .get(`https://api.coingecko.com/api/v3/exchange_rates`)
+  //     .then((response) => {
+  //       setCurrency(response.data.rates);
+  //     });
+  // }, []);
+  const { data, error, isLoading } = useGetCoinsExchangeRatesQuery();
+
+  if (!data || error || isLoading) return <Loading />;
+
   const handleOnChange = (event) => {
     setAmount(event.target.value);
   };

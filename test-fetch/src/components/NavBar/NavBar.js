@@ -10,19 +10,15 @@ import { faBitcoinSign } from "@fortawesome/free-solid-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { faSackDollar } from "@fortawesome/free-solid-svg-icons";
 import MenuProfile from "../MenuProfile/MenuProfile";
+
 import useAuth from "../../hooks/useAuth";
 import { useSendLogoutMutation } from "../../features/auth/authApiSlice";
 
 const NavBar = () => {
-  // const token = localStorage.getItem("token");
-  // const email = localStorage.getItem("email");
-  // console.log(token);
-  // console.log(email);
   const { email } = useAuth();
   const [sendLogout, { isLoading, isSuccess, isError, error }] =
     useSendLogoutMutation();
-  console.log(email);
-  
+
   return (
     <>
       <Navbar expand="lg" className="bg-light fixed-top navbar">

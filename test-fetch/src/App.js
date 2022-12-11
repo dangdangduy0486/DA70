@@ -5,10 +5,8 @@ import Signup from "./pages/SignUp/SignUp";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home/Home";
 import CoinInfo from "./pages/CoinInfo/CoinInfo";
-// import Mainbonus from "./pages/MainBonus/MainBonus";
 import EmailVerify from "./pages/EmailVerify/EmailVerify";
 import Markets from "./pages/Markets/Markets";
-import Test from "./pages/Test";
 import UserInfor from "./pages/UserInfo/UserInfor";
 import Forgot from "./pages/Forgot/Forgot";
 import UserCart from "./pages/UserCart/UserCart";
@@ -21,6 +19,7 @@ import UserManagement from "./components/UserManagement/UserManagement";
 import Aboutus from "./pages/AboutUs/AboutUs";
 import TradingToP from "./pages/TradingToP/TradingToP";
 import Request from "./pages/Request/Request";
+
 function App() {
   // const user = localStorage.getItem("token");
   return (
@@ -31,7 +30,6 @@ function App() {
             {/* {user && <Route path="/cart" exact element={<Cart />} />} */}
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/test" element={<Test />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/aboutus" element={<Aboutus />} />
             <Route path="/trading" element={<TradingToP />} />

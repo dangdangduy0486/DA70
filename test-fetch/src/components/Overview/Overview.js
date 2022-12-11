@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
+
 import "./Overview.css";
+import { useGetUserWalletQuery } from "../../features/user/userApiSlice";
+import Loading from "../../pages/Loading/Loading";
 
 const Overview = () => {
   const [walletAmout, setWalletAmount] = useState(null);
@@ -13,26 +16,30 @@ const Overview = () => {
     { id: "binancecoin", name: "BNB", symbol: "bnb" },
   ];
   const [newwallet, setnewWallet] = useState([]);
-  useEffect(() => {
-    try {
-      const id = localStorage.getItem("id");
-      const url = `api/wallet/info/${id}`;
-      axios
-        .get(url)
-        .then((response) => {
-          setWalletAmount(response.data);
-        })
-        .catch((error) => {
-          console.log("errorrr");
-        });
-    } catch (error) {
-      console.log("error");
-    }
-  }, []);
-  if (!walletAmout) return null;
-  console.log(walletAmout.wallet);
+  // useEffect(() => {
+  // try {
+  const id = localStorage.getItem("id");
+  //     const url = `api/wallet/info/${id}`;
+  //     axios
+  //       .get(url)
+  //       .then((response) => {
+  //         setWalletAmount(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log("errorrr");
+  //       });
+  //   } catch (error) {
+  //     console.log("error");
+  //   }
+  // }, []);
+  // if (!walletAmout) return null;
+  // console.log(walletAmout.wallet);
 
-  var map = walletAmout.wallet.reduce(function (map, invoice) {
+  const { data, error, isLoading } = useGetUserWalletQuery(id);
+
+  if (!data || error || isLoading) return <Loading />;
+
+  var map = data.wallet.reduce(function (map, invoice) {
     var name = invoice.currencyID;
     // var type = invoice.type;
     var amount1 = invoice.amount * 1;

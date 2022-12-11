@@ -5,28 +5,33 @@ import Table from "react-bootstrap/Table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { useGetUserRecieptsQuery } from "../../features/user/userApiSlice";
+import Loading from "../../pages/Loading/Loading";
+
 const RequestReceipt = () => {
   const [requestOrder, setRequestOrder] = useState(null);
 
-  useEffect(() => {
-    const email = localStorage.getItem("email");
-    const url = `/api/user/get-order/${email}`;
-    const token = localStorage.getItem("token");
-    const opts = {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    };
-    axios
-      .get(url, opts)
-      .then((response) => {
-        setRequestOrder(response.data.order);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-  if (!requestOrder) return null;
+  // useEffect(() => {
+  const email = localStorage.getItem("email");
+  //   const url = `/api/user/get-order/${email}`;
+  //   const token = localStorage.getItem("token");
+  //   const opts = {
+  //     headers: {
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //   };
+  //   axios
+  //     .get(url, opts)
+  //     .then((response) => {
+  //       setRequestOrder(response.data.order);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+  const { data, error, isLoading } = useGetUserRecieptsQuery(email);
+
+  if (!data || error || isLoading) return <Loading />;
   return (
     <>
       <div className="bao">

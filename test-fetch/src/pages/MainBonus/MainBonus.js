@@ -8,31 +8,33 @@ import "./MainBonus.css";
 import { Carousel } from "antd";
 import Loading from "../Loading/Loading";
 import Footer from "../../components/Footer/Footer";
+import { useGetTrendingCoinsQuery } from "../../features/coins/coinsApiSlice";
 
 const Mainbonus = () => {
   const [trendCoins, setTrendingCoins] = useState(null);
   const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    const url = "api/trending";
-    const token = localStorage.getItem("token");
-    const opts = {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    };
-    axios
-      .get(url, opts)
-      .then((res) => {
-        setTrendingCoins(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsError(true);
-      });
-  }, []);
+  // useEffect(() => {
+  //   const url = "api/trending";
+  //   const token = localStorage.getItem("token");
+  //   const opts = {
+  //     headers: {
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //   };
+  //   axios
+  //     .get(url, opts)
+  //     .then((res) => {
+  //       setTrendingCoins(res.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setIsError(true);
+  //     });
+  // }, []);
 
-  if (!trendCoins || isError) return <Loading />;
+  const { data, error, isLoading } = useGetTrendingCoinsQuery();
+  if (!data || error || isLoading) return <Loading />;
   return (
     <>
       <div className="cover">
@@ -48,9 +50,9 @@ const Mainbonus = () => {
           </Link>
         </div>
         <div className="cover_mid cover-gird">
-          {trendCoins.coins &&
-            trendCoins.coins.map((coin) => (
-              <div className="girds">
+          {data.coins &&
+            data.coins.map((coin) => (
+              <div className="girds" key={coin.item.coin_id}>
                 <div className="gird_top">
                   <img src={coin.item.thumb} alt="coin" />
                   <div className="gird_first-head">
