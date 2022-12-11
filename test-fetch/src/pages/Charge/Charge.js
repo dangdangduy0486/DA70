@@ -7,10 +7,11 @@ import "./Charge.css";
 const Charge = () => {
   const [walletChoose, setWalletChoose] = useState("Fiat and spot");
   const [currency, setCurrency] = useState([]);
-  const [currencyOption, setCurrencyOption] = useState([]);
-  const [currencyID, setCurrencyId] = useState("usd");
+  const [currencyID, setCurrencyId] = useState("vnd");
   const [amount, setAmount] = useState(null);
   const walletOption = ["Fiat and spot", "Futures", "Funding"];
+  const currencyOption = ["USD", "VND", "YPN", "EUR"];
+
   useEffect(() => {
     axios
       .get(`https://api.coingecko.com/api/v3/exchange_rates`)
@@ -34,6 +35,10 @@ const Charge = () => {
           sellUnit: "a",
           amount: amount,
           sender: "VCB",
+          walletType: walletChoose,
+        })
+        .then(() => {
+          console.log("success~");
         })
         .catch((error) => {
           console.log(error);

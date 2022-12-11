@@ -4,15 +4,23 @@ import UserManagement from "../../components/UserManagement/UserManagement";
 import profile from "../../images/profile.svg";
 import NavBar from "../../components/NavBar/NavBar";
 import "./UserInfo.css";
-const UserInfor = () => {
-  const location = useLocation();
-  const userInfo = location.state.userInfo;
 
+import useAuth from "../../hooks/useAuth";
+import { useGetUserQuery } from "../../features/user/userApiSlice";
+
+const UserInfor = () => {
+  // const location = useLocation();
+  // const userInfo = location.state.userInfo;
+
+  const { email, role } = useAuth();
+  const { data, error, isLoading, isFetching, isSuccess } =
+    useGetUserQuery(email);
+  console.log(data);
   return (
     <>
       <NavBar />
       <section className="page_userinfo ">
-        {userInfo.role === "admin" ? (
+        {role === "admin" ? (
           <>
             <UserManagement />
           </>
@@ -24,14 +32,14 @@ const UserInfor = () => {
                   <img src={process.env.PUBLIC_URL + profile} alt="" />
                 </div>
                 <div className="card-body">
-                  <h3>{userInfo.fullname}</h3>
+                  {/* <h3>{data.fullname}</h3> */}
                   <form>
                     <div className="user-form">
                       <p className="m-1">Your email</p>
                       <input
                         className="w-100"
                         type="email"
-                        value={userInfo.email}
+                        // value={data.email}
                         disabled
                       />
                     </div>

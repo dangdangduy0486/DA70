@@ -34,13 +34,13 @@ const Overview = () => {
 
   var map = walletAmout.wallet.reduce(function (map, invoice) {
     var name = invoice.currencyID;
+    // var type = invoice.type;
     var amount1 = invoice.amount * 1;
     var price = +amount1;
     map[name] = (map[name] || 0) + price;
-    console.log(name);
     return map;
   }, {});
-  var array = Object.keys(map).map(function (name) {
+  var array = Object.keys(map).map(function (name, type) {
     return {
       currencyID: name,
       amount: map[name],
@@ -93,7 +93,7 @@ const Overview = () => {
                   <tr>
                     <th>Currency</th>
                     <th>Amount</th>
-                  </tr>{" "}
+                  </tr>
                   {array.map((w) => (
                     <tr>
                       <td>{w.currencyID.toUpperCase()}</td>

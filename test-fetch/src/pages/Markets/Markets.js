@@ -9,8 +9,9 @@ import { FloatButton } from "antd";
 import Loading from "../Loading/Loading";
 import CarouselCoins from "../../components/CarouselCoins/CarouselCoins ";
 import Footer from "../../components/Footer/Footer";
+import { useGetMarketsQuery } from "../../features/markets/marketsApiSlice";
+
 const Markets = () => {
-  const [markets, setMarkets] = useState("");
   const [vsCurrency, setVsCurrency] = useState("usd");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -26,35 +27,38 @@ const Markets = () => {
     setCurrentPage((currentPage) => currentPage + 1);
     console.log(currentPage);
   };
-  const url = "/api/markets";
-  const token = localStorage.getItem("token");
-  const opts = {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-  useEffect(() => {
-    axios
-      .get(
-        url,
-        {
-          params: {
-            vs_currency: vsCurrency,
-            page: currentPage,
-          },
-        },
-        opts
-      )
-      .then((response) => {
-        setMarkets(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [vsCurrency, currentPage]);
+  // const url = "/api/markets";
+  // const token = localStorage.getItem("token");
+  // const opts = {
+  //   headers: {
+  //     Authorization: token ? `Bearer ${token}` : "",
+  //   },
+  // };
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       url,
+  //       {
+  //         params: {
+  //           vs_currency: vsCurrency,
+  //           page: currentPage,
+  //         },
+  //       },
+  //       opts
+  //     )
+  //     .then((response) => {
+  //       setMarkets(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [vsCurrency, currentPage]);
+  const { data, error, isLoading } = useGetMarketsQuery({
+    vs_currency: vsCurrency,
+    page: currentPage,
+  });
 
-  if (!markets) return <Loading />;
-  console.log(markets);
+  if (!data || error || isLoading) return <Loading />;
 
   return (
     <>
@@ -62,7 +66,7 @@ const Markets = () => {
       <section className="markets">
         <CarouselCoins />
         <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} />
-        <MarketsDetails markets={markets} symbol={vsCurrency} />
+        <MarketsDetails markets={data} symbol={vsCurrency} />
         <hr />
         <div className="pagination d-flex justify-content-center">
           <button

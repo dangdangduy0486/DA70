@@ -20,44 +20,27 @@ const Request = () => {
 
   const handleRecharge = (e) => {
     setRequestType(e.target.value);
+    req();
   };
 
   const handleOrder = (e) => {
     setRequestType(e.target.value);
-    console.log(requestType);
+    req();
   };
-
-  useEffect(() => {
-    try {
-      // let requestType = "Spot order";
-      const url = `api/request/${id}`;
-      axios
-        .get(url, {
-          params: {
-            requestType: requestType,
-          },
-        })
-        .then((response) => {
-          setRequest(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log("error");
-    }
-  }, [id, requestType]);
 
   const handleResponseApproved = async (e) => {
     setReqID(e.target.value);
     const url = `api/admin/response-wallet/${id}`;
     setStatus("approved");
+    console.log(reqID);
+    console.log(status);
     await axios
       .patch(url, {
         requestID: reqID,
         status: status,
       })
       .then(() => {
+        req();
         navigate("/request");
       })
       .catch((error) => {
@@ -67,7 +50,7 @@ const Request = () => {
 
   const handleResponseDenided = async (e) => {
     setReqID(e.target.value);
-    const url = `api/admin/response_wallet/${id}`;
+    const url = `api/admin/response-wallet/${id}`;
     setStatus("denided");
     await axios
       .patch(url, {
@@ -75,12 +58,38 @@ const Request = () => {
         status: status,
       })
       .then(() => {
+        req();
         navigate("/request");
       })
       .catch((error) => {
-        console.log("error");
+        console.log(error);
       });
   };
+
+  const req = () => {
+    const url = `api/request/${id}`;
+    axios
+      .get(url, {
+        params: {
+          requestType: requestType,
+        },
+      })
+      .then((response) => {
+        setRequest(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    try {
+      req();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   if (!request) return null;
 
   return (
@@ -96,7 +105,7 @@ const Request = () => {
           className="btn-check"
           name="reqOrder"
           id="reqOrder"
-          autocomplete="off"
+          autoComplete="off"
           checked
           value="Spot order"
           onClick={handleOrder}
@@ -110,7 +119,7 @@ const Request = () => {
           className="btn-check"
           name="reqRecharge"
           id="reqRecharge"
-          autocomplete="off"
+          autoComplete="off"
           value="recharge"
           onClick={handleRecharge}
         />
@@ -122,6 +131,7 @@ const Request = () => {
         <thead>
           <tr>
             <th scope="col">#</th>
+            <th scope="col">_id</th>
             <th scope="col">Username</th>
             <th scope="col">Currency</th>
             <th scope="col">Amount</th>
@@ -135,6 +145,7 @@ const Request = () => {
             request.request.map((r, index) => (
               <tr>
                 <td>{index}</td>
+                <td>{r._id}</td>
                 <td>{r.userID}</td>
                 <td>{r.purchaseUnit}</td>
                 <td>{r.amount}</td>
@@ -151,12 +162,68 @@ const Request = () => {
                   </td>
                 ) : (
                   <td>
-                    <button value={r._id} onClick={handleResponseApproved}>
+                    {/* <button value={r._id} onClick={handleResponseApproved}>
                       <FontAwesomeIcon icon={faCheck} />
                     </button>
                     <button value={r._id} onClick={handleResponseDenided}>
                       <FontAwesomeIcon icon={faX} />
-                    </button>
+                    </button> */}
+
+                    {/* <div class="input-group-append">
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        value={r._id}
+                        onClick={handleResponseApproved}
+                      >
+                        Button
+                      </button>
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        value={r._id}
+                        onClick={handleResponseDenided}
+                      >
+                        Button
+                      </button>
+                    </div> */}
+                    <div
+                      className="btn-group mt-5"
+                      role="group"
+                      aria-label="Basic radio toggle button group "
+                    >
+                      <input
+                        type="radio"
+                        className="btn-check"
+                        name="aprroved"
+                        id="aprroved"
+                        autoComplete="off"
+                        value={r._id}
+                        onClick={handleResponseApproved}
+                      />
+                      <label
+                        className="btn btn-outline-primary"
+                        htmlFor="aprroved"
+                      >
+                        <FontAwesomeIcon icon={faCheck} />
+                      </label>
+
+                      <input
+                        type="radio"
+                        className="btn-check"
+                        name="denided"
+                        id="denided"
+                        autoComplete="off"
+                        value={r._id}
+                        onClick={handleResponseDenided}
+                      />
+                      <label
+                        className="btn btn-outline-primary"
+                        htmlFor="denided"
+                      >
+                        <FontAwesomeIcon icon={faX} />
+                      </label>
+                    </div>
                   </td>
                 )}
               </tr>

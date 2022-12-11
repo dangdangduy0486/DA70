@@ -1,46 +1,83 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
 
 // import * as Request from "../../utils/request";
 import Loading from "../Loading/Loading";
 import "./Login.css";
 import NavBar from "../../components/NavBar/NavBar";
 
+import { useLoginMutation } from "../../features/auth/authApiSlice";
+import { setCredentials } from "../../features/auth/authSlice";
+
 const Login = () => {
+  const userRef = useRef();
+  const errRef = useRef();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  // const [Resdata, setResData] = useState(null);
+  // const url = "api/auth/login";
+
   const navigate = useNavigate();
-  const [isError, setIsError] = useState(false);
-  const [Resdata, setResData] = useState(null);
-  const url = "api/auth/login";
-  const token = localStorage.getItem("token");
-  const opts = {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-  const onSubmit = async (values) => {
-    let { email, password } = values;
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  // const token = localStorage.getItem("token");
+  // const opts = {
+  //   headers: {
+  //     Authorization: token ? `Bearer ${token}` : "",
+  //   },
+  // };
+
+  useEffect(() => {
+    userRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    setErrMsg("");
+  }, []);
+
+  const onSubmit = async (e) => {
+    // let { email, password } = values;
+    e.preventDefault();
     try {
-      const res = await axios
-        .post(url, { email, password }, opts)
-        .catch((err) => {
-          if (err && err.response) console.log("Error", err);
-        });
-      setResData(res.data);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("email", res.data.email);
-      localStorage.setItem("id", res.data.userID);
-      localStorage.setItem("role", res.data.role);
-      console.log(res.data.token);
-      navigate("/", { state: { data: Resdata } });
+      // const res = await axios.post(url, { email, password }).catch((err) => {
+      //   if (err && err.response) console.log("Error", err);
+      // });
+      // setResData(res.data);
+      // localStorage.setItem("token", res.data.token);
+      // localStorage.setItem("email", res.data.email);
+      // localStorage.setItem("id", res.data.userID);
+      // localStorage.setItem("role", res.data.role);
+      // console.log(res.data.token);
+      // navigate("/", { state: { data: Resdata } });
+
+      const { accessToken } = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ accessToken }));
+      navigate("/");
     } catch (error) {
-      console.log("error");
-      // setIsError(true);
+      if (!error.status) {
+        setErrMsg("No Server Response");
+      } else if (error.status === 400) {
+        setErrMsg("Mising Email or Password");
+      } else if (error.status === 401) {
+        setErrMsg("Unauthorized");
+      } else {
+        setErrMsg(error.data?.message);
+      }
+      errRef.current.focus();
     }
   };
+
+  const handleEmailInput = (e) => setEmail(e.target.value);
+  const handlePwdInput = (e) => setPassword(e.target.value);
+
+  const errClass = errMsg ? "errmsg" : "offscreen";
 
   const formik = useFormik({
     initialValues: {
@@ -63,13 +100,14 @@ const Login = () => {
     }),
     onSubmit,
   });
-  if (isError) {
+
+  if (isLoading) {
     return <Loading />;
   }
   return (
     <>
       <NavBar />
-      <section className="vh-100% gradient-custom">
+      {/* <section className="vh-100% gradient-custom">
         <div className="container py-5">
           <div className="row d-flex justify-content-center align-items-center">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -167,6 +205,44 @@ const Login = () => {
             </div>
           </div>
         </div>
+      </section> */}
+      <section className="public">
+        <header>
+          <h1>Employee Login</h1>
+        </header>
+        <main className="login">
+          <p ref={errRef} className={errClass} aria-live="assertive">
+            {errMsg}
+          </p>
+
+          <form className="form" onSubmit={onSubmit}>
+            <label htmlFor="email">Username:</label>
+            <input
+              className="form__input"
+              type="text"
+              id="email"
+              ref={userRef}
+              value={email}
+              onChange={handleEmailInput}
+              autoComplete="off"
+              required
+            />
+
+            <label htmlFor="password">Password:</label>
+            <input
+              className="form__input"
+              type="password"
+              id="password"
+              onChange={handlePwdInput}
+              value={password}
+              required
+            />
+            <button className="form__submit-button">Sign In</button>
+          </form>
+        </main>
+        <footer>
+          <Link to="/">Back to Home</Link>
+        </footer>
       </section>
     </>
   );

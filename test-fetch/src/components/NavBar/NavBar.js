@@ -10,16 +10,19 @@ import { faBitcoinSign } from "@fortawesome/free-solid-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { faSackDollar } from "@fortawesome/free-solid-svg-icons";
 import MenuProfile from "../MenuProfile/MenuProfile";
+import useAuth from "../../hooks/useAuth";
+import { useSendLogoutMutation } from "../../features/auth/authApiSlice";
 
 const NavBar = () => {
-  const token = localStorage.getItem("token");
-  console.log(token);
-  const email = localStorage.getItem("email");
+  // const token = localStorage.getItem("token");
+  // const email = localStorage.getItem("email");
+  // console.log(token);
+  // console.log(email);
+  const { email } = useAuth();
+  const [sendLogout, { isLoading, isSuccess, isError, error }] =
+    useSendLogoutMutation();
   console.log(email);
-  const handleLogout = () => {
-    localStorage.removeItem("token", "email");
-    window.location.reload();
-  };
+  
   return (
     <>
       <Navbar expand="lg" className="bg-light fixed-top navbar">
@@ -47,14 +50,14 @@ const NavBar = () => {
               </Link>
             </Nav>
           </Navbar.Collapse>
-          {token ? (
+          {email ? (
             <>
               <Nav className="me-0 menu-right">
                 <Link style={{ textDecoration: "none" }} to="/logout">
                   <Button
                     className="btn"
                     variant="outline-warning"
-                    onClick={handleLogout}
+                    onClick={sendLogout}
                   >
                     Logout
                   </Button>

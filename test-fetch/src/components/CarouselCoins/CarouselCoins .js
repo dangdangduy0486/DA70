@@ -93,7 +93,7 @@ const CarouselCoins = () => {
         <div className="slide-track">
           {trendCoins.coins &&
             trendCoins.coins.map((coin, index) => (
-              <div class="slide" key={index}>
+              <div className="slide" key={index}>
                 <span>
                   <img
                     src={coin.item.large}

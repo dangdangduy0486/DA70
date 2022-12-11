@@ -10,7 +10,6 @@ const Home = () => {
   // if (state === null) return null;
   // console.log(state);
   // console.log(location.state.email);
-
   return (
     <>
       <div className="homePage">

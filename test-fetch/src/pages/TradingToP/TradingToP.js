@@ -10,6 +10,10 @@ import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer/Footer";
 
 const TradingToP = () => {
+  const [p2pRequest, setP2PRequest] = useState([]);
+
+  const [e, setE] = useState([]);
+
   const [assetChoose, setAssetChoose] = useState("bitcoin");
   const [fiatChoose, setFiatChoose] = useState("vnd");
   const [rates, setRates] = useState([]);
@@ -24,6 +28,7 @@ const TradingToP = () => {
   // const onFinish = (e) => {
   //   console.log(e);
   // };
+  const id = localStorage.getItem("id");
   useEffect(() => {
     axios
       .get(`https://api.coingecko.com/api/v3/coins/${assetChoose}`)
@@ -52,6 +57,47 @@ const TradingToP = () => {
   function calculator(num1, num2) {
     return (num1 + num2) / 2;
   }
+  ///
+
+  //
+  useEffect(() => {
+    const url = `api/request/${id}`;
+    axios
+      .get(url, {
+        params: {
+          requestType: "P2P",
+        },
+      })
+      .then((response) => {
+        setP2PRequest(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
+  var arr = [];
+  const onChange = (key) => {
+    if (key === "1") {
+      p2pRequest.request.map((a) => {
+        if (a.orderType === "buy") {
+          arr.push(a);
+        }
+        setE(arr);
+        console.log(arr);
+      });
+    }
+    if (key === "2") {
+      p2pRequest.request.map((a) => {
+        if (a.orderType === "sell") {
+          let arr = [];
+          arr.push(a);
+          setE(arr);
+        }
+      });
+    }
+  };
+  console.log(e);
+  //
   // console.log(rates);
   const onSubmit = async (values) => {
     const { assetChoose, fiatChoose, yourprice } = values;
@@ -74,7 +120,7 @@ const TradingToP = () => {
     <>
       <NavBar />
       <section className="tradingtopeople bg-light p-2">
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="1" onChange={onChange}>
           <Tabs.TabPane tab="Buy" key="1">
             <Input.Search
               placeholder="Enter name of coin"
@@ -496,6 +542,33 @@ const TradingToP = () => {
           </Tabs.TabPane>
         </Tabs>
       </section>
+      <div>
+        <table class="table-dark w-100">
+          <thead>
+            <tr>
+              <th scope="col">Sender</th>
+              <th scope="col">Fiat</th>
+              <th scope="col">Sell</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Statue</th>
+              <th scope="col">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {p2pRequest.request &&
+              p2pRequest.request.map((p) => (
+                <tr>
+                  <td>{p.sender}</td>
+                  <td>{p.purchaseUnit}</td>
+                  <td>{p.sellUnit}</td>
+                  <td>{p.amount}</td>
+                  <td>{p.status}</td>
+                  <td>{p.orderType}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
       <Footer />
     </>
   );

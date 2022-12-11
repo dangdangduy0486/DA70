@@ -1,4 +1,4 @@
-import "./loading.css";
+import "./Loading.css";
 const Loading = (props) => {
   return (
     <div className="loading">

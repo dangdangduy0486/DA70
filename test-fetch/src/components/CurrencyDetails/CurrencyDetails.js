@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./CurrencyDetails.css";
+import { useGetCurrenciesQuery } from "../../features/currencies/currenciesApiSlice";
 
 const CurrencyDetails = (props) => {
   const [currencies, setCurrencies] = useState(null);
@@ -11,36 +12,35 @@ const CurrencyDetails = (props) => {
     setSelectedCurrency(value.symbol);
   };
 
-  const url = "/api/currency";
-  const token = localStorage.getItem("token");
-  const opts = {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-  useEffect(() => {
-    axios
-      .get(url, opts)
-      .then((response) => {
-        setCurrencies(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  if (!currencies) return null;
-  console.log(currencies);
-
+  // const url = "/api/currency";
+  // const token = localStorage.getItem("token");
+  // const opts = {
+  //   headers: {
+  //     Authorization: token ? `Bearer ${token}` : "",
+  //   },
+  // };
+  // useEffect(() => {
+  //   axios
+  //     .get(url, opts)
+  //     .then((response) => {
+  //       setCurrencies(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+  const { data, error, isLoading } = useGetCurrenciesQuery();
+  if (!data || error || isLoading) return null;
   return (
     <>
       <div id="currencyDetails">
-        {currencies &&
-          currencies.map((currency) => (
+        {data &&
+          data.map((currency) => (
             <div
               className="currency_item"
               onClick={() => handleSelectCurrency(currency)}
               style={{ cursor: "pointer" }}
+              key={currency._id}
             >
               {currency.symbol.toUpperCase()}
             </div>

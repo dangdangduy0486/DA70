@@ -8,12 +8,7 @@ import "./MainBonus.css";
 import { Carousel } from "antd";
 import Loading from "../Loading/Loading";
 import Footer from "../../components/Footer/Footer";
-// const contentStyle = {
-//   height: "160px",
-//   color: "#fff",
-//   textAlign: "center",
-//   background: "#364d79",
-// };
+
 const Mainbonus = () => {
   const [trendCoins, setTrendingCoins] = useState(null);
   const [isError, setIsError] = useState(false);
@@ -36,6 +31,7 @@ const Mainbonus = () => {
         setIsError(true);
       });
   }, []);
+
   if (!trendCoins || isError) return <Loading />;
   return (
     <>
