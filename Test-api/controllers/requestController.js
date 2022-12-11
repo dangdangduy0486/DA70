@@ -7,8 +7,10 @@ const Request = require("../models/request");
 const getRequest = async (req, res) => {
   try {
     const requestType = req.query.requestType;
+
     let user = await User.findOne({
-      _id: req.params.id,
+      // _id: req.params.id,
+      email: req.body.email,
     });
 
     if (!user) {
@@ -16,9 +18,21 @@ const getRequest = async (req, res) => {
         message: "Invalid link",
       });
     }
-    //admin get all request
-    if (user.role === "admin") {
+    console.log(requestType);
+
+    if (requestType !== "P2P") {
+      //admin get all request
+      if (user.role === "admin") {
+        const request = await Request.find({
+          requestType: requestType,
+        });
+
+        return res.status(200).send({
+          request,
+        });
+      }
       const request = await Request.find({
+        userID: user.id,
         requestType: requestType,
       });
 
@@ -26,10 +40,11 @@ const getRequest = async (req, res) => {
         request,
       });
     }
+
     const request = await Request.find({
-      userID: user.id,
       requestType: requestType,
     });
+
     return res.status(200).send({
       request,
     });

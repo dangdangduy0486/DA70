@@ -10,7 +10,8 @@ const Request = require("../models/request");
 const allUsers = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.id,
+      // _id: req.params.id,
+      email: req.body.email,
     });
 
     if (!user) {
@@ -40,7 +41,8 @@ const allUsers = async (req, res) => {
 const editUser = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.id,
+      // _id: req.params.id,
+      email: req.body.email,
     });
 
     if (!user) {
@@ -81,7 +83,8 @@ const editUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.id,
+      // _id: req.params.id,
+      email: req.body.email,
     });
 
     if (!user) {
@@ -121,7 +124,8 @@ const deleteUser = async (req, res) => {
 const getAllOrders = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.id,
+      // _id: req.params.id,
+      email: req.body.email,
     });
 
     if (!user) {
@@ -151,7 +155,8 @@ const getAllOrders = async (req, res) => {
 const responseOrders = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.id,
+      // _id: req.params.id,
+      email: req.body.email,
     });
 
     if (!user) {
@@ -295,8 +300,9 @@ const responseOrders = async (req, res) => {
 //response wallet
 const responseWallet = async (req, res) => {
   try {
-    const user = await User.findOne({
-      _id: req.params.id,
+    let user = await User.findOne({
+      // _id: req.params.id,
+      email: req.body.email,
     });
 
     if (!user || user.role !== "admin") {
@@ -329,38 +335,42 @@ const responseWallet = async (req, res) => {
     if (request.status === "approved") {
       const existsWallet = await Wallet.findOne({
         userID: request.userID,
+        currencyID: request.purchaseUnit,
+        type: request.walletType,
       });
+      console.log(existsWallet);
       if (existsWallet) {
-        if (existsWallet.currencyID === request.purchaseUnit) {
-          let amount =
-            parseFloat(existsWallet.amount) + parseFloat(request.amount);
+        let amount =
+          parseFloat(existsWallet.amount) + parseFloat(request.amount);
 
-          const wallet = await Wallet.findOneAndUpdate(
-            {
-              _id: existsWallet.id,
-            },
-            {
-              amount: amount,
-            }
-          );
-
-          return res.status(200).send({
-            message: "Recharge success!!!!",
-            wallet,
-          });
-        }
+        const wallet = await Wallet.findOneAndUpdate(
+          {
+            _id: existsWallet.id,
+          },
+          {
+            amount: amount,
+            type: request.walletType,
+          }
+        );
+        return res.status(200).send({
+          message: "Recharge success!!!!",
+          wallet,
+        });
       }
 
-      const wallet = await Wallet.create({
-        userID: request.userID,
-        currencyID: request.purchaseUnit,
-        amount: request.amount,
-      });
+      if (!existsWallet) {
+        const wallet = await Wallet.create({
+          userID: request.userID,
+          currencyID: request.purchaseUnit,
+          amount: request.amount,
+          type: request.walletType,
+        });
 
-      return res.status(200).send({
-        message: "Recharge success!!",
-        wallet,
-      });
+        return res.status(200).send({
+          message: "Recharge success!!",
+          wallet,
+        });
+      }
     }
     return res.status(200).send({
       message: "Recharge denided!!",

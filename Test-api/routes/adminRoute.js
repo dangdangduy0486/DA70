@@ -13,19 +13,19 @@ const {
 const router = express.Router();
 
 //get all users
-router.get("/all-users/:id", allUsers);
+router.get("/all-users", allUsers);
 
 // edit user information
-router.patch("/edit-user/:id", editUser);
+router.patch("/edit-user", editUser);
 
 //delete user
-router.delete("/delete-user/:id/", deleteUser);
+router.delete("/delete-user", deleteUser);
 
 //get all orders request
 router.get("/all-order/:id", getAllOrders);
 
 //response order
-router.patch("/response-order/:id", responseOrders);
+router.patch("/response-order", responseOrders);
 
 //edit order
 // router.patch("/update-order/:id", editOrder);
@@ -34,6 +34,6 @@ router.patch("/response-order/:id", responseOrders);
 // router.patch("/delete-order/:id", deleteOrder);
 
 //response request recharge
-router.patch("/response-wallet/:id", responseWallet);
+router.patch("/response-wallet", responseWallet);
 
 module.exports = router;

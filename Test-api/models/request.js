@@ -27,6 +27,14 @@ const RequestSchema = new Schema({
     type: String,
     default: "pending",
   },
+  walletType: {
+    type: String,
+    default: "",
+  },
+  orderType: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = Request = mongoose.model("Request", RequestSchema);

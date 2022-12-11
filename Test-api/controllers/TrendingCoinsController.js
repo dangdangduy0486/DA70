@@ -1,6 +1,8 @@
-const config = require("../config");
+const config = require("../config/APIs");
 const axios = require("axios");
-const { response } = require("express");
+
+const verifyUser = require("../middleware/verifyUser");
+const jwt = require("jsonwebtoken");
 
 const axiosOptions = {
   headers: {

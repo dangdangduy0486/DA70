@@ -26,6 +26,9 @@ const OrderSchema = new Schema({
   total: {
     type: String,
   },
+  orderType: {
+    type: String,
+  },
   status: {
     type: String,
     default: "PENDING",

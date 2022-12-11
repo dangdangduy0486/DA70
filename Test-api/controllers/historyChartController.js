@@ -8,25 +8,28 @@ const axiosOptions = {
   },
 };
 
-const getExchangRates = async (vs_currency, ids) => {
+const getHistoryChartInfo = async (coinID, days) => {
   const res = await axios
-    .get(config.EXCHANGE_RATES(vs_currency, ids), axiosOptions)
+    .get(config.HISTORY_CHART(coinID, days), axiosOptions)
     .then((response) => {
       return response;
     })
     .catch((err) => {
       console.log(err);
     });
-    
+
   return res.data;
 };
-const exchangeRatesParser = async (req, res) => {
-  if ((!req.query.vs_currency, !req.query.ids)) {
+const historyChartInfoParser = async (req, res) => {
+  if ((!req.query.coinID, !req.query.days)) {
     return res.status(403).json({ error: "missing something" });
   }
-  const exchangeRatesData = await getExchangRates(req.query.vs_currency, req.query.ids);
-  return res.status(200).json(exchangeRatesData);
+  const historyChartInfo = await getHistoryChartInfo(
+    req.query.coinID,
+    req.query.days
+  );
+  return res.status(200).json(historyChartInfo);
 };
 module.exports = {
-  exchangeRatesParser,
+  historyChartInfoParser,
 };

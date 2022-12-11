@@ -6,7 +6,8 @@ const Request = require("../models/request");
 const rechargeRequest = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.id,
+      // _id: req.params.id,
+      email: req.params.email,
     });
 
     if (!user) {
@@ -29,6 +30,7 @@ const rechargeRequest = async (req, res) => {
       amount: req.body.amount,
       sender: req.body.sender,
       reciever: user.email,
+      walletType: req.body.walletType,
     });
 
     return res.status(200).send({
@@ -46,7 +48,8 @@ const rechargeRequest = async (req, res) => {
 const getWallet = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.id,
+      // _id: req.params.id,
+      email: req.body.email,
     });
 
     if (!user) {

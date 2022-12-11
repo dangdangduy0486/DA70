@@ -1,4 +1,4 @@
-const config = require("../config");
+const config = require("../config/APIs");
 const axios = require("axios");
 
 const axiosOptions = {

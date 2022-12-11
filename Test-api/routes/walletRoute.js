@@ -6,8 +6,8 @@ const {
   rechargeRequest,
 } = require("../controllers/WalletController");
 
-router.post("/request/:id", rechargeRequest);
+router.post("/request/:email", rechargeRequest);
 
-router.get("/info/:id", getWallet);
+router.get("/info", getWallet);
 
 module.exports = router;

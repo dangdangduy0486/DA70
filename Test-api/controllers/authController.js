@@ -122,37 +122,41 @@ const login = async (req, res, next) => {
         .status(400)
         .send({ message: "An Email sent to your account please verify" });
     }
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       {
-        email: user.email,
-        userID: user.id,
+        UserInfo: {
+          email: user.email,
+          role: user.role,
+        },
       },
       process.env.JWT_ACCESS_TOKEN,
       {
-        expiresIn: "1d",
+        // expiresIn: "15m",
+        expiresIn: "15s",
       }
     );
 
-    await Token.create({
-      userID: user._id,
-      token: token,
-    });
-    // const refreshToken = jwt.sign(
-    //   {
-    //     email: user.email,
-    //   },
-    //   process.env.JWT_REFRESH_TOKEN,
-    //   {
-    //     expiresIn: "1d",
-    //   }
-    // );
+    const refreshToken = jwt.sign(
+      {
+        email: user.email,
+      },
+      process.env.JWT_REFRESH_TOKEN,
+      {
+        expiresIn: "7d",
+      }
+    );
 
-    res.status(200).send({
+    //create secure cookie with refresh token
+    res.cookie("jwt", refreshToken, {
+      // httpOnly: true, //accessible only by web server
+      // secure: true, //https
+      // sameSite: "None", //cross-site cookie
+      // maxAge: 7 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
+    });
+
+    res.status(200).json({
       message: "logged in successfully",
-      token: token,
-      email: user.email,
-      userID: user.id,
-      role: user.role,
+      accessToken,
     });
   } catch (error) {
     res.status(500).send({
@@ -161,8 +165,70 @@ const login = async (req, res, next) => {
   }
 };
 
+const refresh = (req, res) => {
+  const cookies = req.cookies;
+  console.log(cookies);
+  if (!cookies?.jwt)
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+
+  const refreshToken = cookies.jwt;
+
+  jwt.verify(
+    refreshToken,
+    process.env.JWT_REFRESH_TOKEN,
+    async (err, decoded) => {
+      if (err)
+        return res.status(403).json({
+          message: "Forbidden",
+        });
+
+      const user = await User.findOne({
+        email: decoded.email,
+      }).exec();
+
+      if (!user)
+        return res.status(401).json({
+          message: "Unauthorized",
+        });
+
+      const accessToken = jwt.sign(
+        {
+          UserInfo: {
+            email: user.email,
+            role: user.role,
+          },
+        },
+        process.env.JWT_ACCESS_TOKEN,
+        { expiresIn: "15m" }
+      );
+
+      res.json({ accessToken });
+    }
+  );
+};
+
+const logout = (req, res) => {
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) return res.sendStatus(204);
+
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    sameSite: "None",
+    secure: true,
+  });
+
+  res.json({
+    message: "Cookie cleared",
+  });
+};
+
 module.exports = {
   signup,
   verifyEmail,
   login,
+  refresh,
+  logout,
 };

@@ -2,14 +2,18 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  requestSpotOrder,
   getOrders,
+  requestSpotOrder,
+  requestPostP2P,
 } = require("../controllers/orderController");
 
-//post request order
-router.post("/request/:id", requestSpotOrder);
-
 //get order info
-router.get("/info/:id", getOrders);
+router.get("/info", getOrders);
+
+//post request order
+router.post("/request", requestSpotOrder);
+
+//post request p2p
+router.post("/p2p-request", requestPostP2P);
 
 module.exports = router;

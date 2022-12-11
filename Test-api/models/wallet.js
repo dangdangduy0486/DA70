@@ -13,7 +13,6 @@ const WalletSchema = new Schema({
   },
   type: {
     type: String,
-    default: "fiat",
   },
 });
 
