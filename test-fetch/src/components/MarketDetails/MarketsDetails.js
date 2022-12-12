@@ -180,7 +180,7 @@ const MarketsDetails = ({ markets, symbol }) => {
             markets.map((market) => (
               <tr key={market.market_cap_rank}>
                 <td data-label="#">
-                  <p>{market.market_cap_rank}</p>
+                  <p>{market.market_cap_rank ? market.market_cap_rank : "?"}</p>
                 </td>
                 <td data-label="Coin">
                   <div className="coin_box">
@@ -192,11 +192,7 @@ const MarketsDetails = ({ markets, symbol }) => {
                       }}
                       to={`/coins/${market.id}`}
                     >
-                      <img
-                        className="imgCoin"
-                        src={market.image}
-                        alt="{coin.image}"
-                      />
+                      <img className="imgCoin" src={market.image} alt="" />
                       <p style={{ color: "black", marginBottom: 0 }}>
                         {market.name}
                       </p>
@@ -207,9 +203,8 @@ const MarketsDetails = ({ markets, symbol }) => {
                   </div>
                 </td>
                 <td data-label="Price">
-                  <p>
-                    {market.current_price}-{`${symbol}`}
-                  </p>
+                  <p>{market.current_price ? market.current_price : "?"}</p>
+                  <p>{`${symbol.toUpperCase()}`}</p>
                 </td>
                 <td data-label="1h">
                   <p
@@ -271,14 +266,12 @@ const MarketsDetails = ({ markets, symbol }) => {
                   </p>
                 </td>
                 <td data-label="Volume" className="total_volume">
-                  <p>
-                    {market.total_volume}-{`${symbol}`}
-                  </p>
+                  <p>{market.total_volume ? market.total_volume : "?"}</p>
+                  <p>{`${symbol.toUpperCase()}`}</p>
                 </td>
                 <td data-label="Market Cap" className="market_cap">
-                  <p>
-                    {market.market_cap}-{`${symbol}`}
-                  </p>
+                  <p>{market.market_cap ? market.market_cap : "?"}</p>
+                  <p>{`${symbol.toUpperCase()}`}</p>
                 </td>
               </tr>
             ))}

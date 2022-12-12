@@ -3,21 +3,46 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/esm/Button";
 import NavDropdown from "react-bootstrap/NavDropdown";
+
 import "./NavBar.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBitcoinSign } from "@fortawesome/free-solid-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { faSackDollar } from "@fortawesome/free-solid-svg-icons";
-import MenuProfile from "../MenuProfile/MenuProfile";
+import axios from "axios";
 
+import MenuProfile from "../MenuProfile/MenuProfile";
 import useAuth from "../../hooks/useAuth";
 import { useSendLogoutMutation } from "../../features/auth/authApiSlice";
+import { useState } from "react";
 
 const NavBar = () => {
+  const [searchResults, setSearchResults] = useState([]);
   const { email } = useAuth();
   const [sendLogout, { isLoading, isSuccess, isError, error }] =
     useSendLogoutMutation();
+
+  const Search = (key) => {
+    axios
+      .get(`https://api.coingecko.com/api/v3/search?query=${key}`)
+      .then((response) => {
+        console.log(response.data.coins);
+        setSearchResults(response.data.coins);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const searchResultsList = () => {
+    const list = document.getElementById("list-group");
+    if (list.style.display === "none") {
+      list.style.display = "block";
+    } else {
+      list.style.display = "none";
+    }
+  };
 
   return (
     <>
@@ -44,6 +69,45 @@ const NavBar = () => {
               <Link style={{ textDecoration: "none" }} to="/aboutus">
                 <Nav.Link href="/aboutus">About Us</Nav.Link>
               </Link>
+              <Link style={{ textDecoration: "none" }} to="/nft">
+                <Nav.Link href="/nft">NFT</Nav.Link>
+              </Link>
+              <Nav.Item>
+                <li className="nav-item dropdown">
+                  <Link
+                    className="nav-link dropdown-toggle"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Exchanges
+                  </Link>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        style={{ textDecoration: "none" }}
+                        to="/exchanges"
+                      >
+                        Crypto Exchanges
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        style={{ textDecoration: "none" }}
+                        to="/exchanges/derivatives"
+                      >
+                        Derivatives
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+              </Nav.Item>
             </Nav>
           </Navbar.Collapse>
           {email ? (
@@ -89,6 +153,30 @@ const NavBar = () => {
             </>
           )}
         </Container>
+        <Nav>
+          <Nav.Item>
+            <input
+              class="me-2"
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+              onChange={(event) => Search(event.target.value)}
+              onFocus={searchResultsList}
+            />
+          </Nav.Item>
+          <Nav.Item>
+            <ul
+              class="list-group"
+              id="list-group"
+              style={{ display: "none", zIndex: 1 }}
+            >
+              {searchResults &&
+                searchResults.map((s) => (
+                  <li class="list-group-item">{s.name}</li>
+                ))}
+            </ul>
+          </Nav.Item>
+        </Nav>
       </Navbar>
     </>
   );

@@ -19,6 +19,8 @@ import UserManagement from "./components/UserManagement/UserManagement";
 import Aboutus from "./pages/AboutUs/AboutUs";
 import TradingToP from "./pages/TradingToP/TradingToP";
 import Request from "./pages/Request/Request";
+import Exchanges from "./pages/Exchanges/Exchanges";
+import NFT from "./pages/NFT/NFT";
 
 function App() {
   // const user = localStorage.getItem("token");
@@ -54,6 +56,9 @@ function App() {
             <Route path="/charge" element={<Charge />} />
             <Route path="/usermanage" element={<UserManagement />} />
             <Route path="/request" element={<Request />} />
+            <Route path="/exchanges" element={<Exchanges />} />
+            <Route path="/exchanges/derivatives" element={<Exchanges />} />
+            <Route path="/nft" element={<NFT />} />
           </Routes>
         </div>
       </BrowserRouter>
