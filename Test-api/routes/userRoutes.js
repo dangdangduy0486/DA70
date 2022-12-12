@@ -13,10 +13,10 @@ const {
 router.post("/forgot-password", forgotPassword);
 
 //reset password request
-router.get("/reset-password/:userID", resetPasswordRequest);
+router.get("/reset-password/:email", resetPasswordRequest);
 
 //reset password
-router.patch("/reset-password/:userID", resetPassword);
+router.patch("/reset-password/:email", resetPassword);
 
 //get user info
 router.get("/user-info/:email", getUserInfo);

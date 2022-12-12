@@ -8,9 +8,9 @@ const axiosOptions = {
   },
 };
 
-const getAllMarkets = async (vs_currency, page) => {
+const getAllMarkets = async (vs_currency, order, perPage, page) => {
   const res = await axios
-    .get(config.MARKET_URL(vs_currency, page), axiosOptions)
+    .get(config.MARKET_URL(vs_currency, order, perPage, page), axiosOptions)
     .then((response) => {
       return response;
     })
@@ -20,11 +20,18 @@ const getAllMarkets = async (vs_currency, page) => {
   return res.data;
 };
 const marketsParser = async (req, res) => {
-  if ((!req.query.vs_currency, !req.query.page)) {
+  if (
+    (!req.query.vs_currency,
+    !req.query.page,
+    !req.query.perPage,
+    !req.query.order)
+  ) {
     return res.status(403).json({ error: "missing something" });
   }
   const marketsData = await getAllMarkets(
     req.query.vs_currency,
+    req.query.order,
+    req.query.perPage,
     req.query.page
   );
   return res.status(200).json(marketsData);

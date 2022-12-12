@@ -49,7 +49,7 @@ const getWallet = async (req, res) => {
   try {
     const user = await User.findOne({
       // _id: req.params.id,
-      email: req.body.email,
+      email: req.params.email,
     });
 
     if (!user) {

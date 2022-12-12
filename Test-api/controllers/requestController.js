@@ -10,7 +10,7 @@ const getRequest = async (req, res) => {
 
     let user = await User.findOne({
       // _id: req.params.id,
-      email: req.body.email,
+      email: req.parmas.email,
     });
 
     if (!user) {

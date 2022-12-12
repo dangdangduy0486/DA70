@@ -8,6 +8,6 @@ const {
 
 router.post("/request/:email", rechargeRequest);
 
-router.get("/info", getWallet);
+router.get("/info/:email", getWallet);
 
 module.exports = router;

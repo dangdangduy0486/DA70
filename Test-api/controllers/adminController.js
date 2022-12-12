@@ -11,7 +11,7 @@ const allUsers = async (req, res) => {
   try {
     const user = await User.findOne({
       // _id: req.params.id,
-      email: req.body.email,
+      email: req.parmas.email,
     });
 
     if (!user) {
@@ -42,7 +42,7 @@ const editUser = async (req, res) => {
   try {
     const user = await User.findOne({
       // _id: req.params.id,
-      email: req.body.email,
+      email: req.parmas.email,
     });
 
     if (!user) {
@@ -84,7 +84,7 @@ const deleteUser = async (req, res) => {
   try {
     const user = await User.findOne({
       // _id: req.params.id,
-      email: req.body.email,
+      email: req.params.email,
     });
 
     if (!user) {
@@ -125,7 +125,7 @@ const getAllOrders = async (req, res) => {
   try {
     const user = await User.findOne({
       // _id: req.params.id,
-      email: req.body.email,
+      email: req.parmas.email,
     });
 
     if (!user) {
@@ -156,7 +156,7 @@ const responseOrders = async (req, res) => {
   try {
     const user = await User.findOne({
       // _id: req.params.id,
-      email: req.body.email,
+      email: req.parmas.email,
     });
 
     if (!user) {
@@ -302,7 +302,7 @@ const responseWallet = async (req, res) => {
   try {
     let user = await User.findOne({
       // _id: req.params.id,
-      email: req.body.email,
+      email: req.parmas.email,
     });
 
     if (!user || user.role !== "admin") {

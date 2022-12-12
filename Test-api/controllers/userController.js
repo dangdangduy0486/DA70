@@ -44,7 +44,7 @@ const forgotPassword = async (req, res) => {
 const resetPasswordRequest = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.userID,
+      _id: req.params.email,
     });
 
     if (!user)
@@ -84,7 +84,7 @@ const resetPasswordRequest = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.userID,
+      _id: req.params.email,
     });
 
     if (!user)
