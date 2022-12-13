@@ -5,6 +5,7 @@ import Loading from "../Loading/Loading";
 
 const Exchanges = () => {
   const [exchangesData, setExchangesData] = useState([]);
+  const [exchangeData, setExchangeData] = useState([]);
   useEffect(() => {
     axios
       .get("https://api.coingecko.com/api/v3/exchanges?per_page=100&page=1")
@@ -15,6 +16,20 @@ const Exchanges = () => {
         console.log(error);
       });
   }, []);
+
+  // useEffect(() => {
+  // exchangesData.map((ex) =>
+  //   axios
+  //     .get(`https://api.coingecko.com/api/v3/exchanges/${ex.id}`)
+  //     .then((response) => {
+  //       setExchangeData(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     })
+  // );
+  // }, [exchangesData]);
+  // console.log(exchangeData);
 
   if (!exchangesData) return <Loading />;
   console.log(exchangesData);

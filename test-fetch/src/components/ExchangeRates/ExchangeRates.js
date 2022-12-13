@@ -66,7 +66,7 @@ const ExchangeRates = () => {
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             aria-describedby="emailHelp"
             id="exchangeFrom"
             name="exchangeFrom"
@@ -80,7 +80,7 @@ const ExchangeRates = () => {
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="exchangeTo"
             name="exchangeTo"
             onChange={handleExchangeTo}
@@ -102,7 +102,7 @@ const ExchangeRates = () => {
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             aria-describedby="emailHelp"
             id="exchangeFrom"
             name="exchangeFrom"
@@ -116,7 +116,7 @@ const ExchangeRates = () => {
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="exchangeTo"
             name="exchangeTo"
             onChange={handleExchangeTo}

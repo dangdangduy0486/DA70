@@ -21,6 +21,7 @@ import TradingToP from "./pages/TradingToP/TradingToP";
 import Request from "./pages/Request/Request";
 import Exchanges from "./pages/Exchanges/Exchanges";
 import NFT from "./pages/NFT/NFT";
+import NFTList from "./pages/NFT/NFTList";
 
 function App() {
   // const user = localStorage.getItem("token");
@@ -58,7 +59,7 @@ function App() {
             <Route path="/request" element={<Request />} />
             <Route path="/exchanges" element={<Exchanges />} />
             <Route path="/exchanges/derivatives" element={<Exchanges />} />
-            <Route path="/nft" element={<NFT />} />
+            <Route path="/nft" element={<NFTList />} />
           </Routes>
         </div>
       </BrowserRouter>

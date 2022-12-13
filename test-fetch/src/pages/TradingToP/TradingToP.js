@@ -543,7 +543,7 @@ const TradingToP = () => {
         </Tabs>
       </section>
       <div>
-        <table class="table-dark w-100">
+        <table className="table-dark w-100">
           <thead>
             <tr>
               <th scope="col">Sender</th>

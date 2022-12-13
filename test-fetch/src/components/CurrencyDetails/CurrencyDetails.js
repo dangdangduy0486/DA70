@@ -48,34 +48,34 @@ const CurrencyDetails = (props) => {
       </div>
       {/* <button
         type="button"
-        class="btn btn-outline-secondary"
+        className="btn btn-outline-secondary"
         data-bs-toggle="modal"
         data-bs-target="#currencyModalLabel"
       >
         {selectedCurrency.toUpperCase()}
       </button>
       <div
-        class="modal fade currency-list-modal"
+        className="modal fade currency-list-modal"
         id="currencyModalLabel"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
-          <div class="modal-content currency-modal-content">
-            <div class="modal-header currency-modal-header">
+        <div className="modal-dialog">
+          <div className="modal-content currency-modal-content">
+            <div className="modal-header currency-modal-header">
               <input
                 placeholder="Enter money unit, example: usd, eur, btc"
-                class="form-control"
+                className="form-control"
               />
               <button
                 type="button"
-                class="btn-close close-currenncy-modal"
+                className="btn-close close-currenncy-modal"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body currency-list">
+            <div className="modal-body currency-list">
               {currencies &&
                 currencies.map((currency) => (
                   <p
@@ -88,10 +88,10 @@ const CurrencyDetails = (props) => {
                   </p>
                 ))}
             </div>
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
                 Close

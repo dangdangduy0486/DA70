@@ -17,7 +17,7 @@ const UserManagement = () => {
   return (
     <>
       <div className="shadow-lg p-3 bg-body ">
-        <div class="row ">
+        <div className="row ">
           <div className="col-8 text-center">
             <h2>User List</h2>
           </div>
@@ -27,9 +27,9 @@ const UserManagement = () => {
             </Button>
           </div>
         </div>
-        <div class="row">
-          <div class="table-responsive ">
-            <table class="table table-striped table-hover table-bordered">
+        <div className="row">
+          <div className="table-responsive ">
+            <table className="table table-striped table-hover table-bordered">
               <thead>
                 <tr>
                   <th>#</th>
@@ -50,7 +50,7 @@ const UserManagement = () => {
                   <td>
                     <a
                       href="#"
-                      class="view"
+                      className="view"
                       title="View"
                       data-toggle="tooltip"
                       style={{ color: "#10ab80" }}
@@ -62,7 +62,12 @@ const UserManagement = () => {
                         type="button"
                       />
                     </a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip">
+                    <a
+                      href="#"
+                      className="edit"
+                      title="Edit"
+                      data-toggle="tooltip"
+                    >
                       <FontAwesomeIcon
                         icon={faPenToSquare}
                         className="btn ms-2"
@@ -72,7 +77,7 @@ const UserManagement = () => {
                     </a>
                     <a
                       href="#"
-                      class="delete"
+                      className="delete"
                       title="Delete"
                       data-toggle="tooltip"
                       style={{ color: "red" }}
@@ -95,7 +100,7 @@ const UserManagement = () => {
                   <td>
                     <a
                       href="#"
-                      class="view"
+                      className="view"
                       title="View"
                       data-toggle="tooltip"
                       style={{ color: "#10ab80" }}
@@ -107,7 +112,12 @@ const UserManagement = () => {
                         type="button"
                       />
                     </a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip">
+                    <a
+                      href="#"
+                      className="edit"
+                      title="Edit"
+                      data-toggle="tooltip"
+                    >
                       <FontAwesomeIcon
                         icon={faPenToSquare}
                         className="btn ms-2"
@@ -117,7 +127,7 @@ const UserManagement = () => {
                     </a>
                     <a
                       href="#"
-                      class="delete"
+                      className="delete"
                       title="Delete"
                       data-toggle="tooltip"
                       style={{ color: "red" }}
@@ -140,7 +150,7 @@ const UserManagement = () => {
                   <td>
                     <a
                       href="#"
-                      class="view"
+                      className="view"
                       title="View"
                       data-toggle="tooltip"
                       style={{ color: "#10ab80" }}
@@ -152,7 +162,12 @@ const UserManagement = () => {
                         type="button"
                       />
                     </a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip">
+                    <a
+                      href="#"
+                      className="edit"
+                      title="Edit"
+                      data-toggle="tooltip"
+                    >
                       <FontAwesomeIcon
                         icon={faPenToSquare}
                         className="btn ms-2"
@@ -162,7 +177,7 @@ const UserManagement = () => {
                     </a>
                     <a
                       href="#"
-                      class="delete"
+                      className="delete"
                       title="Delete"
                       data-toggle="tooltip"
                       style={{ color: "red" }}
@@ -185,7 +200,7 @@ const UserManagement = () => {
                   <td>
                     <a
                       href="#"
-                      class="view"
+                      className="view"
                       title="View"
                       data-toggle="tooltip"
                       style={{ color: "#10ab80" }}
@@ -197,7 +212,12 @@ const UserManagement = () => {
                         type="button"
                       />
                     </a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip">
+                    <a
+                      href="#"
+                      className="edit"
+                      title="Edit"
+                      data-toggle="tooltip"
+                    >
                       <FontAwesomeIcon
                         icon={faPenToSquare}
                         className="btn ms-2"
@@ -207,7 +227,7 @@ const UserManagement = () => {
                     </a>
                     <a
                       href="#"
-                      class="delete"
+                      className="delete"
                       title="Delete"
                       data-toggle="tooltip"
                       style={{ color: "red" }}
@@ -230,7 +250,7 @@ const UserManagement = () => {
                   <td>
                     <a
                       href="#"
-                      class="view"
+                      className="view"
                       title="View"
                       data-toggle="tooltip"
                       style={{ color: "#10ab80" }}
@@ -242,7 +262,12 @@ const UserManagement = () => {
                         type="button"
                       />
                     </a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip">
+                    <a
+                      href="#"
+                      className="edit"
+                      title="Edit"
+                      data-toggle="tooltip"
+                    >
                       <FontAwesomeIcon
                         icon={faPenToSquare}
                         className="btn ms-2"
@@ -252,7 +277,7 @@ const UserManagement = () => {
                     </a>
                     <a
                       href="#"
-                      class="delete"
+                      className="delete"
                       title="Delete"
                       data-toggle="tooltip"
                       style={{ color: "red" }}
@@ -275,7 +300,7 @@ const UserManagement = () => {
                   <td>
                     <a
                       href="#"
-                      class="view"
+                      className="view"
                       title="View"
                       data-toggle="tooltip"
                       style={{ color: "#10ab80" }}
@@ -287,7 +312,12 @@ const UserManagement = () => {
                         type="button"
                       />
                     </a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip">
+                    <a
+                      href="#"
+                      className="edit"
+                      title="Edit"
+                      data-toggle="tooltip"
+                    >
                       <FontAwesomeIcon
                         icon={faPenToSquare}
                         className="btn ms-2"
@@ -297,7 +327,7 @@ const UserManagement = () => {
                     </a>
                     <a
                       href="#"
-                      class="delete"
+                      className="delete"
                       title="Delete"
                       data-toggle="tooltip"
                       style={{ color: "red" }}
@@ -320,7 +350,7 @@ const UserManagement = () => {
                   <td>
                     <a
                       href="#"
-                      class="view"
+                      className="view"
                       title="View"
                       data-toggle="tooltip"
                       style={{ color: "#10ab80" }}
@@ -332,7 +362,12 @@ const UserManagement = () => {
                         type="button"
                       />
                     </a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip">
+                    <a
+                      href="#"
+                      className="edit"
+                      title="Edit"
+                      data-toggle="tooltip"
+                    >
                       <FontAwesomeIcon
                         icon={faPenToSquare}
                         className="btn ms-2"
@@ -342,7 +377,7 @@ const UserManagement = () => {
                     </a>
                     <a
                       href="#"
-                      class="delete"
+                      className="delete"
                       title="Delete"
                       data-toggle="tooltip"
                       style={{ color: "red" }}
@@ -365,7 +400,7 @@ const UserManagement = () => {
                   <td>
                     <a
                       href="#"
-                      class="view"
+                      className="view"
                       title="View"
                       data-toggle="tooltip"
                       style={{ color: "#10ab80" }}
@@ -377,7 +412,12 @@ const UserManagement = () => {
                         type="button"
                       />
                     </a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip">
+                    <a
+                      href="#"
+                      className="edit"
+                      title="Edit"
+                      data-toggle="tooltip"
+                    >
                       <FontAwesomeIcon
                         icon={faPenToSquare}
                         className="btn ms-2"
@@ -387,7 +427,7 @@ const UserManagement = () => {
                     </a>
                     <a
                       href="#"
-                      class="delete"
+                      className="delete"
                       title="Delete"
                       data-toggle="tooltip"
                       style={{ color: "red" }}
@@ -410,7 +450,7 @@ const UserManagement = () => {
                   <td>
                     <a
                       href="#"
-                      class="view"
+                      className="view"
                       title="View"
                       data-toggle="tooltip"
                       style={{ color: "#10ab80" }}
@@ -422,7 +462,12 @@ const UserManagement = () => {
                         type="button"
                       />
                     </a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip">
+                    <a
+                      href="#"
+                      className="edit"
+                      title="Edit"
+                      data-toggle="tooltip"
+                    >
                       <FontAwesomeIcon
                         icon={faPenToSquare}
                         className="btn ms-2"
@@ -432,7 +477,7 @@ const UserManagement = () => {
                     </a>
                     <a
                       href="#"
-                      class="delete"
+                      className="delete"
                       title="Delete"
                       data-toggle="tooltip"
                       style={{ color: "red" }}
@@ -465,39 +510,39 @@ const UserManagement = () => {
           </Modal.Header>
           <Modal.Body>
             <form>
-              <div class="form-group">
+              <div className="form-group">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="name"
                   placeholder="Enter Name"
                 />
               </div>
-              <div class="form-group mt-3">
+              <div className="form-group mt-3">
                 <input
                   type="email"
-                  class="form-control"
+                  className="form-control"
                   id="email"
                   placeholder="Enter Email"
                 />
               </div>
-              <div class="form-group mt-3">
+              <div className="form-group mt-3">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="role"
                   placeholder="Enter Role"
                 />
               </div>
-              <div class="form-group mt-3">
+              <div className="form-group mt-3">
                 <input
                   type="number"
-                  class="form-control"
+                  className="form-control"
                   id="money"
                   placeholder="Enter Money"
                 />
               </div>
-              <button type="submit" class="btn btn-success mt-1 ">
+              <button type="submit" className="btn btn-success mt-1 ">
                 Add New User
               </button>
             </form>

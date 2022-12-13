@@ -156,7 +156,7 @@ const NavBar = () => {
         <Nav>
           <Nav.Item>
             <input
-              class="me-2"
+              className="me-2"
               type="text"
               placeholder="Search"
               aria-label="Search"
@@ -166,13 +166,13 @@ const NavBar = () => {
           </Nav.Item>
           <Nav.Item>
             <ul
-              class="list-group"
+              className="list-group"
               id="list-group"
               style={{ display: "none", zIndex: 1 }}
             >
               {searchResults &&
                 searchResults.map((s) => (
-                  <li class="list-group-item">{s.name}</li>
+                  <li className="list-group-item">{s.name}</li>
                 ))}
             </ul>
           </Nav.Item>
