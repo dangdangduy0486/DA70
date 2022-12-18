@@ -31,6 +31,7 @@ const Casourel = () => {
     <View style={styles.container}>
       <View style={styles.wrap}>
         <ScrollView
+          scrollEventThrottle={16}
           onScroll={({ nativeEvent }) => onchange(nativeEvent)}
           showsHorizontalScrollIndicator={false}
           pagingEnabled
