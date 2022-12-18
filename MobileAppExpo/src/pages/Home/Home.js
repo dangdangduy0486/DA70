@@ -89,7 +89,7 @@ const Home = () => {
   }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
-      <ScrollView>
+      <ScrollView scrollEventThrottle={16}>
         <View
           style={{
             flex: 1,

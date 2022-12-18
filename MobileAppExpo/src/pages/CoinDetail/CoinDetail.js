@@ -21,6 +21,7 @@ const CoinDetail = (navigation) => {
   const [isLoading, setIsLoading] = useState();
   const [isError, setIsError] = useState(false);
   const [coinInfo, setCoinInfo] = useState([]);
+  const [bao, setBao] = useState([]);
   const route = useRoute();
   const { id } = route.params;
   useEffect(() => {
@@ -39,7 +40,7 @@ const CoinDetail = (navigation) => {
         setIsError(true);
       });
   }, [id]);
-
+  // console.log(coinInfo);
   if (!coinInfo || isError || isLoading) return <Loading />;
   function trading() {
     return (
