@@ -8,29 +8,14 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import * as Yup from "yup";
-import ErrorMessage from "../../components/Error/Error";
 import React, { useState } from "react";
 import { Formik } from "formik";
-import { COLORS } from "../../color/Color";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-const Login = ({ navigation }) => {
+import { COLORS } from "../../color/Color";
+const Forgot = ({ navigation }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [rightIcon, setRightIcon] = useState("eye");
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .required("Required")
-      .matches(
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Please enter your email"
-      ),
-    password: Yup.string()
-      .required("Required")
-      .matches(
-        /^[A-Za-z]\w{7,14}$/,
-        "Input Password and Submit [7 to 15 characters which contain only characters, numeric digits, underscore and first character must be a letter "
-      ),
-  });
+
   const handlePasswordVisibility = () => {
     if (rightIcon === "eye") {
       setRightIcon("eye-off");
@@ -46,20 +31,17 @@ const Login = ({ navigation }) => {
         <Text style={{ color: "white", fontSize: 20, paddingBottom: 10 }}>
           Welcome to DBcryto!
         </Text>
-        <Text style={styles.text_header}>Login</Text>
+        <Text style={styles.text_header}>Forgot password</Text>
       </View>
       <View style={styles.main}>
         <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={validationSchema}
+          initialValues={{ email: "" }}
           onSubmit={(values) => {
-            setTimeout(() => {
-              navigation.navigate("Home");
-            }, 3000);
             console.log(values);
+            navigation.navigate("reset");
           }}
         >
-          {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
             <View>
               <Text style={styles.form_label_text}>Email</Text>
               <View style={styles.form_group}>
@@ -72,23 +54,6 @@ const Login = ({ navigation }) => {
                   style={styles.form_input}
                 />
               </View>
-              <ErrorMessage errorValue={errors.email} />
-              <Text style={styles.form_label_text}>Password</Text>
-              <View style={styles.form_group}>
-                <MaterialCommunityIcons name="key" size={30} />
-                <TextInput
-                  placeholder="Enter your password"
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  style={styles.form_input}
-                  secureTextEntry={passwordVisibility}
-                />
-                <Pressable onPress={handlePasswordVisibility}>
-                  <MaterialCommunityIcons name={rightIcon} size={30} />
-                </Pressable>
-              </View>
-              <ErrorMessage errorValue={errors.password} />
               <View style={styles.button}>
                 <TouchableOpacity
                   style={{
@@ -100,23 +65,7 @@ const Login = ({ navigation }) => {
                   }}
                   onPress={handleSubmit}
                 >
-                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                    Login
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ marginTop: 10, flexDirection: "row" }}>
-                <Text>Already have an account?</Text>
-                <TouchableOpacity
-                  style={{ marginLeft: 5 }}
-                  onPress={() => navigation.navigate("Signup")}
-                >
-                  <Text style={{ fontWeight: "bold" }}>Signup</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ marginTop: 10, flexDirection: "row" }}>
-                <TouchableOpacity onPress={() => navigation.navigate("Forgot")}>
-                  <Text style={{ fontWeight: "bold" }}>Forgot password?</Text>
+                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>Send</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -126,6 +75,9 @@ const Login = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+export default Forgot;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -177,4 +129,3 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
-export default Login;

@@ -6,6 +6,8 @@ import Market from "../../pages/Market/Market";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Signup from "../../pages/Signup/Signup";
 import CoinDetail from "../../pages/CoinDetail/CoinDetail";
+import Forgot from "../../pages/Forgot/Forgot";
+import Newpassword from "../../pages/Newpassword/Newpassword";
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
   return (
@@ -29,6 +31,16 @@ const StackNavigation = () => {
         options={{ headerShown: false }}
         name="Market"
         component={Market}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="reset"
+        component={Newpassword}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Forgot"
+        component={Forgot}
       />
       <Stack.Screen
         options={{ headerShown: false }}
