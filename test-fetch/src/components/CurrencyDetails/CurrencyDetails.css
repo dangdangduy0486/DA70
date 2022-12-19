@@ -9,12 +9,34 @@
   max-width: 100%;
   margin-top: 5px;
 }
+
 .currency_item {
   margin-right: 2px;
   padding: inherit;
   border-radius: 2px;
 }
+
 .currency_item:hover {
   background-color: white;
   color: black;
+}
+
+#dropdown-currencies {
+  columns: 4;
+  -webkit-columns: 4;
+  -moz-columns: 4;
+}
+
+.dropdown-currencies-items {
+  display: block;
+  clear: both;
+  font-weight: 400;
+  white-space: nowrap;
+  padding: 0px 20px;
+  cursor: pointer;
+}
+
+.dropdown-currencies-items:hover {
+  text-decoration: underline;
+  color: #007bff;
 }

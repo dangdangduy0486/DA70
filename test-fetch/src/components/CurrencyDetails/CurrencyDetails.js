@@ -1,105 +1,41 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import "./CurrencyDetails.css";
 import { useGetCurrenciesQuery } from "../../features/coins/coinsApiSlice";
 
 const CurrencyDetails = (props) => {
-  const [currencies, setCurrencies] = useState(null);
-  const [selectedCurrency, setSelectedCurrency] = useState(null);
+  const [selected, setSelected] = useState("usd");
 
   const handleSelectCurrency = (value) => {
     props.currencyFr(value.symbol);
-    setSelectedCurrency(value.symbol);
+    setSelected(value.symbol);
   };
-
-  // const url = "/api/currency";
-  // const token = localStorage.getItem("token");
-  // const opts = {
-  //   headers: {
-  //     Authorization: token ? `Bearer ${token}` : "",
-  //   },
-  // };
-  // useEffect(() => {
-  //   axios
-  //     .get(url, opts)
-  //     .then((response) => {
-  //       setCurrencies(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
   const { data, error, isLoading } = useGetCurrenciesQuery();
   if (!data || error || isLoading) return null;
   return (
     <>
-      <div id="currencyDetails">
-        {data &&
-          data.map((currency) => (
-            <div
-              className="currency_item"
-              onClick={() => handleSelectCurrency(currency)}
-              style={{ cursor: "pointer" }}
-              key={currency._id}
-            >
-              {currency.symbol.toUpperCase()}
-            </div>
-          ))}
+      <div className="dropdown">
+        <button
+          className="border border-white rounded-pill"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          style={{ height: "30px", width: "150px" }}
+        >
+          {selected.toUpperCase()}
+        </button>
+        <ul className="dropdown-menu" id="dropdown-currencies">
+          {data &&
+            data.map((currency) => (
+              <li className="dropdown-currencies-items">
+                <p
+                  onClick={() => handleSelectCurrency(currency)}
+                  key={currency._id}
+                >
+                  {currency.symbol.toUpperCase()}
+                </p>
+              </li>
+            ))}
+        </ul>
       </div>
-      {/* <button
-        type="button"
-        className="btn btn-outline-secondary"
-        data-bs-toggle="modal"
-        data-bs-target="#currencyModalLabel"
-      >
-        {selectedCurrency.toUpperCase()}
-      </button>
-      <div
-        className="modal fade currency-list-modal"
-        id="currencyModalLabel"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content currency-modal-content">
-            <div className="modal-header currency-modal-header">
-              <input
-                placeholder="Enter money unit, example: usd, eur, btc"
-                className="form-control"
-              />
-              <button
-                type="button"
-                className="btn-close close-currenncy-modal"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body currency-list">
-              {currencies &&
-                currencies.map((currency) => (
-                  <p
-                    className="currency_item"
-                    onClick={() => handleSelectCurrency(currency)}
-                    style={{ cursor: "pointer" }}
-                    data-bs-dismiss="modal"
-                  >
-                    {currency.symbol.toUpperCase()}
-                  </p>
-                ))}
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };

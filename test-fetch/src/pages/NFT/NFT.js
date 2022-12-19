@@ -6,7 +6,6 @@ const NFT = ({ id, index }) => {
   useEffect(() => {
     axios
       .get(`https://api.coingecko.com/api/v3/nfts/${id}`)
-      // .get(`https://api.coingecko.com/api/v3/nfts/cryptocoven`)
       .then((response) => {
         setNftInfo(response.data);
       })
@@ -14,35 +13,47 @@ const NFT = ({ id, index }) => {
         console.log(error);
       });
   }, [id]);
-  console.log(nftInfo);
+  if (!nftInfo) return null;
   return (
+    // <></>
     <tr>
       <td className="text-muted">{index}</td>
       <td>
         <img
-          src={nftInfo.image}
+          src={nftInfo.image.small}
           alt=""
           className="img-fluid me-4"
           style={{ width: "3%" }}
         />
         <span>{nftInfo.name}</span>
-        <span className="ms-3 text-muted">{nftInfo.symbol}</span>
       </td>
 
       <td>
-        <p>{nftInfo.floor_price}</p>
+        <p>{nftInfo.floor_price.native_currency}</p>
       </td>
 
-      <td className={nftInfo.volume_24h > 0 ? "text-success" : "text-danger"}>
-        {nftInfo.volume_24h}
+      <td
+        className={
+          nftInfo.floor_price_in_usd_24h_percentage_change > 0
+            ? "text-success"
+            : "text-danger"
+        }
+      >
+        {/* {nftInfo.floor_price_in_usd_24h_percentage_change.toLocaleString()} */}
+        {nftInfo.floor_price_in_usd_24h_percentage_change.toFixed(2)}%
       </td>
-
-      <td>
-        {nftInfo.floor_price_in_usd_24h_percentage_change.toLocaleString()}
-        {nftInfo.floor_price_in_usd_24h_percentage_change}
-      </td>
+      <td>{nftInfo.market_cap.native_currency}</td>
+      <td>{nftInfo.volume_24h.native_currency}</td>
       <td>{nftInfo.number_of_unique_addresses}</td>
-      <td>{nftInfo.number_of_unique_addresses_24h_percentage_change}</td>
+      <td
+        className={
+          nftInfo.number_of_unique_addresses_24h_percentage_change > 0
+            ? "text-success"
+            : "text-danger"
+        }
+      >
+        {nftInfo.number_of_unique_addresses_24h_percentage_change.toFixed(2)}%
+      </td>
     </tr>
   );
 };

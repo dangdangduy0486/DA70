@@ -18,7 +18,7 @@ const UserInfor = () => {
   console.log(data);
   return (
     <>
-      <NavBar />
+      <NavBar page="userInfo" />
       <section className="page_userinfo ">
         {role === "admin" ? (
           <>
@@ -60,6 +60,16 @@ const UserInfor = () => {
                         placeholder="Enter your address"
                         name="address"
                         id="address"
+                      />
+                    </div>
+                    <div className="user-form">
+                      <p className="m-1">Phone</p>
+                      <input
+                        className="w-100"
+                        type="text"
+                        placeholder="Enter Phone"
+                        name="phone"
+                        id="phone"
                       />
                     </div>
                     <button className="form-submit btn btn-outline-dark mt-2">

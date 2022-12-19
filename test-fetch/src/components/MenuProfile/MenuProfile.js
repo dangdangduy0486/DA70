@@ -7,35 +7,19 @@ import info from "../../images/infor.svg";
 import UserInfor from "../../pages/UserInfo/UserInfor";
 import { useGetUserQuery } from "../../features/user/userApiSlice";
 import Loading from "../../pages/Loading/Loading";
+import { useSendLogoutMutation } from "../../features/auth/authApiSlice";
 
 const MenuProfile = ({ email }) => {
   function handleMenu() {
     let menuHand = document.querySelector(".sub-menu-wrap");
     menuHand.classList.toggle("open-menu");
   }
-  // const url = `api/user/user-info/${email}`;
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   // console.log(token);
-  //   const opts = {
-  //     headers: {
-  //       Authorization: token ? `Bearer ${token}` : "",
-  //     },
-  //   };
-  //   axios
-  //     .get(url, opts)
-  //     .then((response) => {
-  //       setUserInfo(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, [url]);
-  // if (!userInfo) return null;
 
-  // const { email, isAdmin, role } = useAuth();
   const { data, isLoading, isError } = useGetUserQuery(email);
+  const [sendLogout] = useSendLogoutMutation();
+
   if (!data || isLoading || isError) return <Loading />;
+
   return (
     <>
       <img className="img_user" src={profile} alt="" onClick={handleMenu}></img>
@@ -62,6 +46,11 @@ const MenuProfile = ({ email }) => {
             <img src={info} alt="" />
             <p>Wallet</p>
             <span></span>
+          </Link>
+          <Link style={{ textDecoration: "none" }} to="/">
+            <p className="text-danger" onClick={sendLogout}>
+              Logout
+            </p>
           </Link>
         </div>
       </div>

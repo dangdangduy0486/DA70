@@ -19,6 +19,7 @@
   justify-items: end;
   margin: 0 0.1rem;
   padding-left: 0;
+  border: none;
 }
 
 #pagination button i,
@@ -26,3 +27,4 @@
   width: 40px;
   height: auto;
 }
+

@@ -40,7 +40,7 @@ const Exchanges = () => {
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Exchanges</th>
+            <th scope="col">Exchange</th>
             <th scope="col">Trust Score</th>
             <th scope="col">24h Volume (Normalized)</th>
             <th scope="col">24h Volume</th>

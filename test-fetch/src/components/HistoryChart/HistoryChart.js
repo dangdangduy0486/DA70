@@ -53,7 +53,6 @@ const HistoryChart = (coinID) => {
     coinID: coinID.coinID,
     days: days,
   });
-  console.log(data);
   if (!data || error || isLoading) return <Loading />;
 
   const handleChangeDays = (e) => {
@@ -93,11 +92,11 @@ const HistoryChart = (coinID) => {
           className="btn-check"
           name="7days"
           id="7days"
-          autocomplete="off"
+          autoComplete="off"
           onClick={handleChangeDays}
           value={7}
         />
-        <label className="btn btn-outline-primary" for="7days">
+        <label className="btn btn-outline-primary" htmlFor="7days">
           7d
         </label>
 
@@ -106,11 +105,11 @@ const HistoryChart = (coinID) => {
           className="btn-check"
           name="14days"
           id="14days"
-          autocomplete="off"
+          autoComplete="off"
           onClick={handleChangeDays}
           value={14}
         />
-        <label className="btn btn-outline-primary" for="14days">
+        <label className="btn btn-outline-primary" htmlFor="14days">
           14d
         </label>
 
@@ -119,11 +118,11 @@ const HistoryChart = (coinID) => {
           className="btn-check"
           name="30days"
           id="30days"
-          autocomplete="off"
+          autoComplete="off"
           onClick={handleChangeDays}
           value={30}
         />
-        <label className="btn btn-outline-primary" for="30days">
+        <label className="btn btn-outline-primary" htmlFor="30days">
           30d
         </label>
 
@@ -132,11 +131,11 @@ const HistoryChart = (coinID) => {
           className="btn-check"
           name="90days"
           id="90days"
-          autocomplete="off"
+          autoComplete="off"
           onClick={handleChangeDays}
           value={90}
         />
-        <label className="btn btn-outline-primary" for="90days">
+        <label className="btn btn-outline-primary" htmlFor="90days">
           90d
         </label>
 
@@ -145,11 +144,11 @@ const HistoryChart = (coinID) => {
           className="btn-check"
           name="180days"
           id="180days"
-          autocomplete="off"
+          autoComplete="off"
           onClick={handleChangeDays}
           value={180}
         />
-        <label className="btn btn-outline-primary" for="180days">
+        <label className="btn btn-outline-primary" htmlFor="180days">
           180d
         </label>
 
@@ -158,11 +157,11 @@ const HistoryChart = (coinID) => {
           className="btn-check"
           name="maxdays"
           id="maxdays"
-          autocomplete="off"
+          autoComplete="off"
           onClick={handleChangeDays}
           value={"max"}
         />
-        <label className="btn btn-outline-primary" for="maxdays">
+        <label className="btn btn-outline-primary" htmlFor="maxdays">
           max
         </label>
       </div>

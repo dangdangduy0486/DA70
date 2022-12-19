@@ -22,9 +22,10 @@ import Request from "./pages/Request/Request";
 import Exchanges from "./pages/Exchanges/Exchanges";
 import NFT from "./pages/NFT/NFT";
 import NFTList from "./pages/NFT/NFTList";
+import Derivatives from "./pages/Exchanges/Derivatives";
+import Test from "./Test";
 
 function App() {
-  // const user = localStorage.getItem("token");
   return (
     <div className="App">
       <BrowserRouter>
@@ -46,7 +47,9 @@ function App() {
             <Route path="/forgot" element={<Forgot />} />
             <Route path="/markets" element={<Markets />} />
             <Route path="/" element={<Home />} />
-            {/* <Route path="/layout" element={<Layout />} /> */}
+
+            <Route path="/test" element={<Test />} />
+
             <Route path="/coins/:coinID" element={<CoinInfo />} />
             <Route
               path="/api/auth/verify/:id/:token"
@@ -58,7 +61,7 @@ function App() {
             <Route path="/usermanage" element={<UserManagement />} />
             <Route path="/request" element={<Request />} />
             <Route path="/exchanges" element={<Exchanges />} />
-            <Route path="/exchanges/derivatives" element={<Exchanges />} />
+            <Route path="/exchanges/derivatives" element={<Derivatives />} />
             <Route path="/nft" element={<NFTList />} />
           </Routes>
         </div>

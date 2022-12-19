@@ -1,9 +1,11 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRightToBracket,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
+import { Tabs } from "antd";
 
 import MarketsDetails from "../../components/MarketDetails/MarketsDetails";
 import NavBar from "../../components/NavBar/NavBar";
@@ -15,25 +17,26 @@ import CarouselCoins from "../../components/CarouselCoins/CarouselCoins ";
 import Footer from "../../components/Footer/Footer";
 import { useGetMarketsQuery } from "../../features/markets/marketsApiSlice";
 import { useRef } from "react";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import Categories from "../../components/Cryptocurrencies/Categories";
+import Search from "../../components/Others/Search/Search";
 
 const Markets = () => {
   const [vsCurrency, setVsCurrency] = useState("usd");
-  const [ order, setOrder ] = useState("market_cap_desc")
+  const [order, setOrder] = useState("market_cap_desc");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(12969);
   const [perPage, setPerPage] = useState(100);
+  const [category, setCategory] = useState("all");
 
   const callback = (childData) => {
     setVsCurrency((vsCurrency) => (vsCurrency = childData));
   };
 
-  // const handlePreviousPage = () => {
-  //   setPage((page) => page - 1);
-  // };
-  // const handleNextPage = () => {
-  //   setPage((page) => page + 1);
-  // };
-  // const url = "/api/markets";
+  const categoryCallback = (childData) => {
+    setCategory((category) => (category = childData));
+  };
+
   // const token = localStorage.getItem("token");
   // const opts = {
   //   headers: {
@@ -61,6 +64,7 @@ const Markets = () => {
   // }, [vsCurrency, currentPage]);
   const { data, error, isLoading } = useGetMarketsQuery({
     vs_currency: vsCurrency,
+    category: category,
     order: order,
     perPage: perPage,
     page: page,
@@ -80,6 +84,22 @@ const Markets = () => {
 
   //pagination
   const TotalNumber = Math.ceil(totalPages / perPage);
+
+  const first = () => {
+    if (page === 1) {
+      return null;
+    } else {
+      setPage(1);
+    }
+  };
+
+  const last = () => {
+    if (page === 1) {
+      return null;
+    } else {
+      setPage(TotalNumber);
+    }
+  };
 
   const next = () => {
     if (page === TotalNumber) {
@@ -117,32 +137,50 @@ const Markets = () => {
 
   return (
     <>
-      <NavBar />
-      <section className="markets">
+      <NavBar page={"markets"} />
+      <Sidebar page={"markets"} />
+      <div className="markets container-fluid">
         <CarouselCoins />
-        <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} />
-        <MarketsDetails markets={data} symbol={vsCurrency} />
-        <hr />
-        {/* <div className="pagination d-flex justify-content-center">
-          <button
-            type="button"
-            className="btn btn-info"
-            onClick={() => handlePreviousPage()}
-          >
-            <i className="fa-solid fa-angles-left"></i>Pre
-          </button>
-          <button type="button" className="btn btn-outline-secondary">
-            {page}
-          </button>
-          <button
-            type="button"
-            className="btn btn-info"
-            onClick={() => handleNextPage()}
-          >
-            <i className="fa-solid fa-angles-right"></i>Next
-          </button>
-        </div> */}
+        <div className="container mt-3" style={{ height: "100hv" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} />
+            <Search />
+          </div>
+          <Tabs defaultActiveKey="2" className="mt-3">
+            <Tabs.TabPane
+              tab={
+                <span>
+                  <FontAwesomeIcon icon={faStar} className="me-2" />
+                  <span>Portfolio</span>
+                </span>
+              }
+              key="1"
+            ></Tabs.TabPane>
+            <Tabs.TabPane tab="Coins" key="2">
+              <MarketsDetails
+                markets={data}
+                symbol={vsCurrency}
+                categoryFr={categoryCallback}
+              />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Gainers & Losers" key="3">
+              <h2>Top Crypto Gainers and Losers</h2>
+              <p className="text-muted">
+                Discover the largest gainers and losers across all major
+                cryptocurrencies listed on CoinGecko, based on price movements
+                in the last 24 hours.
+              </p>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Categories" key="4">
+              <Categories />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Metaverse" key="5">
+              <Categories />
+            </Tabs.TabPane>
+          </Tabs>
+        </div>
 
+        <hr />
         <div className="flex items-center" id="pagination">
           <form
             className="relative flex items-center font-nunito
@@ -177,11 +215,22 @@ const Markets = () => {
           <ul className="flex items-center justify-end text-sm">
             <li className="flex items-center">
               <button
+                disabled={page === 1 ? "disabled" : ""}
+                className="outline-0 hover:text-cyan w-8 "
+                onClick={first}
+                type="button"
+              >
+                <i className="fa-solid fa-angles-left"></i>
+              </button>
+            </li>
+            <li className="flex items-center">
+              <button
+                disabled={page === 1 ? "disabled" : ""}
                 className="outline-0 hover:text-cyan w-8"
                 onClick={prev}
                 type="button"
               >
-                <i className="fa-solid fa-angles-left"></i>
+                <i className="fa-solid fa-angle-left"></i>
               </button>
             </li>
 
@@ -189,7 +238,7 @@ const Markets = () => {
               <li>
                 <button
                   onClick={multiStepPrev}
-                  className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center text-lg    "
+                  className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center text-lg"
                 >
                   ...
                 </button>
@@ -249,8 +298,19 @@ const Markets = () => {
             ) : null}
             <li>
               <button
+                disabled={page === TotalNumber ? "disabled" : ""}
                 className="outline-0 hover:text-cyan w-8"
                 onClick={next}
+                type="button"
+              >
+                <i className="fa-solid fa-angle-right"></i>
+              </button>
+            </li>
+            <li>
+              <button
+                disabled={page === TotalNumber ? "disabled" : ""}
+                className="outline-0 hover:text-cyan w-8"
+                onClick={last}
                 type="button"
               >
                 <i className="fa-solid fa-angles-right"></i>
@@ -259,7 +319,7 @@ const Markets = () => {
           </ul>
         </div>
         <FloatButton.BackTop />
-      </section>
+      </div>
       <Footer />
     </>
   );

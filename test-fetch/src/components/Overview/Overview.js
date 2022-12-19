@@ -117,7 +117,7 @@ const Overview = () => {
                   <tr>
                     <th>Currency</th>
                     <th>Amount</th>
-                  </tr>{" "}
+                  </tr>
                   {array.map((w) => (
                     <tr>
                       <td>{w.currencyID.toUpperCase()}</td>
