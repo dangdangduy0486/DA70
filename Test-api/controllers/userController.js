@@ -11,9 +11,9 @@ const Order = require("../models/order");
 const Wallet = require("../models/wallet");
 const Request = require("../models/request");
 
-const generateMD5 = () => {
-  const expire = Math.ceil(Date.now() / 1000) + 25200;
-  const hash = CryptoJS.MD5(expire + ` cntt@da&)dUybAo`);
+const generateMD5 = (input) => {
+  const expire = 252001080;
+  const hash = CryptoJS.MD5(expire + ` cntt@da&)dUybAo` + input);
   const base64 = hash
     .toString(CryptoJS.enc.Base64)
     .replace(/=/g, "")
@@ -161,10 +161,162 @@ const editUserInfo = async (req, res) => {
   }
 };
 
+//create request
+const request = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+
+    if (!user) {
+      return res.status(400).send({
+        message: "Invalid link",
+      });
+    }
+
+    // const {
+    //   requestType,
+    //   type,
+    //   firstUnit,
+    //   secondUnit,
+    //   amount,
+    //   total,
+    //   senderAddress,
+    //   recieverAddress,
+    // } = req.body;
+
+    // if (!req.body) {
+    //   return res.status(401).send({
+    //     message: "missing something",
+    //   });
+    // }
+    if (!req.body === null) {
+      return res.status(401).send({
+        message: "missing something",
+      });
+    }
+    console.log(req.body);
+    console.log("hello 1");
+
+    if (req.params.type === "spot") {
+      const existWallet = await Wallet.findOne({
+        userID: user._id,
+        currencyID: req.body.secondUnit,
+        type: "fiat",
+      });
+      console.log(existWallet);
+
+      if (!existWallet) {
+        return res.status(401).send({
+          message: "Please..",
+        });
+      }
+      console.log("hello 2");
+      let total = parseFloat(existWallet.amount) - parseFloat(req.body.total);
+      if (total > 0) {
+        const request = await Request.create({
+          userID: user._id,
+          requestType: req.params.type,
+          type: req.body.type ? req.body.type : null,
+          firstUnit: req.body.firstUnit ? req.body.firstUnit : null,
+          secondUnit: req.body.secondUnit ? req.body.secondUnit : null,
+          amount: req.body.amount ? req.body.amount : null,
+          total: req.body.total ? req.body.total : null,
+          senderAddress: req.body.senderAddress
+            ? generateMD5(req.body.senderAddress)
+            : null,
+          recieverAddress: req.body.recieverAddress
+            ? generateMD5(req.body.recieverAddress)
+            : null,
+        });
+
+        const wallet = await Wallet.findOneAndUpdate(
+          {
+            userID: user._id,
+            currencyID: req.body.secondUnit,
+            type: "fiat",
+          },
+          { amount: total }
+        );
+        console.log("hello 3");
+        return res.status(200).send({
+          request,
+          wallet,
+        });
+      }
+      return res.status(401).send({
+        message: "Please",
+      });
+    }
+    console.log("hello 4");
+    const request = await Request.create({
+      userID: user._id,
+      requestType: req.params.type,
+      type: req.body.type ? req.body.type : null,
+      firstUnit: req.body.firstUnit ? req.body.firstUnit : null,
+      secondUnit: req.body.secondUnit ? req.body.secondUnit : null,
+      amount: req.body.amount ? req.body.amount : null,
+      total: req.body.total ? req.body.total : null,
+      senderAddress: req.body.senderAddress
+        ? generateMD5(req.body.senderAddress)
+        : null,
+      recieverAddress: req.body.recieverAddress
+        ? generateMD5(req.body.recieverAddress)
+        : null,
+    });
+
+    return res.status(200).send({
+      request,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+const requestInfo = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (!user) {
+      return res.status(400).send({
+        message: "Invalid link",
+      });
+    }
+
+    if (user.role === "admin") {
+      const request = await Request.find({
+        requestType: req.params.type,
+      });
+
+      return res.status(200).send({
+        request,
+      });
+    }
+
+    const request = await Request.find({
+      userID: user._id,
+      requestType: req.params.type,
+    });
+
+    return res.status(200).send({
+      request,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: "Internal Server Error",
+    });
+  }
+};
+
 module.exports = {
   forgotPassword,
   resetPasswordRequest,
   resetPassword,
   getUserInfo,
   editUserInfo,
+  request,
+  requestInfo,
 };

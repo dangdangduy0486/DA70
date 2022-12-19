@@ -3,11 +3,7 @@ const {
   allUsers,
   editUser,
   deleteUser,
-  getAllOrders,
-  responseOrders,
-  // editOrder,
-  // deleteOrder,
-  responseWallet,
+  response,
 } = require("../controllers/adminController");
 
 const router = express.Router();
@@ -21,19 +17,7 @@ router.patch("/edit-user/:email", editUser);
 //delete user
 router.delete("/delete-user/:email", deleteUser);
 
-//get all orders request
-router.get("/all-order/:email", getAllOrders);
-
-//response order
-router.patch("/response-order/:email", responseOrders);
-
-//edit order
-// router.patch("/update-order/:id", editOrder);
-
-//delete order
-// router.patch("/delete-order/:id", deleteOrder);
-
 //response request recharge
-router.patch("/response-wallet/:email", responseWallet);
+router.patch("/response/:email", response);
 
 module.exports = router;

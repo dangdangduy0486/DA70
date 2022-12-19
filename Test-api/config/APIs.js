@@ -1,4 +1,7 @@
-const MARKET_URL = (vs_currency, order, perPage, page) =>
+const MARKET_URL = (vs_currency, category, order, perPage, page) =>
+  `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${vs_currency}&category=${category}&order=${order}&per_page=${perPage}&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`;
+
+const MARKET_URL_ALL = (vs_currency, order, perPage, page) =>
   `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${vs_currency}&order=${order}&per_page=${perPage}&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`;
 
 const TRENDING_COIN_URL = () =>
@@ -14,6 +17,7 @@ const HISTORY_CHART = (coinID, days) =>
   `https://api.coingecko.com/api/v3/coins/${coinID}/market_chart?vs_currency=usd&days=${days}`;
 
 module.exports = {
+  MARKET_URL_ALL,
   MARKET_URL,
   TRENDING_COIN_URL,
   COIN_INFO_URL,

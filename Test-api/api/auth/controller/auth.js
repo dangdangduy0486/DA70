@@ -8,9 +8,9 @@ const User = require("../models/User");
 const Token = require("../models/token");
 const Order = require("../models/order");
 
-const generateMD5 = (input) => {
+const generateMD5 = () => {
   const expire = Math.ceil(Date.now() / 1000) + 25200;
-  const hash = CryptoJS.MD5(expire + ` cntt@da&)dUybAo` + input);
+  const hash = CryptoJS.MD5(expire + ` cntt@da&)dUybAo`);
   const base64 = hash
     .toString(CryptoJS.enc.Base64)
     .replace(/=/g, "")
@@ -27,22 +27,26 @@ const signup = async (req, res) => {
       return res
         .status(409)
         .send({ message: "User with given email already Exist!" });
+
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.password, salt);
+
     user = await User.create({ ...req.body, password: hashPassword });
-    const token = await Token.create({
+
+    await Token.create({
       userID: user._id,
-      token: generateMD5(user._id),
+      token: token,
     });
 
     const url = `${process.env.BASE_URL}api/auth/verify/${user.id}/${token.token}`;
     await sendEmail(user.email, "Verify Email", url);
+
     res.status(201).send({
       message: "An Email sent to your account please verify",
     });
   } catch (error) {
     res.status(500).send({
-      message: "Internal Server Error4",
+      message: "Internal Server Error",
       error: error,
     });
   }
@@ -76,7 +80,7 @@ const verifyEmail = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send({
-      message: "Internal Server Error3",
+      message: "Internal Server Error",
     });
   }
 };

@@ -5,6 +5,7 @@ const User = require("../models/User");
 const Order = require("../models/order");
 const Wallet = require("../models/wallet");
 const Request = require("../models/request");
+const Currency = require("../models/currency");
 
 //get all users
 const allUsers = async (req, res) => {
@@ -120,110 +121,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-//get all order request
-const getAllOrders = async (req, res) => {
-  try {
-    const user = await User.findOne({
-      // _id: req.params.id,
-      email: req.parmas.email,
-    });
-
-    if (!user) {
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-    }
-
-    if (user.role !== "admin") {
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-    }
-
-    orders = await Order.find({});
-
-    return res.status(200).send({ orders });
-  } catch (error) {
-    res.status(500).send({
-      message: "Internal Server Error",
-      error,
-    });
-  }
-};
-
-//response orders
-const responseOrders = async (req, res) => {
-  try {
-    const user = await User.findOne({
-      // _id: req.params.id,
-      email: req.parmas.email,
-    });
-
-    if (!user) {
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-    }
-
-    if (user.role !== "admin") {
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-    }
-
-    const request = await Request.findOneAndUpdate(
-      {
-        _id: req.body.requestID,
-      },
-      {
-        status: req.body.status,
-      }
-    );
-
-    if (request.status === "approved") {
-      const request = await Request.findOne({
-        _id: req.body.requestID,
-      });
-
-      const order = await Order.create({
-        userID: request.userID,
-        purchaseUnit: request.purchaseUnit,
-        sellUnit: request.sellUnit,
-        price: request.price,
-        amount: request.amount,
-        sender: request.sender,
-        reciever: request.reciever,
-        total: "",
-      });
-
-      let amount = parseFloat(wallet.amount) - parseFloat(req.body.amount);
-
-      await Wallet.findOneAndUpdate(
-        {
-          userID: user.id,
-          currencyID: req.body.purchaseUnit,
-        },
-        {
-          amount: amount,
-        }
-      );
-
-      return res.status(200).send({
-        message: "Recharge success!!",
-        order,
-      });
-    }
-    return res.status(200).send({
-      message: "Request denided!!",
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: "Internal Server Error",
-      error,
-    });
-  }
-};
-
 //edit order
 // const editOrder = async (req, res) => {
 //   try {
@@ -298,11 +195,10 @@ const responseOrders = async (req, res) => {
 // };
 
 //response wallet
-const responseWallet = async (req, res) => {
+const response = async (req, res) => {
   try {
-    let user = await User.findOne({
-      // _id: req.params.id,
-      email: req.parmas.email,
+    const user = await User.findOne({
+      email: req.params.email,
     });
 
     if (!user || user.role !== "admin") {
@@ -310,8 +206,6 @@ const responseWallet = async (req, res) => {
         message: "Invalid link",
       });
     }
-    // console.log(req.body.requestID);
-    // console.log(req.body.status);
 
     if (!req.body.requestID || !req.body.status) {
       return res.status(401).send({
@@ -335,10 +229,9 @@ const responseWallet = async (req, res) => {
     if (request.status === "approved") {
       const existsWallet = await Wallet.findOne({
         userID: request.userID,
-        currencyID: request.purchaseUnit,
-        type: request.walletType,
+        currencyID: request.firstUnit,
+        type: request.type,
       });
-      console.log(existsWallet);
       if (existsWallet) {
         let amount =
           parseFloat(existsWallet.amount) + parseFloat(request.amount);
@@ -349,7 +242,7 @@ const responseWallet = async (req, res) => {
           },
           {
             amount: amount,
-            type: request.walletType,
+            type: request.type,
           }
         );
         return res.status(200).send({
@@ -359,11 +252,19 @@ const responseWallet = async (req, res) => {
       }
 
       if (!existsWallet) {
+        const currency = await Currency.findOne({
+          symbol: currencyID.firstUnit,
+        });
+
+        if (currency.firstUnit === "Suggested Currencies") {
+          type = "Fiat Currencies";
+        }
+
         const wallet = await Wallet.create({
           userID: request.userID,
-          currencyID: request.purchaseUnit,
+          currencyID: request.firstUnit,
           amount: request.amount,
-          type: request.walletType,
+          type: type,
         });
 
         return res.status(200).send({
@@ -378,7 +279,6 @@ const responseWallet = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       message: "Internal Server Error",
-      error,
     });
   }
 };
@@ -387,9 +287,5 @@ module.exports = {
   allUsers,
   editUser,
   deleteUser,
-  getAllOrders,
-  responseOrders,
-  // editOrder,
-  // deleteOrder,
-  responseWallet,
+  response,
 };

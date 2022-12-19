@@ -7,6 +7,8 @@ const {
   resetPassword,
   getUserInfo,
   editUserInfo,
+  request,
+  requestInfo,
 } = require("../controllers/userController");
 
 //forgot password
@@ -23,5 +25,11 @@ router.get("/user-info/:email", getUserInfo);
 
 //update user
 router.patch("/update-user-info/:email", editUserInfo);
+
+//
+router.post("/request/:email/:type", request);
+
+//
+router.get("/request/:email/:type", requestInfo);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Order = require("../models/order");
 const Wallet = require("../models/wallet");
 const Request = require("../models/request");
+const { request } = require("gaxios");
 
 //send request recharge
 const getRequest = async (req, res) => {
@@ -54,6 +55,58 @@ const getRequest = async (req, res) => {
     });
   }
 };
+
+const requestSpot = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.body.email,
+    });
+
+    if (!user) {
+      res.status(400).send({
+        message: "Invalid link",
+      });
+    }
+
+    const {
+      requestType,
+      type,
+      firstUnit,
+      secondUnit,
+      amount,
+      total,
+      senderAddress,
+      recieverAddress,
+    } = req.body;
+
+    if (!req.body) {
+      res.status(401).send({
+        message: "missing something",
+      });
+    }
+
+    const request = await request.create({
+      requestType,
+      type,
+      firstUnit,
+      secondUnit,
+      amount,
+      total,
+      senderAddress,
+      recieverAddress,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+// const requestP2P
+
+// const requestFunding
+
+// const requestFutures
 
 module.exports = {
   getRequest,

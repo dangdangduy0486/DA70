@@ -8,32 +8,34 @@ const RequestSchema = new Schema({
   requestType: {
     type: String,
   },
-  purchaseUnit: {
+  type: {
     type: String,
   },
-  sellUnit: {
+  firstUnit: {
+    type: String,
+  },
+  secondUnit: {
     type: String,
   },
   amount: {
+    type: Number,
+  },
+  total: {
+    type: Number,
+  },
+  senderAddress: {
     type: String,
   },
-  sender: {
-    type: String,
-  },
-  reciever: {
+  recieverAddress: {
     type: String,
   },
   status: {
     type: String,
     default: "pending",
   },
-  walletType: {
-    type: String,
-    default: "",
-  },
-  orderType: {
-    type: String,
-    default: "",
+  isAccepted: {
+    type: Boolean,
+    default: false,
   },
 });
 

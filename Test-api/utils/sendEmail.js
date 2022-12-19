@@ -1,15 +1,7 @@
 require("dotenv").config();
-const { google } = require("googleapis");
 const nodemailer = require("nodemailer");
-const OAuth2 = google.auth.OAuth2;
-
-const OAuth2_client = new OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET);
-OAuth2_client.setCredentials({
-  refresh_token: process.env.REFRESH_TOKEN
-})
 
 module.exports = async (email, subject, text) => {
-  const accessToken = OAuth2_client.getAccessToken();
   try {
     const transporter = nodemailer.createTransport({
       host: process.env.HOST,
@@ -17,25 +9,23 @@ module.exports = async (email, subject, text) => {
       post: Number(process.env.EMAIL_PORT),
       secure: Boolean(process.env.SECURE),
       auth: {
-        type: "OAuth2",
         user: process.env.USER,
         pass: process.env.PASSWORD,
-        // clientId : "113798732064467693505 ",
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        refreshToken: process.env.REFRESH_TOKEN,
-        accessToken: accessToken,
-        expires: 1484314697598,
-        // privateKey: "8ff04bb9ebfb7258fea45c9a1940360edcdfa290"
       },
     });
-    await transporter.sendMail({
+    const mailOptions = {
       from: process.env.USER + "ADMIN",
       to: email,
       subject: subject,
       text: text,
+    };
+    await transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
     });
-    console.log("Email sent Succressfully");
   } catch (error) {
     console.log("Email not sent");
     console.log(error);

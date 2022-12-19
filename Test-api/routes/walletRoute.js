@@ -3,10 +3,10 @@ const router = express.Router();
 
 const {
   getWallet,
-  rechargeRequest,
+  fundingRequest,
 } = require("../controllers/WalletController");
 
-router.post("/request/:email", rechargeRequest);
+router.post("/request/:email", fundingRequest);
 
 router.get("/info/:email", getWallet);
 

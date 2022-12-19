@@ -1,9 +1,20 @@
 const User = require("../models/User");
 const Wallet = require("../models/wallet");
 const Request = require("../models/request");
+const Currency = require("../models/currency");
 
+const generateMD5 = (input) => {
+  const expire = Math.ceil(Date.now() / 1000) + 25200;
+  const hash = CryptoJS.MD5(expire + ` cntt@da&)dUybAo` + input);
+  const base64 = hash
+    .toString(CryptoJS.enc.Base64)
+    .replace(/=/g, "")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
+  return base64;
+};
 //create recharge request
-const rechargeRequest = async (req, res) => {
+const fundingRequest = async (req, res) => {
   try {
     const user = await User.findOne({
       // _id: req.params.id,
@@ -16,7 +27,7 @@ const rechargeRequest = async (req, res) => {
       });
     }
 
-    if (!req.body.purchaseUnit || !req.body.amount || !req.body.sender) {
+    if (!req.body.purchaseUnit || !req.body.amount) {
       return res.status(401).send({
         message: "Missing something",
       });
@@ -24,12 +35,11 @@ const rechargeRequest = async (req, res) => {
 
     const request = await Request.create({
       userID: user.id,
-      requestType: "recharge",
-      purchaseUnit: req.body.purchaseUnit,
-      sellUnit: req.body.sellUnit,
+      requestType: "funding",
+      firstUnit: req.body.firstUnit,
+      secondUnit: req.body.secondUnit,
       amount: req.body.amount,
-      sender: req.body.sender,
-      reciever: user.email,
+      recieverAddress: generateMD5(user.email),
       walletType: req.body.walletType,
     });
 
@@ -83,5 +93,5 @@ const getWallet = async (req, res) => {
 
 module.exports = {
   getWallet,
-  rechargeRequest,
+  fundingRequest,
 };

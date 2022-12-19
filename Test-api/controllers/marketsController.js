@@ -8,9 +8,12 @@ const axiosOptions = {
   },
 };
 
-const getAllMarkets = async (vs_currency, order, perPage, page) => {
+const getMarkets = async (vs_currency, category, order, perPage, page) => {
   const res = await axios
-    .get(config.MARKET_URL(vs_currency, order, perPage, page), axiosOptions)
+    .get(
+      config.MARKET_URL(vs_currency, category, order, perPage, page),
+      axiosOptions
+    )
     .then((response) => {
       return response;
     })
@@ -19,6 +22,18 @@ const getAllMarkets = async (vs_currency, order, perPage, page) => {
     });
   return res.data;
 };
+const getMarketsAll = async (vs_currency, order, perPage, page) => {
+  const res = await axios
+    .get(config.MARKET_URL_ALL(vs_currency, order, perPage, page), axiosOptions)
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return res.data;
+};
+
 const marketsParser = async (req, res) => {
   if (
     (!req.query.vs_currency,
@@ -28,13 +43,25 @@ const marketsParser = async (req, res) => {
   ) {
     return res.status(403).json({ error: "missing something" });
   }
-  const marketsData = await getAllMarkets(
-    req.query.vs_currency,
-    req.query.order,
-    req.query.perPage,
-    req.query.page
-  );
-  return res.status(200).json(marketsData);
+
+  if (req.query.category === "all") {
+    let marketsData = await getMarketsAll(
+      req.query.vs_currency,
+      req.query.order,
+      req.query.perPage,
+      req.query.page
+    );
+    return res.status(200).json(marketsData);
+  } else {
+    let marketsData = await getMarkets(
+      req.query.vs_currency,
+      req.query.category,
+      req.query.order,
+      req.query.perPage,
+      req.query.page
+    );
+    return res.status(200).json(marketsData);
+  }
 };
 module.exports = {
   marketsParser,
