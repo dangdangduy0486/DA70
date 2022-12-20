@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import getCurrencySymbol from "currency-symbols";
 
 const RequestRow = ({ vs_currency, ids }) => {
-  console.log(vs_currency);
-  console.log(ids);
+  // console.log(vs_currency);
+  // console.log(ids);
   const [coinInfo, setCoinInfo] = useState([]);
 
   useEffect(() => {
@@ -16,18 +17,26 @@ const RequestRow = ({ vs_currency, ids }) => {
       });
   }, []);
 
-  console.log(coinInfo);
+  // console.log(coinInfo);
   return (
     <>
       {coinInfo.map((c) => (
         <>
           <td>
-            <img src={c.image} alt="" width="50px" className="me-3"/>
+            <img src={c.image} alt="" width="30px" className="me-3" />
             <span>{c.name}</span>
           </td>
           <td>
-            <p>{c.current_price}</p>
-            <p>{vs_currency.toUpperCase()}</p>
+            <td>
+              <span className="text-muted">{`${
+                getCurrencySymbol(vs_currency)
+                  ? getCurrencySymbol(vs_currency)
+                  : "?"
+              } `}</span>
+              <span>
+                {c.current_price ? c.current_price.toLocaleString() : "?"}
+              </span>
+            </td>
           </td>
         </>
       ))}

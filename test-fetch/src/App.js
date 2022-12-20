@@ -38,7 +38,7 @@ function App() {
             <Route path="/aboutus" element={<Aboutus />} />
             <Route path="/trading" element={<TradingToP />} />
             <Route
-              path="/api/user/reset-password/:id"
+              path="/api/user/reset-password/:email"
               element={<NewPassword />}
             />
             <Route path="/user-info" element={<UserInfor />} />

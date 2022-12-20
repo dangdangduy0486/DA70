@@ -7,7 +7,14 @@ const Footer = () => {
       <footer className="footer">
         <div className="container_footer">
           <div className="footet_left">
-            <h5>About us</h5>
+            <h5>
+              <Link
+                style={{ textDecoration: "none", color: "rgb(178, 174, 174)" }}
+                to="/aboutus"
+              >
+                About us
+              </Link>
+            </h5>
             <p>
               It is my website about creating a crypto website. We wish it can
               help you earning money

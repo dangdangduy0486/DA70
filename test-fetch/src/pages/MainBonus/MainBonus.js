@@ -34,6 +34,7 @@ const Mainbonus = () => {
   // }, []);
 
   const { data, error, isLoading } = useGetTrendingCoinsQuery();
+  console.log(data);
   if (!data || error || isLoading) return <Loading />;
   return (
     <>

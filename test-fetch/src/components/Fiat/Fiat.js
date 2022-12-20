@@ -7,28 +7,10 @@ import Loading from "../../pages/Loading/Loading";
 import useAuth from "../../hooks/useAuth";
 
 const Fiat = () => {
-  const [walletAmout, setWalletAmount] = useState(null);
-  // useEffect(() => {
-  //   try {
-  // const id = localStorage.getItem("id");
-  //     const url = `api/wallet/info/${id}`;
-  //     axios
-  //       .get(url)
-  //       .then((response) => {
-  //         setWalletAmount(response.data);
-  //       })
-  //       .catch((error) => {
-  //         console.log("errorrr");
-  //       });
-  //   } catch (error) {
-  //     console.log("error");
-  //   }
-  // }, []);
-  // if (!walletAmout) return null;
   const { email } = useAuth();
-  console.log(email);
-
   const { data, error, isLoading } = useGetUserWalletQuery({ email });
+
+  console.log(data);
 
   if (!data || error || isLoading) return <Loading />;
   var map = data.wallet.reduce(function (map, invoice) {

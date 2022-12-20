@@ -21,10 +21,20 @@
   color: black;
 }
 
+.dropdown-menu-category {
+  border-bottom: 1px solid gray;
+
+}
+
+.dropdown-menu-category-title {
+  padding: 5px 50px;
+  font-weight: bold;
+}
+
 #dropdown-currencies {
-  columns: 4;
-  -webkit-columns: 4;
-  -moz-columns: 4;
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
 }
 
 .dropdown-currencies-items {
@@ -36,7 +46,7 @@
   cursor: pointer;
 }
 
-.dropdown-currencies-items:hover {
-  text-decoration: underline;
-  color: #007bff;
+.dropdown-currencies-items p:hover {
+  /* text-decoration: underline; */
+  color: #e800f0;
 }

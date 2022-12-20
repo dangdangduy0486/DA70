@@ -1,118 +1,111 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
 import Loading from "../Loading/Loading";
 import { useGetCoinsExchangeRatesQuery } from "../../features/coins/coinsApiSlice";
 import "./Charge.css";
+import useAuth from "../../hooks/useAuth";
+import { useGetCurrenciesQuery } from "../../features/coins/coinsApiSlice";
 
 const Charge = () => {
   const [walletChoose, setWalletChoose] = useState("Fiat and spot");
-  const [currency, setCurrency] = useState([]);
-  const [currencyID, setCurrencyId] = useState("vnd");
+  const [currencyID, setCurrencyID] = useState("");
+  const [creditcard, setCreditcard] = useState("");
   const [amount, setAmount] = useState(null);
-  const walletOption = ["Fiat and spot", "Futures", "Funding"];
-  const currencyOption = ["USD", "VND", "YPN", "EUR"];
+  const walletOption = ["Fiat and spot", "Futures", "funding"];
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`https://api.coingecko.com/api/v3/exchange_rates`)
-  //     .then((response) => {
-  //       setCurrency(response.data.rates);
-  //     });
-  // }, []);
-  const { data, error, isLoading } = useGetCoinsExchangeRatesQuery();
+  const ListCreditCard = [
+    {
+      img: "https://th.bing.com/th/id/OIP.CSv0D_Pv2hzbhGo6UWoLAgHaHa?pid=ImgDet&rs=1",
+      value: "Mastercard",
+    },
+    {
+      img: "https://th.bing.com/th/id/R.882554502a910b08926783672406e254?rik=HcKdX2aH%2bJNPTw&pid=ImgRaw&r=0",
+      value: "Visa",
+    },
+    {
+      img: "https://th.bing.com/th/id/OIP.eFntJMWiAigLvftXw6GfCwHaBz?pid=ImgDet&rs=1",
+      value: "Paypal",
+    },
+    {
+      img: "https://th.bing.com/th/id/R.93432c12cb348bdefdcc27d465fac524?rik=LhggmvPksBkFkA&riu=http%3a%2f%2flogos-download.com%2fwp-content%2fuploads%2f2016%2f04%2fJCB_logo_logotype_emblem_Japan_Credit_Bureau.png&ehk=Q0%2f%2fhZsj0IOI9CRwjKhtQ%2bPCmN0Dgyiqi5VNsI67lvM%3d&risl=&pid=ImgRaw&r=0",
+      value: "JCB",
+    },
+    {
+      img: "https://th.bing.com/th/id/OIP.TRozxgHH_1RL9eF0qWKjhgHaEK?pid=ImgDet&rs=1",
+      value: "Discover",
+    },
+    {
+      img: "https://th.bing.com/th/id/R.3758ada9405b3b649042694be1d5c722?rik=uowZUfQou%2b8Y5A&riu=http%3a%2f%2fconsumersresearch.org%2fwp-content%2fuploads%2f2019%2f01%2fApple-Pay-Logo-1024x575.png&ehk=W%2fXP3fsdQkodaz609oIZuBFjZMa8TRoThrmdxt0QXNA%3d&risl=&pid=ImgRaw&r=0",
+      value: "Apple Pay",
+    },
+    {
+      img: "https://th.bing.com/th/id/R.db677e961692420fce98af43e153e94b?rik=RDJLHiVWUNzncA&pid=ImgRaw&r=0",
+      value: "Amazon Pay",
+    },
+    {
+      img: "ttps://th.bing.com/th/id/OIP.PApyUw088G70rGvpDdoweAHaFj?pid=ImgDet&rs=1",
+      value: "Diners Club International",
+    },
+    {
+      img: "https://th.bing.com/th/id/OIP.mVgf3EOygbiEBEh3rtsQJgHaDF?pid=ImgDet&rs=1",
+      value: "Stripe",
+    },
+    {
+      img: "https://th.bing.com/th/id/R.759a4f4627d9dbfb40e1da9611d99a7b?rik=DgYa3bCtitbtiQ&riu=http%3a%2f%2fwww.pngplay.com%2fwp-content%2fuploads%2f5%2fAmerican-Express-Logo-Background-PNG-Image.png&ehk=IYCXdLfKX5pjY6avB2J%2friAF%2fN1WWkDLXqQPXDzHyZ8%3d&risl=&pid=ImgRaw&r=0",
+      value: "American Express",
+    },
+  ];
 
-  if (!data || error || isLoading) return <Loading />;
+  const { email } = useAuth();
+
+  const { data, error, isLoading } = useGetCurrenciesQuery();
+  if (!data || error || isLoading) return null;
+
+  function isFiat(value) {
+    return (
+      value.category === "Fiat Currencies" ||
+      value.category === "Suggested Currencies"
+    );
+  }
+
+  var filtered = data.filter(isFiat);
 
   const handleOnChange = (event) => {
     setAmount(event.target.value);
   };
-  const id = localStorage.getItem("id");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const url = `api/wallet/request/${id}`;
-      await axios
-        .post(url, {
-          requestType: "recharge",
-          purchaseUnit: currencyID,
-          sellUnit: "a",
-          amount: amount,
-          sender: "VCB",
-          walletType: walletChoose,
-        })
-        .then(() => {
-          console.log("success~");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log("error");
-    }
+    console.log(currencyID);
+    console.log(creditcard);
+    console.log(amount);
+    console.log(email);
+
+    axios
+      .post(`api/user/request/${email}/funding`, {
+        firstUnit: currencyID,
+        senderAddress: creditcard,
+        amount: amount,
+        recieverAddress: email,
+      })
+      .then((response) => {
+        console.log("success");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
     <>
       <NavBar />
-      {/* <section className="container_charge vh-100% gradient-custom">
-        <div className="container py-5 h-100">
-          <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div
-                className="card bg-dark text-white"
-                style={{ borderRadius: "1rem" }}
-              >
-                <form
-                  className="form bg-dark text-center "
-                  id="form_signup"
-                  // onSubmit={formik.handleSubmit}
-                  onSubmit={() => handleSubmit()}
-                >
-                  <h3 className="heading text-center">Charge Money</h3>
-                  <p className="infor">Welcome to DBcoin</p>
-                  <div className="form-group">
-                    <label htmlFor="money" className="form-lable">
-                      Your money
-                    </label>
-                    <input
-                      id="money"
-                      name="money"
-                      type="number"
-                      placeholder="Enter your money"
-                      className="form-control"
-                      onChange={handleOnChange}
-                    ></input>
-                  </div>
-                  <button
-                    className="form-submit btn btn-outline-light btn-lg px-5"
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    Charge
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
       <section className="container_charge">
         <div className="container_chargeform">
-          <h4 className="text-center pe-1">Deposit</h4>
+          <h4 className="text-center pe-1">FUNDING</h4>
           <form className="form_charge" onSubmit={() => handleSubmit()}>
-            <div className="chargeform_group">
-              <label htmlFor="name">Your name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Enter your name"
-                onChange={handleOnChange}
-              ></input>
-            </div>
             <div className="chargeform_group">
               <label htmlFor="amount">Your amount</label>
               <input
@@ -125,9 +118,38 @@ const Charge = () => {
             </div>
             <div className="chargeform_group">
               <label htmlFor="currency">Currency</label>
-              <select id="currency" name="currency">
-                <option>USD</option>
+              <select
+                id="currency"
+                name="currency"
+                onChange={(e) => {
+                  const selectCurrency = e.target.value;
+                  setCurrencyID(selectCurrency);
+                }}
+              >
+                <option selected>---</option>
+                {filtered.map((unit) => (
+                  <option value={unit.symbol}>{unit.name}</option>
+                ))}
               </select>
+            </div>
+            <div className="chargeform_group group-img-credit">
+              {ListCreditCard.map((card, index) => (
+                <span class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id={index}
+                    key={index}
+                    value={card.value}
+                    onClick={(e) => {
+                      const selectCard = e.target.value;
+                      setCreditcard(selectCard);
+                    }}
+                  />
+                  <img src={card.img} alt="" className="img-credit" />
+                </span>
+              ))}
             </div>
             <div className="chargeform_group">
               <label htmlFor="wallet_option">Wallet</label>

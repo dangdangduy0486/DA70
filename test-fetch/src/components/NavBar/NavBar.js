@@ -22,8 +22,8 @@ const NavBar = (props) => {
   };
 
   const { email } = useAuth();
-  const [sendLogout, { isLoading, isSuccess, isError, error }] =
-    useSendLogoutMutation();
+  // const [sendLogout, { isLoading, isSuccess, isError, error }] =
+  //   useSendLogoutMutation();
 
   return (
     <>
@@ -73,9 +73,9 @@ const NavBar = (props) => {
               <Link style={{ textDecoration: "none" }} to="/trading">
                 <Nav.Link href="/trading">P2P</Nav.Link>
               </Link>
-              <Link style={{ textDecoration: "none" }} to="/aboutus">
+              {/* <Link style={{ textDecoration: "none" }} to="/aboutus">
                 <Nav.Link href="/aboutus">About Us</Nav.Link>
-              </Link>
+              </Link> */}
               <Link style={{ textDecoration: "none" }} to="/nft">
                 <Nav.Link href="/nft">NFT</Nav.Link>
               </Link>
@@ -135,7 +135,7 @@ const NavBar = (props) => {
                     Logout
                   </Button>
                 </Link> */}
-                <span className="money">money</span>
+                {/* <span className="money">money</span> */}
                 <MenuProfile className="menu-profile" email={email} />
                 <Link
                   style={{ textDecoration: "none", alignSelf: "center" }}

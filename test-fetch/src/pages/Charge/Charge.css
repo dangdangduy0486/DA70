@@ -11,10 +11,12 @@
   margin-bottom: 2em;
   font-size: 15px;
 }
+
 .container_charge h4 {
   font-size: 2em;
   color: var(--yellwo-color);
 }
+
 .container_chargeform {
   display: flex;
   flex-direction: column;
@@ -23,14 +25,17 @@
   max-width: 500px;
   width: 100%;
 }
+
 .form_charge {
   padding: 0.5em;
 }
+
 .chargeform_group {
   display: flex;
   flex-direction: column;
   margin: 0.5em 0;
 }
+
 .btn_recharge {
   padding: 0.4em 1em;
   margin: 0.5em auto 0.5em;
@@ -39,7 +44,18 @@
   border: 1px solid var(--yellwo-color);
   border-radius: 5px;
 }
+
 .btn_recharge:hover {
   background-color: var(--yellwo-color);
   color: white;
+}
+
+.group-img-credit {
+  display: inline-block;
+}
+
+.img-credit {
+  padding: 0 10px;
+  width: 20%;
+  cursor: pointer;
 }

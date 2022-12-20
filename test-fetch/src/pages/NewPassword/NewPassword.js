@@ -17,7 +17,7 @@ const NewPassword = () => {
     const { newpassword } = values;
     try {
       await axios
-        .post(url, { newpassword }, opts)
+        .patch(url, { newpassword }, opts)
         .then(() => history("/login"))
         .catch((err) => {
           if (err && err.response) console.log("Error", err);

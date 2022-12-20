@@ -20,10 +20,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       query: ({ email }) => {
         console.log(email);
         return {
-          url: `api/wallet/info`,
-          params: {
-            email,
-          },
+          url: `api/wallet/info/${email}`,
         };
       },
     }),

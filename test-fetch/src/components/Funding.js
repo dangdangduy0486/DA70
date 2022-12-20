@@ -2,8 +2,20 @@ import React from "react";
 import "../Css/Funding.css";
 import { Tabs, Table, Input, Form, Button, Select } from "antd";
 import { useState } from "react";
+
+import { useGetUserWalletQuery } from "../features/user/userApiSlice";
+import Loading from "../pages/Loading/Loading";
+import useAuth from "../hooks/useAuth";
+
 const Funding = () => {
   const [searchName, setSearchName] = useState("");
+
+  const { email } = useAuth();
+  const { data, error, isLoading } = useGetUserWalletQuery({ email });
+
+  console.log(data);
+
+  if (!data || error || isLoading) return <Loading />;
   return (
     <>
       <section className="container_funding">

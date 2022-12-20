@@ -11,6 +11,46 @@ const CurrencyDetails = (props) => {
   };
   const { data, error, isLoading } = useGetCurrenciesQuery();
   if (!data || error || isLoading) return null;
+
+  // Create an empty object, used to store the different categories.
+  var temporaryObject = {};
+
+  // Scan for each of the objects in the `items` array.
+  data.forEach((item) => {
+    // Create a category in the teporary object if the category
+    // hasn't been created.
+    if (typeof temporaryObject[item.category] === "undefined")
+      temporaryObject[item.category] = [];
+
+    // Push the item to the its category of the `temporaryObject`.
+    temporaryObject[item.category].push({
+      id: item._id,
+      symbol: item.symbol,
+      name: item.name,
+    });
+  });
+
+  // Create a empty array used to stores the sorted, grouped items.
+  var newItems = [];
+
+  // Scan for each of the category in the `temporaryObject`
+  for (var category in temporaryObject) {
+    // Push the new category in the `newItems` array.
+    newItems.push({
+      category: category,
+      items: [],
+    });
+
+    // Get the last category index of the `newItems` array,
+    // so we can push the related data to the related category.
+    var lastItem = newItems.length - 1;
+
+    // Scan for the related category in the `temporaryObject` object.
+    temporaryObject[category].forEach((item) => {
+      newItems[lastItem].items.push(item);
+    });
+  }
+
   return (
     <>
       <div className="dropdown">
@@ -22,17 +62,28 @@ const CurrencyDetails = (props) => {
         >
           {selected.toUpperCase()}
         </button>
-        <ul className="dropdown-menu" id="dropdown-currencies">
-          {data &&
-            data.map((currency) => (
-              <li className="dropdown-currencies-items">
-                <p
-                  onClick={() => handleSelectCurrency(currency)}
-                  key={currency._id}
-                >
-                  {currency.symbol.toUpperCase()}
-                </p>
-              </li>
+        <ul className="dropdown-menu">
+          {newItems &&
+            newItems.map((currency) => (
+              <>
+                <li className="dropdown-menu-category">
+                  <p className="dropdown-menu-category-title">
+                    {currency.category}
+                  </p>
+                  <ul id="dropdown-currencies">
+                    <li className="dropdown-currencies-items">
+                      {currency.items.map((cr) => (
+                        <p onClick={() => handleSelectCurrency(cr)} key={cr.id}>
+                          <span className="text-muted me-3">
+                            {cr.symbol.toUpperCase()}
+                          </span>
+                          {cr.name}
+                        </p>
+                      ))}
+                    </li>
+                  </ul>
+                </li>
+              </>
             ))}
         </ul>
       </div>

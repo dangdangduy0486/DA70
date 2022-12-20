@@ -1,0 +1,158 @@
+import React from "react";
+import axios from "axios";
+import { useState } from "react";
+import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX, faCheck, faCircle } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+
+import useAuth from "../../hooks/useAuth";
+import RequestRow from "./SpotRequestRow";
+
+const SpotRequest = () => {
+  const navigate = useNavigate();
+  const [request, setRequest] = useState(null);
+  const [status, setStatus] = useState(null);
+  const [reqID, setReqID] = useState(null);
+  const [reqType, setReqType] = useState("spot");
+  const [requestType, setRequestType] = useState("Spot order");
+  const { email, role } = useAuth();
+
+  const handleRecharge = (e) => {
+    setRequestType(e.target.value);
+    req();
+  };
+
+  const handleOrder = (e) => {
+    setRequestType(e.target.value);
+    req();
+  };
+
+  const handleResponseApproved = async (e) => {
+    setReqID(e.target.value);
+    const url = `api/admin/response/${email}/${reqType}`;
+    setStatus("approved");
+    await axios
+      .patch(url, {
+        requestID: reqID,
+        status: status,
+      })
+      .then(() => {
+        req();
+        navigate("/request");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleResponseDenided = async (e) => {
+    setReqID(e.target.value);
+    const url = `api/admin/response/${email}/${reqType}`;
+    setStatus("denided");
+    await axios
+      .patch(url, {
+        requestID: reqID,
+        status: status,
+      })
+      .then(() => {
+        req();
+        navigate("/request");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const req = () => {
+    const url = `api/user/request/${email}/${reqType}`;
+    axios
+      .get(url)
+      .then((response) => {
+        setRequest(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  console.log(request);
+
+  useEffect(() => {
+    try {
+      req();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  if (!request) return null;
+  return (
+    <>
+      <div>
+        <table className="table table-dark table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Cryptocurrencies</th>
+              <th scope="col">Price</th>
+              <th scope="col">Address</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Total</th>
+              <th scope="col">Type</th>
+              <th scope="col">Status</th>
+              {role === "admin" ? <td>Actions</td> : null}
+            </tr>
+          </thead>
+          <tbody>
+            {request.request &&
+              request.request.map((r, index) => (
+                <>
+                  <tr>
+                    <RequestRow
+                      key={r._id}
+                      vs_currency={r.secondUnit}
+                      ids={r.firstUnit}
+                    />
+                    <td>{r.senderAddress}</td>
+                    <td>{r.amount}</td>
+                    <td>{r.total}</td>
+                    <td>
+                      <span>{r.type}</span>
+                    </td>
+                    <td>
+                      <span
+                        className={`${
+                          r.status === "approved"
+                            ? "text-success"
+                            : r.status === "pending"
+                            ? "text-warning"
+                            : "text-danger"
+                        } rounded-pill`}
+                        style={{ fontSize: "12px" }}
+                      >
+                        <FontAwesomeIcon icon={faCircle} className="me-2" />
+                        {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
+                      </span>
+                    </td>
+                    {r.status === "approved" || r.status === "rejected" ? (
+                      <td></td>
+                    ) : (
+                      <td className="request-action">
+                        <span className="text-success me-3" id="approved-check">
+                          <FontAwesomeIcon icon={faCheck} />
+                        </span>
+                        <span className="text-danger" id="denided-check">
+                          <FontAwesomeIcon icon={faX} />
+                        </span>
+                      </td>
+                    )}
+                  </tr>
+                </>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+};
+
+export default SpotRequest;
