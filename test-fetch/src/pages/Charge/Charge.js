@@ -8,6 +8,7 @@ import { useGetCoinsExchangeRatesQuery } from "../../features/coins/coinsApiSlic
 import "./Charge.css";
 import useAuth from "../../hooks/useAuth";
 import { useGetCurrenciesQuery } from "../../features/coins/coinsApiSlice";
+import { toast } from "react-toastify";
 
 const Charge = () => {
   const [walletChoose, setWalletChoose] = useState("Fiat and spot");
@@ -46,7 +47,7 @@ const Charge = () => {
       value: "Amazon Pay",
     },
     {
-      img: "ttps://th.bing.com/th/id/OIP.PApyUw088G70rGvpDdoweAHaFj?pid=ImgDet&rs=1",
+      img: "https://th.bing.com/th/id/OIP.PApyUw088G70rGvpDdoweAHaFj?pid=ImgDet&rs=1",
       value: "Diners Club International",
     },
     {
@@ -87,15 +88,16 @@ const Charge = () => {
     axios
       .post(`api/user/request/${email}/funding`, {
         firstUnit: currencyID,
-        senderAddress: creditcard,
+        senderAddress: "Credit Card",
         amount: amount,
         recieverAddress: email,
       })
       .then((response) => {
-        console.log("success");
+        toast.success("Funding request sent");
+        // console.log("success");
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.data.message);
       });
   };
 
@@ -132,22 +134,39 @@ const Charge = () => {
                 ))}
               </select>
             </div>
-            <div className="chargeform_group group-img-credit">
+            <div className="group-img-credit">
               {ListCreditCard.map((card, index) => (
-                <span class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="inlineRadioOptions"
-                    id={index}
-                    key={index}
-                    value={card.value}
-                    onClick={(e) => {
-                      const selectCard = e.target.value;
-                      setCreditcard(selectCard);
-                    }}
-                  />
-                  <img src={card.img} alt="" className="img-credit" />
+                // <span class="form-check form-check-inline">
+                //   <input
+                //     class="form-check-input"
+                //     type="radio"
+                //     name="inlineRadioOptions"
+                //     id={index}
+                //     key={index}
+                //     value={card.value}
+                //     onClick={(e) => {
+                //       const selectCard = e.target.value;
+                //       setCreditcard(selectCard);
+                //     }}
+                //   />
+                //   <img src={card.img} alt="" className="img-credit" />
+                // </span>
+                <span className="img-contain" key={index}>
+                  <label className="label_img">
+                    <input type="radio" name="creditCard" value={card.value} />
+                    <img
+                      name="creditCardImg"
+                      src={card.img}
+                      alt={card.value}
+                      value={card.value}
+                      className="img-credit"
+                      // onClick={(e) => {
+                      // const selectCard = e.target.value;
+                      // setCreditcard(selectCard);
+                      // console.log(selectCard);
+                      // }}
+                    />
+                  </label>
                 </span>
               ))}
             </div>

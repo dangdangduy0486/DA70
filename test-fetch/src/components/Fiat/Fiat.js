@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import getCurrencySymbol from "currency-symbols";
 
 import "./Fiat.css";
 import { useGetUserWalletQuery } from "../../features/user/userApiSlice";
@@ -10,10 +11,14 @@ const Fiat = () => {
   const { email } = useAuth();
   const { data, error, isLoading } = useGetUserWalletQuery({ email });
 
-  console.log(data);
-
   if (!data || error || isLoading) return <Loading />;
-  var map = data.wallet.reduce(function (map, invoice) {
+
+  function isFiat(value) {
+    return value.type === "Fiat Currencies";
+  }
+  let fiatList = data.wallet.filter(isFiat);
+  
+  var map = fiatList.reduce(function (map, invoice) {
     var name = invoice.currencyID;
     var amount1 = invoice.amount * 1;
     var price = +amount1;
@@ -27,6 +32,12 @@ const Fiat = () => {
       amount: map[name],
     };
   });
+
+  function isCrypto(value) {
+    return value.type === "Cryptocurrencies";
+  }
+  let cryptoList = data.wallet.filter(isCrypto);
+
   return (
     <>
       <section className="container_fiat">
@@ -38,37 +49,67 @@ const Fiat = () => {
             <h5 className="p-3">My Assets</h5>
             <div className="myasset_details p-2">
               <div className="myasset_detail">
-                <h6>Fiat and Spot</h6>
+                <h2>Fiat</h2>
               </div>
-              <div>
-                <table className="w-100 text-center">
-                  <tr>
-                    <th>Currency</th>
-                    <th>Amount</th>
-                  </tr>
-                  {array.map((w) => (
+              <div className="container-fluid">
+                <table class="table">
+                  <thead>
                     <tr>
-                      <td>{w.currencyID.toUpperCase()}</td>
-                      <td>{w.amount}</td>
+                      <th scope="col">#</th>
+                      <th scope="col">Currency</th>
+                      <th scope="col">Amount</th>
                     </tr>
-                  ))}
+                  </thead>
+                  <tbody>
+                    {array.map((w, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{w.currencyID.toUpperCase()}</td>
+                        <td>
+                          <span className="text-muted">{`${
+                            getCurrencySymbol(w.currencyID)
+                              ? getCurrencySymbol(w.currencyID)
+                              : w.currencyID.toUpperCase()
+                          } `}</span>
+                          <span>
+                            {w.amount ? w.amount.toLocaleString() : "?"}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
               </div>
               <div className="myasset_detail">
-                <h6>Funding</h6>
+                <h2>Spot</h2>
               </div>
               <div>
-                <table className="w-100 text-center">
-                  <tr>
-                    <th>Currency</th>
-                    <th>Amount</th>
-                  </tr>
-                  {array.map((w) => (
+                <table className="table">
+                  <thead>
                     <tr>
-                      <td>{w.currencyID.toUpperCase()}</td>
-                      <td>{w.amount}</td>
+                      <th scope="col">#</th>
+                      <th scope="col">Currency</th>
+                      <th scope="col">Amount</th>
                     </tr>
-                  ))}
+                  </thead>
+                  <tbody>
+                    {cryptoList.map((w, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{w.currencyID.toUpperCase()}</td>
+                        <td>
+                          <span className="text-muted">{`${
+                            getCurrencySymbol(w.currencyID)
+                              ? getCurrencySymbol(w.currencyID)
+                              : w.currencyID.toUpperCase()
+                          } `}</span>
+                          <span>
+                            {w.amount ? w.amount.toLocaleString() : "?"}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
               </div>
             </div>

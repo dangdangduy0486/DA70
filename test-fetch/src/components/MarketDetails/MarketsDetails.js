@@ -37,6 +37,7 @@ const MarketsDetails = ({ markets, symbol, categoryFr }) => {
       setSelected(value.name);
     }
   };
+
   if (!categories) return null;
   return (
     <>
@@ -87,7 +88,10 @@ const MarketsDetails = ({ markets, symbol, categoryFr }) => {
           </li>
           {categories &&
             categories.map((category) => (
-              <li className="dropdown-categories-items">
+              <li
+                className="dropdown-categories-items"
+                key={category.category_id}
+              >
                 <p
                   onClick={() => handleSelectCategory(category)}
                   key={category.category_id}
@@ -101,21 +105,24 @@ const MarketsDetails = ({ markets, symbol, categoryFr }) => {
       <div>
         <table className="table_markets table table-hover">
           <thead>
-            <th id="market_rank">#</th>
-            <th>Coin</th>
-            <th></th>
-            <th></th>
-            <th>Price</th>
-            <th>1h</th>
-            <th>24h</th>
-            <th>7d</th>
-            <th className="total_volume">24h Volume</th>
-            <th className="market_cap">Market Cap</th>
+            <tr>
+              <th id="market_rank">#</th>
+              <th>Coin</th>
+              <th></th>
+              <th></th>
+              <th>Price</th>
+              <th>1h</th>
+              <th>24h</th>
+              <th>7d</th>
+              <th className="total_volume">24h Volume</th>
+              <th className="market_cap">Market Cap</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
             {markets &&
-              markets.map((market) => (
-                <tr key={market.id}>
+              markets.map((market, index) => (
+                <tr key={index}>
                   <td data-label="#">
                     <p>
                       {market.market_cap_rank ? market.market_cap_rank : "?"}
@@ -144,7 +151,6 @@ const MarketsDetails = ({ markets, symbol, categoryFr }) => {
                     </div>
                   </td>
                   <td data-label="Price">
-                    {/* <span className="text-muted">{`${symbol.toUpperCase()} `}</span> */}
                     <span className="text-muted">{`${
                       getCurrencySymbol(symbol)
                         ? getCurrencySymbol(symbol)
@@ -243,10 +249,21 @@ const MarketsDetails = ({ markets, symbol, categoryFr }) => {
                         : "?"}
                     </span>
                   </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="Tooltip on top"
+                    >
+                      Buy
+                    </button>
+                  </td>
                 </tr>
               ))}
           </tbody>
-        </table>  
+        </table>
       </div>
     </>
   );

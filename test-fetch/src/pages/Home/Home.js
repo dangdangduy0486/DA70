@@ -10,10 +10,12 @@ const Home = () => {
   // if (state === null) return null;
   // console.log(state);
   // console.log(location.state.email);
+  const callback = () => {};
+
   return (
     <>
       <div className="homePage">
-        <NavBar />
+        <NavBar currencyFr={callback} />
         <Mainbonus />
       </div>
     </>

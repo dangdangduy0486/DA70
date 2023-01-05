@@ -8,7 +8,7 @@ import Loading from "../../pages/Loading/Loading";
 import { useGetTrendingCoinsQuery } from "../../features/coins/coinsApiSlice";
 
 const CarouselCoins = () => {
-  const [trendCoins, setTrendingCoins] = useState(null);
+  const [trendingCoins, setTrendingCoins] = useState([]);
   // const url = "api/trending";
   // const token = localStorage.getItem("token");
   // const opts = {
@@ -27,10 +27,19 @@ const CarouselCoins = () => {
   //       console.log(error);
   //     });
   // }, []);
+  const { data } = useGetTrendingCoinsQuery();
+  useEffect(() => {
+    const check = localStorage.getItem("trendingCoins");
+    if (!check && data) {
+      setTrendingCoins(data.coins);
+      localStorage.setItem("trendingCoins", JSON.stringify(data.coins));
+    }
+    if (check) {
+      setTrendingCoins(JSON.parse(check));
+    }
+  }, [data]);
 
-  const { data, error, isLoading } = useGetTrendingCoinsQuery();
-
-  if (!data || error || isLoading) return <Loading />;
+  if (!trendingCoins) return <Loading />;
 
   function carousel() {
     let carouselSlider = document.getElementsByClassName("carousel__slider");
@@ -93,8 +102,8 @@ const CarouselCoins = () => {
     <>
       <section className="slider">
         <div className="slide-track">
-          {data.coins &&
-            data.coins.map((coin, index) => (
+          {trendingCoins &&
+            trendingCoins.map((coin, index) => (
               <div className="slide" key={index}>
                 <span>
                   <img

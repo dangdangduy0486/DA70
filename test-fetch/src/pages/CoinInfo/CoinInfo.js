@@ -7,8 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowTrendUp,
   faArrowTrendDown,
+  faCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 import "./CoinInfo.css";
 import Footer from "../../components/Footer/Footer";
@@ -18,102 +19,115 @@ import Loading from "../Loading/Loading";
 import Button from "react-bootstrap/esm/Button";
 import HistoryChart from "../../components/HistoryChart/HistoryChart";
 import useAuth from "../../hooks/useAuth";
+import { getByTestId } from "@testing-library/react";
 
-const CoinInfo = () => {
-  const [coinInfo, setCoinInfo] = useState("");
+const CoinInfo = (props) => {
+  const [coinInfo, setCoinInfo] = useState([]);
   const { coinID } = useParams("");
-  const [isLoading, setIsLoading] = useState();
-  const [isError, setIsError] = useState(false);
-  const [amount1, setAmount1] = useState(1);
-  const [amount2, setAmount2] = useState(1);
+  const [amount, setAmount] = useState(0);
+  const [total, setTotal] = useState(1);
   const [currency1, setCurrency1] = useState("btc");
   const [currency2, setCurrency2] = useState("btc");
-  const [rates, setRates] = useState([]);
+  const [vsCurrency, setVsCurrency] = useState("usd");
 
-  useEffect(() => {
-    axios
-      .get(`https://api.coingecko.com/api/v3/exchange_rates`)
-      .then((response) => {
-        setRates(response.data.rates);
-      });
-  }, []);
-
-  function numberFormat(number) {
-    return number.toFixed(6);
-  }
-  function handleAmount1Change(amount1) {
-    setAmount2(
-      numberFormat((amount1 * rates[currency2].value) / rates[currency1].value)
-    );
-    setAmount1(amount1);
-
-    console.log(amount1);
-    console.log(amount2);
-    console.log(currency1);
-    console.log(currency2);
-  }
-  function handleCurrency1Change(currency1) {
-    setAmount2(
-      numberFormat((amount1 * rates[currency2].value) / rates[currency1].value)
-    );
-    setCurrency1(currency1);
-  }
+  const callback = async (childData) => {
+    await setVsCurrency((vsCurrency) => (vsCurrency = childData));
+  };
 
   const { email } = useAuth();
-  console.log(email);
 
-  const handleCreateSpotRequest = () => {
+  useEffect(() => {
+    let spotTotal = document.getElementById("spotTotal");
+    setTotal(spotTotal.innerText);
+  });
+
+  const handleCreateSpotRequest = async () => {
     const url = `/api/user/request/${email}/spot`;
     const token = localStorage.getItem("token");
+
     const opts = {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
       },
     };
-    const res = axios
+    const res = await axios
       .post(
         url,
         {
           type: "buy",
-          firstUnit: currency2,
-          secondUnit: currency1,
-          amount: amount2,
-          total: amount1,
-          senderAddress: "",
+          firstUnit: currency1,
+          secondUnit: currency2,
+          amount: amount,
+          total: total,
+          senderAddress: "DB Crypto",
           recieverAddress: email,
         },
         opts
       )
-      .then(() => {
-        alert("Buy coin successfull!!!");
+      .then((response) => {
+        toast.success(response.data.message);
+        // spotTotal.innerText = 0;
+        // setAmount(0);
+      })
+      .catch((error) => {
+        if (!email) {
+          toast.error("Please Login");
+          return;
+        }
+        toast.error(error.response.data.message);
       });
     return res.data;
   };
-  const symbol = "eth";
+
+  const handleAmountChange = (event) => {
+    if (!event.target.value === true) {
+      setAmount(0);
+    }
+    setAmount(parseFloat(event.target.value));
+  };
+
+  // const req = async () => {
+  //   const url = "/api/coins/";
+  //   await axios
+  //     .get(url, {
+  //       params: {
+  //         vs_currency: vsCurrency,
+  //         ids: coinID,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       setCoinInfo(response.data[0]);
+  //       setIsLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setIsError(true);
+  //     });
+  // };
 
   const url = "/api/coins/";
   useEffect(() => {
     axios
       .get(url, {
         params: {
-          id: coinID,
+          vs_currency: vsCurrency,
+          ids: coinID,
         },
       })
       .then((response) => {
-        setCoinInfo(response.data);
-        setIsLoading(false);
+        setCoinInfo(response.data[0]);
+        setCurrency2(vsCurrency);
+        setCurrency1(coinID);
       })
       .catch((error) => {
         console.log(error);
-        setIsError(true);
       });
-  }, [coinID]);
-
-  if (!coinInfo || isError || isLoading) return <Loading />;
+  }, [vsCurrency, coinID]);
+  if (!coinInfo) return <Loading />;
 
   return (
     <>
-      <NavBar />
+      <NavBar currencyFr={callback} vsCurrency={vsCurrency} />
       <section className="coininfor">
         <Container className="coin_info">
           <div className="row coin_info_main">
@@ -126,41 +140,40 @@ const CoinInfo = () => {
                     </div>
                     <div id="coin-info-name">
                       <span>
-                        <img src={coinInfo.image.small} alt=""></img>
+                        <img src={coinInfo.image} alt=""></img>
                       </span>
                       <span>{coinInfo.name}</span>
-                      <span>({coinInfo.symbol.toUpperCase()})</span>
+                      <span>({vsCurrency.toUpperCase()})</span>
                     </div>
                     <div>
                       <div>
                         <div>
                           <span className="text-muted">{`${
-                            getCurrencySymbol(symbol)
-                              ? getCurrencySymbol(symbol)
-                              : symbol.toUpperCase()
+                            getCurrencySymbol(vsCurrency)
+                              ? getCurrencySymbol(vsCurrency)
+                              : vsCurrency.toUpperCase()
                           } `}</span>
                           <span className="coin-info-price">
-                            {coinInfo.market_data.current_price.eth}
+                            {coinInfo.current_price
+                              ? coinInfo.current_price.toLocaleString()
+                              : "?"}
                           </span>
                           <span
                             className={`${
-                              coinInfo.market_data
-                                .market_cap_change_percentage_24h_in_currency
-                                .eth > 0
+                              coinInfo.market_cap_change_percentage_24h_in_currency >
+                              0
                                 ? "text-success"
                                 : "text-danger"
                             } `}
                           >
-                            {coinInfo.market_data
-                              .market_cap_change_percentage_24h_in_currency
-                              .eth > 0 ? (
+                            {coinInfo.market_cap_change_percentage_24h_in_currency >
+                            0 ? (
                               <FontAwesomeIcon icon={faArrowTrendUp} />
                             ) : (
                               <FontAwesomeIcon icon={faArrowTrendDown} />
                             )}
-                            {coinInfo.market_data
-                              .market_cap_change_percentage_24h_in_currency.eth
-                              ? coinInfo.market_data.market_cap_change_percentage_24h_in_currency.eth.toFixed(
+                            {coinInfo.market_cap_change_percentage_24h_in_currency
+                              ? coinInfo.market_cap_change_percentage_24h_in_currency.toFixed(
                                   2
                                 )
                               : "?"}
@@ -177,39 +190,35 @@ const CoinInfo = () => {
                               // }`}
                               style={{
                                 width: `${
-                                  ((coinInfo.market_data.current_price.eth -
-                                    coinInfo.market_data.low_24h.eth) /
-                                    (coinInfo.market_data.high_24h.eth -
-                                      coinInfo.market_data.low_24h.eth)) *
+                                  ((coinInfo.current_price - coinInfo.low_24h) /
+                                    (coinInfo.high_24h - coinInfo.low_24h)) *
                                   100
                                 }%`,
                               }}
                               role="progressbar"
                               className="coin-info-progress"
-                              aria-valuenow={
-                                coinInfo.market_data.current_price.eth
-                              }
-                              aria-valuemin={coinInfo.market_data.low_24h.eth}
-                              aria-valuemax={coinInfo.market_data.high_24h.eth}
+                              aria-valuenow={coinInfo.current_price}
+                              aria-valuemin={coinInfo.low_24h}
+                              aria-valuemax={coinInfo.high_24h}
                             ></div>
                           </div>
                           <div className="progress_info">
                             <p>
                               <span className="text-muted">{`${
-                                getCurrencySymbol(symbol)
-                                  ? getCurrencySymbol(symbol)
-                                  : symbol.toUpperCase()
+                                getCurrencySymbol(vsCurrency)
+                                  ? getCurrencySymbol(vsCurrency)
+                                  : vsCurrency.toUpperCase()
                               } `}</span>
-                              {coinInfo.market_data.low_24h.eth}
+                              {coinInfo.low_24h}
                             </p>
                             <p>24H</p>
                             <p>
                               <span className="text-muted">{`${
-                                getCurrencySymbol(symbol)
-                                  ? getCurrencySymbol(symbol)
-                                  : symbol.toUpperCase()
+                                getCurrencySymbol(vsCurrency)
+                                  ? getCurrencySymbol(vsCurrency)
+                                  : vsCurrency.toUpperCase()
                               } `}</span>
-                              {coinInfo.market_data.high_24h.eth}
+                              {coinInfo.high_24h}
                             </p>
                           </div>
                         </div>
@@ -225,56 +234,60 @@ const CoinInfo = () => {
                     <span className="text-muted">Market Cap</span>
                     <span>
                       {`${
-                        getCurrencySymbol(symbol)
-                          ? getCurrencySymbol(symbol)
-                          : symbol.toUpperCase()
+                        getCurrencySymbol(vsCurrency)
+                          ? getCurrencySymbol(vsCurrency)
+                          : vsCurrency.toUpperCase()
                       } `}
-                      {coinInfo.market_data.market_cap.eth}
+                      {coinInfo.market_cap}
                     </span>
                   </li>
                   <li>
                     <span className="text-muted">24 Hour Trading Vol</span>
                     <span>
                       {`${
-                        getCurrencySymbol(symbol)
-                          ? getCurrencySymbol(symbol)
-                          : symbol.toUpperCase()
+                        getCurrencySymbol(vsCurrency)
+                          ? getCurrencySymbol(vsCurrency)
+                          : vsCurrency.toUpperCase()
                       } `}
-                      {coinInfo.market_data.total_volume.eth}
+                      {coinInfo.total_volume
+                        ? coinInfo.total_volume.toLocaleString()
+                        : ""}
                     </span>
                   </li>
                   <li>
                     <span className="text-muted">Fully Diluted Valuation</span>
                     <span>
                       {`${
-                        getCurrencySymbol(symbol)
-                          ? getCurrencySymbol(symbol)
-                          : symbol.toUpperCase()
+                        getCurrencySymbol(vsCurrency)
+                          ? getCurrencySymbol(vsCurrency)
+                          : vsCurrency.toUpperCase()
                       } `}
-                      {coinInfo.market_data.fully_diluted_valuation.eth}
+                      {coinInfo.fully_diluted_valuation
+                        ? coinInfo.fully_diluted_valuation.toLocaleString()
+                        : ""}
                     </span>
                   </li>
                   <li>
                     <span className="text-muted">Circulating Supply</span>
                     <span>
-                      {coinInfo.market_data.circulating_supply
-                        ? coinInfo.market_data.circulating_supply.toLocaleString()
+                      {coinInfo.circulating_supply
+                        ? coinInfo.circulating_supply.toLocaleString()
                         : "?"}
                     </span>
                   </li>
                   <li>
                     <span className="text-muted">Total Supply</span>
                     <span>
-                      {coinInfo.market_data.total_supply
-                        ? coinInfo.market_data.total_supply.toLocaleString()
+                      {coinInfo.total_supply
+                        ? coinInfo.total_supply.toLocaleString()
                         : "?"}
                     </span>
                   </li>
                   <li>
                     <span className="text-muted">Max Supply</span>
                     <span>
-                      {coinInfo.market_data.max_supply
-                        ? coinInfo.market_data.max_supply.toLocaleString()
+                      {coinInfo.max_supply
+                        ? coinInfo.max_supply.toLocaleString()
                         : "?"}
                     </span>
                   </li>
@@ -290,7 +303,7 @@ const CoinInfo = () => {
                     <a
                       className="info_link"
                       type="button"
-                      href={coinInfo.links.homepage[0]}
+                      // href={coinInfo.links.homepage[0]}
                     >
                       bitcoin.org
                     </a>
@@ -298,7 +311,7 @@ const CoinInfo = () => {
                     <a
                       className="info_link"
                       type="button"
-                      href={coinInfo.links.homepage[0]}
+                      // href={coinInfo.links.homepage[0]}
                     >
                       Whitepaper
                     </a>
@@ -375,7 +388,7 @@ const CoinInfo = () => {
                     <a
                       className="info_link"
                       type="button"
-                      href={coinInfo.links.subreddit_url}
+                      // href={coinInfo.links.subreddit_url}
                     >
                       Reddit
                     </a>
@@ -384,7 +397,7 @@ const CoinInfo = () => {
                     <a
                       className="info_link"
                       type="button"
-                      href={`https://twitter.com/${coinInfo.links.twitter_screen_name}`}
+                      // href={`https://twitter.com/${coinInfo.links.twitter_screen_name}`}
                     >
                       Reddit
                     </a>
@@ -394,7 +407,7 @@ const CoinInfo = () => {
                     <a
                       className="info_link"
                       type="button"
-                      href={`https://www.facebook.com/${coinInfo.links.facebook_username}`}
+                      // href={`https://www.facebook.com/${coinInfo.links.facebook_username}`}
                     >
                       Facebook
                     </a>
@@ -403,7 +416,7 @@ const CoinInfo = () => {
                     <a
                       className="info_link"
                       type="button"
-                      href={coinInfo.links.official_forum_url}
+                      // href={coinInfo.links.official_forum_url}
                     >
                       bitcointalk.org
                     </a>
@@ -452,27 +465,38 @@ const CoinInfo = () => {
             <HistoryChart coinID={coinID} />
           </div>
           <div className="col">
-            <div className="overview-convert">
-              <div className="coin_trade">
-                <h2>Convert Coin</h2>
-                <h5>From</h5>
-                <CurrencyInput
-                  onAmountChange={handleAmount1Change}
-                  onCurrencyChange={handleCurrency1Change}
-                  currencies={Object.keys(rates)}
-                  amount={amount1}
-                  currency={currency1}
-                  className="currencyInput"
-                />
-                <h5>To</h5>
-                <CurrencyInput
-                  onAmountChange={setAmount2}
-                  onCurrencyChange={setCurrency2}
-                  currencies={Object.keys(rates)}
-                  amount={amount2}
-                  currency={currency2}
-                  className="currencyInput"
-                />
+            <div
+              className="overview-convert mt-4 mb-4"
+              style={{ backgroundColor: "white" }}
+            >
+              <div className="coin_trade text-warning">
+                <h3>BUY NOW</h3>
+                <div>
+                  <span className="text-muted">Enter your amount: </span>
+                  <div class="input-group mb-3">
+                    <input
+                      type="number"
+                      onChange={handleAmountChange}
+                      class="form-control"
+                      aria-label="Dollar amount (with dot and two decimal places)"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <span className="text-muted fs-3">Your total: </span>
+                  <span className="fs-3">
+                    {`${
+                      getCurrencySymbol(vsCurrency)
+                        ? getCurrencySymbol(vsCurrency)
+                        : vsCurrency.toUpperCase()
+                    } `}
+                  </span>
+                  <span className="fs-3" id="spotTotal" name="spotTotal">
+                    {coinInfo.current_price * amount
+                      ? coinInfo.current_price * amount
+                      : 0}
+                  </span>
+                </div>
                 <Button
                   variant="outline-warning"
                   onClick={handleCreateSpotRequest}
@@ -482,35 +506,37 @@ const CoinInfo = () => {
               </div>
             </div>
             <div className="overview-statistics">
-              <h3>{coinInfo.symbol.toUpperCase()} Price Statistics</h3>
+              <h3>{vsCurrency.toUpperCase()} Price Statistics</h3>
               <div className="overview-statistics-list">
                 <ul>
                   <li>
                     <span className="text-muted">{coinInfo.name}</span>
                     <span>
                       {`${
-                        getCurrencySymbol(symbol)
-                          ? getCurrencySymbol(symbol)
-                          : symbol.toUpperCase()
+                        getCurrencySymbol(vsCurrency)
+                          ? getCurrencySymbol(vsCurrency)
+                          : vsCurrency.toUpperCase()
                       } `}
-                      {coinInfo.market_data.current_price.eth}
+                      {coinInfo.current_price
+                        ? coinInfo.current_price.toLocaleString()
+                        : ""}
                     </span>
                   </li>
                   <li>
                     <span className="text-muted">24h Low / 24h High</span>
                     <span>
                       {`${
-                        getCurrencySymbol(symbol)
-                          ? getCurrencySymbol(symbol)
-                          : symbol.toUpperCase()
+                        getCurrencySymbol(vsCurrency)
+                          ? getCurrencySymbol(vsCurrency)
+                          : vsCurrency.toUpperCase()
                       } `}
-                      {coinInfo.market_data.low_24h.eth} /
+                      {coinInfo.low_24h} /
                       {`${
-                        getCurrencySymbol(symbol)
-                          ? getCurrencySymbol(symbol)
-                          : symbol.toUpperCase()
+                        getCurrencySymbol(vsCurrency)
+                          ? getCurrencySymbol(vsCurrency)
+                          : vsCurrency.toUpperCase()
                       } `}
-                      {coinInfo.market_data.high_24h.eth}
+                      {coinInfo.high_24h}
                     </span>
                   </li>
                   <li>
@@ -519,15 +545,16 @@ const CoinInfo = () => {
                   </li>
                   <li>
                     <span className="text-muted">Market Cap</span>
-                    <span>{coinInfo.market_data.market_cap.eth}</span>
+                    <span>
+                      {coinInfo.market_cap
+                        ? coinInfo.market_cap.toLocaleString()
+                        : ""}
+                    </span>
                   </li>
                   <li>
                     <span className="text-muted">Volume / Market Cap</span>
                     <span>
-                      {(
-                        coinInfo.market_data.total_volume.eth /
-                        coinInfo.market_data.market_cap.eth
-                      ).toFixed(4)}
+                      {(coinInfo.total_volume / coinInfo.market_cap).toFixed(4)}
                     </span>
                   </li>
                 </ul>
@@ -542,11 +569,11 @@ const CoinInfo = () => {
             </h3>
             <p
               className="text-gray-500 [&>a]:text-blue-600 [&>a]:underline"
-              dangerouslySetInnerHTML={{ __html: coinInfo.description.en }}
+              // dangerouslySetInnerHTML={{ __html: coinInfo.description.en }}
             ></p>
           </div>
         </Container>
-        <Container>
+        {/* <Container>
           <div>
             <h5>{coinInfo.name} Markets</h5>
           </div>
@@ -579,13 +606,24 @@ const CoinInfo = () => {
                     <td>{tik.bid_ask_spread_percentage.toFixed(2)}</td>
                     <td>{(tik.last / 1000).toFixed(2)} %</td>
                     <td>Recently</td>
-                    <td>{tik.trust_score}</td>
+                    <td><span
+                      className={`${
+                        tik.trust_score === "green"
+                          ? "text-success"
+                          : tik.trust_score === "red"
+                          ? "text-warning"
+                          : "text-danger"
+                      } rounded-pill`}
+                      style={{ fontSize: "12px" }}
+                    >
+                      <FontAwesomeIcon icon={faCircle} />
+                    </span></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </Container>
+        </Container> */}
       </section>
       <Footer />
     </>

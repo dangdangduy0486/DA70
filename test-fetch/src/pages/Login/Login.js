@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 // import * as Request from "../../utils/request";
@@ -15,60 +16,32 @@ import { setCredentials } from "../../features/auth/authSlice";
 
 const Login = () => {
   const userRef = useRef();
-  const errRef = useRef();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   useEffect(() => {
     userRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    setErrMsg("");
-  }, []);
-
   const onSubmit = async (e) => {
-    // let { email, password } = values;
     e.preventDefault();
     try {
-      // const res = await axios.post(url, { email, password }).catch((err) => {
-      //   if (err && err.response) console.log("Error", err);
-      // });
-      // setResData(res.data);
-      // localStorage.setItem("token", res.data.token);
-      // localStorage.setItem("email", res.data.email);
-      // localStorage.setItem("id", res.data.userID);
-      // localStorage.setItem("role", res.data.role);
-      // console.log(res.data.token);
-      // navigate("/", { state: { data: Resdata } });
-
       const { accessToken } = await login({ email, password }).unwrap();
       dispatch(setCredentials({ accessToken }));
       localStorage.setItem("token", accessToken);
+      toast.success("Login success");
       navigate("/");
     } catch (error) {
-      if (!error.status) {
-        setErrMsg("No Server Response");
-      } else if (error.status === 400) {
-        setErrMsg("Mising Email or Password");
-      } else if (error.status === 401) {
-        setErrMsg("Unauthorized");
-      } else {
-        setErrMsg(error.data?.message);
-      }
-      errRef.current.focus();
+      toast.error(error.data.message);
     }
   };
 
   const handleEmailInput = (e) => setEmail(e.target.value);
   const handlePwdInput = (e) => setPassword(e.target.value);
-
-  const errClass = errMsg ? "errmsg" : "offscreen";
 
   const formik = useFormik({
     initialValues: {

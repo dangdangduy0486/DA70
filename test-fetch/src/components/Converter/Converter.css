@@ -1,49 +1,70 @@
-.container_converter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  flex-direction: column;
-  background: url("../../images/Moon.svg");
-  background-size: cover;
-}
+/* @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
-.coin_con {
-  width: 50%;
-  background-color: white;
-  color: black;
-  border-radius: 3px;
-}
-
-.coin_trade {
+.App {
+  height: 100vh;
+  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: white;
-  color: black;
-  padding: 1rem;
+  padding-top: 120px;
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
 }
 
-.group {
-  background-color: blueviolet;
-  display: grid;
-  grid-template-columns: 70% 30%;
-  margin: 0 auto 1rem;
-  max-width: 100%;
+.heading {
+  font-family: 'Pacifico', cursive;
+  font-size: 35px;
 }
 
-.group input,
-.group select {
-  background-color: darkgrey;
-  color: white;
-  border: 0;
+.container {
+  height: 300px;
+  width: 800px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.group input {
-  padding-left: 1rem;
+input {
+  padding-left: 5px;
+  font-size: 20px;
+  height: 36px;
 }
 
-.group select {
-  padding: 0.5rem;
+.middle,
+.right {
+  width: 120px;
 }
+
+.switch {
+  padding: 5px;
+  margin-top: 25px;
+  background-color: rgb(226, 252, 184);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.result {
+  box-sizing: border-box;
+  width: 800px;
+  padding-left: 30px;
+}
+
+button {
+  width: 100px;
+  height: 30px;
+  font-weight: bold;
+  font-size: 20px;
+  border: 2px solid forestgreen;
+  background-color: rgb(226, 252, 184);
+  cursor: pointer;
+}
+
+p,
+h3,
+button,
+.switch {
+  color: forestgreen;
+}
+
+p {
+  font-size: 30px;
+} */

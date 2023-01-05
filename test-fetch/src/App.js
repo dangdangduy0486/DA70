@@ -23,7 +23,6 @@ import Exchanges from "./pages/Exchanges/Exchanges";
 import NFT from "./pages/NFT/NFT";
 import NFTList from "./pages/NFT/NFTList";
 import Derivatives from "./pages/Exchanges/Derivatives";
-import Test from "./Test";
 
 function App() {
   return (
@@ -47,9 +46,6 @@ function App() {
             <Route path="/forgot" element={<Forgot />} />
             <Route path="/markets" element={<Markets />} />
             <Route path="/" element={<Home />} />
-
-            <Route path="/test" element={<Test />} />
-
             <Route path="/coins/:coinID" element={<CoinInfo />} />
             <Route
               path="/api/auth/verify/:id/:token"

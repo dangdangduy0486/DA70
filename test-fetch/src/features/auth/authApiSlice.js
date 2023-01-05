@@ -9,6 +9,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
+      // transformResponse: (response, meta, arg) => response.data,
     }),
     sendLogout: build.mutation({
       query: () => ({

@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
@@ -11,8 +10,7 @@ import Footer from "../../components/Footer/Footer";
 import { useGetTrendingCoinsQuery } from "../../features/coins/coinsApiSlice";
 
 const Mainbonus = () => {
-  const [trendCoins, setTrendingCoins] = useState(null);
-  const [isError, setIsError] = useState(false);
+  const [trendingCoins, setTrendingCoins] = useState([]);
 
   // useEffect(() => {
   //   const url = "api/trending";
@@ -22,20 +20,40 @@ const Mainbonus = () => {
   //       Authorization: token ? `Bearer ${token}` : "",
   //     },
   //   };
-  //   axios
-  //     .get(url, opts)
-  //     .then((res) => {
-  //       setTrendingCoins(res.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setIsError(true);
-  //     });
+  //   const check = localStorage.getItem("trendingCoins");
+  //   if (!check) {
+  //     axios
+  //       .get(url, opts)
+  //       .then((res) => {
+  //         console.log("hello");
+  //         setTrendingCoins(res.data.coins);
+  //         localStorage.setItem("trendingCoins", JSON.stringify(res.data.coins));
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  //   if (check) {
+  //     setTrendingCoins(JSON.parse(check));
+  //   }
   // }, []);
+  // console.log(trendingCoins);
+  // console.log(typeof trendingCoins);
 
-  const { data, error, isLoading } = useGetTrendingCoinsQuery();
-  console.log(data);
-  if (!data || error || isLoading) return <Loading />;
+  const { data } = useGetTrendingCoinsQuery();
+  useEffect(() => {
+    const check = localStorage.getItem("trendingCoins");
+    if (!check && data) {
+      setTrendingCoins(data.coins);
+      localStorage.setItem("trendingCoins", JSON.stringify(data.coins));
+    }
+    if (check) {
+      setTrendingCoins(JSON.parse(check));
+    }
+  }, [data]);
+
+  if (!trendingCoins) return <Loading />;
+
   return (
     <>
       <div className="cover">
@@ -51,8 +69,8 @@ const Mainbonus = () => {
           </Link>
         </div>
         <div className="cover_mid cover-gird">
-          {data.coins &&
-            data.coins.map((coin) => (
+          {trendingCoins &&
+            trendingCoins.map((coin) => (
               <div className="girds" key={coin.item.coin_id}>
                 <div className="gird_top">
                   <img src={coin.item.thumb} alt="coin" />
@@ -79,6 +97,15 @@ const Mainbonus = () => {
             ))}
         </div>
         <div className="cover_bottom">
+          <button
+            onClick={() => {
+              setTrendingCoins([]);
+              localStorage.removeItem("trendingCoins");
+              window.location.reload();
+            }}
+          >
+            Fetch
+          </button>
           <div className="cover_carousel">
             <Carousel autoplay>
               <div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightToBracket,
@@ -22,15 +22,26 @@ import Categories from "../../components/Cryptocurrencies/Categories";
 import Search from "../../components/Others/Search/Search";
 
 const Markets = () => {
+  const [markets, setMarkets] = useState([]);
   const [vsCurrency, setVsCurrency] = useState("usd");
   const [order, setOrder] = useState("market_cap_desc");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(12969);
   const [perPage, setPerPage] = useState(100);
   const [category, setCategory] = useState("all");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const callback = (childData) => {
-    setVsCurrency((vsCurrency) => (vsCurrency = childData));
+  // const callback = (childData) => {
+  //   setVsCurrency((vsCurrency) => (vsCurrency = childData));
+  // };
+
+  // useEffect(() => {
+  //   callback();
+  // }, []);
+
+  const callback = async (childData) => {
+    console.log(childData);
+    await setVsCurrency((vsCurrency) => (vsCurrency = childData));
   };
 
   const categoryCallback = (childData) => {
@@ -62,13 +73,29 @@ const Markets = () => {
   //       console.log(error);
   //     });
   // }, [vsCurrency, currentPage]);
-  const { data, error, isLoading } = useGetMarketsQuery({
+  const { data } = useGetMarketsQuery({
     vs_currency: vsCurrency,
     category: category,
     order: order,
     perPage: perPage,
     page: page,
   });
+
+  useEffect(() => {
+    const check = localStorage.getItem("markets");
+    if (isLoading) {
+      localStorage.removeItem("markets");
+    }
+    if (!check && data) {
+      setMarkets(data);
+      localStorage.setItem("markets", JSON.stringify(data));
+      setIsLoading(false);
+    }
+    if (check) {
+      setMarkets(JSON.parse(check));
+      setIsLoading(false);
+    }
+  }, [data, isLoading]);
 
   //total per page
   const inputRef = useRef(null);
@@ -90,6 +117,7 @@ const Markets = () => {
       return null;
     } else {
       setPage(1);
+      setIsLoading(true);
     }
   };
 
@@ -98,6 +126,7 @@ const Markets = () => {
       return null;
     } else {
       setPage(TotalNumber);
+      setIsLoading(true);
     }
   };
 
@@ -106,6 +135,7 @@ const Markets = () => {
       return null;
     } else {
       setPage(page + 1);
+      setIsLoading(true);
     }
   };
 
@@ -114,36 +144,41 @@ const Markets = () => {
       return null;
     } else {
       setPage(page - 1);
+      setIsLoading(true);
     }
   };
 
   const multiStepNext = () => {
     if (page + 3 >= TotalNumber) {
       setPage(TotalNumber - 1);
+      setIsLoading(true);
     } else {
       setPage(page + 3);
+      setIsLoading(true);
     }
   };
 
   const multiStepPrev = () => {
     if (page - 3 <= 1) {
       setPage(TotalNumber + 1);
+      setIsLoading(true);
     } else {
       setPage(page - 2);
+      setIsLoading(true);
     }
   };
   //handle loading and error
-  if (!data || error || isLoading) return <Loading />;
+  if (!markets) return <Loading />;
 
   return (
     <>
-      <NavBar page={"markets"} />
+      <NavBar page={"markets"} currencyFr={callback} vsCurrency={vsCurrency} />
       <Sidebar page={"markets"} />
       <div className="markets container-fluid">
         <CarouselCoins />
         <div className="container mt-3" style={{ height: "100hv" }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} />
+            {/* <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} /> */}
             <Search />
           </div>
           <Tabs defaultActiveKey="2" className="mt-3">
@@ -158,7 +193,7 @@ const Markets = () => {
             ></Tabs.TabPane>
             <Tabs.TabPane tab="Coins" key="2">
               <MarketsDetails
-                markets={data}
+                markets={markets}
                 symbol={vsCurrency}
                 categoryFr={categoryCallback}
               />

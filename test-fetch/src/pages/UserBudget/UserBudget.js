@@ -5,7 +5,6 @@ import { Tabs, Space } from "antd";
 
 import "./UserBudget.css";
 import Fiat from "../../components/Fiat/Fiat";
-import Funding from "../../components/Funding";
 import Futures from "../../components/Futures";
 import Overview from "../../components/Overview/Overview";
 const UserBudget = () => {
@@ -32,10 +31,7 @@ const UserBudget = () => {
           <Tabs.TabPane tab="Futures" key="3">
             <Futures />
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Funding" key="4">
-            <Funding />
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Transaction History" key="5">
+          <Tabs.TabPane tab="Transaction History" key="4">
             Content of Tab Pane 3
           </Tabs.TabPane>
         </Tabs>

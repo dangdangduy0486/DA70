@@ -1,3 +1,5 @@
+import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 
 export const coinsApiSlice = apiSlice.injectEndpoints({
@@ -12,10 +14,20 @@ export const coinsApiSlice = apiSlice.injectEndpoints({
     }),
     getTrendingCoins: build.query({
       query: () => {
-        return {
-          url: "/api/trending",
-          method: "GET",
-        };
+        const check = localStorage.getItem("trendingCoins");
+        if (!check) {
+          console.log("!check");
+          return {
+            url: "/api/trending",
+            method: "GET",
+          };
+        }
+        if (check) {
+          console.log("check");
+          return {
+            url: "",
+          };
+        }
       },
     }),
     getCoinsHistoryChart: build.query({

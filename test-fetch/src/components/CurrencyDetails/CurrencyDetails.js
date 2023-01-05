@@ -5,9 +5,9 @@ import { useGetCurrenciesQuery } from "../../features/coins/coinsApiSlice";
 const CurrencyDetails = (props) => {
   const [selected, setSelected] = useState("usd");
 
-  const handleSelectCurrency = (value) => {
-    props.currencyFr(value.symbol);
-    setSelected(value.symbol);
+  const handleSelectCurrency = async (value) => {
+    await setSelected(value.symbol);
+    await props.currencyFr(value.symbol);
   };
   const { data, error, isLoading } = useGetCurrenciesQuery();
   if (!data || error || isLoading) return null;
@@ -53,7 +53,7 @@ const CurrencyDetails = (props) => {
 
   return (
     <>
-      <div className="dropdown">
+      <div className="dropstart">
         <button
           className="border border-white rounded-pill"
           data-bs-toggle="dropdown"
@@ -64,9 +64,9 @@ const CurrencyDetails = (props) => {
         </button>
         <ul className="dropdown-menu">
           {newItems &&
-            newItems.map((currency) => (
+            newItems.map((currency, index) => (
               <>
-                <li className="dropdown-menu-category">
+                <li className="dropdown-menu-category" key={index}>
                   <p className="dropdown-menu-category-title">
                     {currency.category}
                   </p>

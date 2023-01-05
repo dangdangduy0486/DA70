@@ -3,25 +3,81 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX, faCheck, faCircle } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import getCurrencySymbol from "currency-symbols";
+import { useNavigate } from "react-router-dom";
 
 import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const FundingRequest = () => {
+  const navigate = useNavigate();
   const [fundingRequest, setFundingRequest] = useState([]);
+  const [status, setStatus] = useState(null);
+  const [reqID, setReqID] = useState(null);
+  // const [reqType, setReqType] = useState("spot");
+  const { email, role } = useAuth();
 
-  const { email } = useAuth();
+  const handleResponseApproved = async (value) => {
+    setReqID(value._id);
+    setStatus("approved");
+    const url = `api/admin/response/${email}/funding`;
 
-  useEffect(() => {
-    axios
-      .get(`api/user/request/${email}/funding`)
+    await axios
+      .patch(url, {
+        requestID: reqID,
+        status: status,
+      })
       .then((response) => {
-        setFundingRequest(response.data);
+        window.location.reload(false);
+        req();
+        navigate("/request");
+        toast.success(response.data.message);
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.data.message);
       });
-  }, [email]);
-  console.log(fundingRequest.request);
+  };
+
+  const handleResponseDenided = async (value) => {
+    setReqID(value._id);
+    setStatus("rejected");
+    const url = `api/admin/response/${email}/funding`;
+
+    await axios
+      .patch(url, {
+        requestID: reqID,
+        status: status,
+      })
+      .then((response) => {
+        window.location.reload(false);
+        req();
+        navigate("/request");
+        toast.success(response.data.message);
+      })
+      .catch((error) => {
+        toast.error(error.data.message);
+      });
+  };
+
+  const req = () => {
+    const url = `api/user/request/${email}/funding`;
+    axios
+      .get(url)
+      .then((response) => {
+        setFundingRequest(response.data.request);
+        toast.success(response.data.message);
+      })
+      .catch((error) => {
+        toast.error(error.data.message);
+      });
+  };
+
+  useEffect(() => {
+    try {
+      req();
+    } catch (error) {
+      toast.error(error.data.message);
+    }
+  }, []);
 
   return (
     <>
@@ -34,21 +90,26 @@ const FundingRequest = () => {
               <th scope="col">From</th>
               <th scope="col">Amount</th>
               <th scope="col">Status</th>
-              <th scope="col">Action</th>
+              {role === "admin" ? <th scope="col">Action</th> : null}
             </tr>
           </thead>
           <tbody>
-            {fundingRequest.request &&
-              fundingRequest.request.map((rs, index) => (
+            {fundingRequest.length <= 0 ? (
+              <tr>
+                <td>Empty</td>
+              </tr>
+            ) : (
+              fundingRequest &&
+              fundingRequest.map((rs, index) => (
                 <tr key={rs._id}>
                   <th>{index + 1}</th>
-                  <td>{rs.senderAddress}</td>
                   <td>{rs.recieverAddress ? rs.recieverAddress : "?"}</td>
+                  <td>{rs.senderAddress}</td>
                   <td>
                     <span className="text-muted">{`${
                       getCurrencySymbol(rs.firstUnit)
                         ? getCurrencySymbol(rs.firstUnit)
-                        : "?"
+                        : rs.firstUnit
                     } `}</span>
                     <span>{rs.amount ? rs.amount.toLocaleString() : "?"}</span>
                   </td>
@@ -68,15 +129,42 @@ const FundingRequest = () => {
                     </span>
                   </td>
                   <td className="request-action">
-                    <span className="text-success me-3" id="approved-check">
-                      <FontAwesomeIcon icon={faCheck} />
-                    </span>
-                    <span className="text-danger" id="denided-check">
-                      <FontAwesomeIcon icon={faX} />
-                    </span>
+                    {rs.status === "approved" || rs.status === "rejected" ? (
+                      <>
+                        {/* <span
+                              className="text-secondary me-3"
+                              id="approved-check"
+                            >
+                              <FontAwesomeIcon icon={faCheck} />
+                            </span>
+                            <span className="text-secondary" id="denided-check">
+                              <FontAwesomeIcon icon={faX} />
+                            </span> */}
+                      </>
+                    ) : (
+                      <>
+                        <span
+                          className="text-success me-3"
+                          id="approved-check"
+                          onClick={() => handleResponseApproved(rs)}
+                          key={rs._id}
+                        >
+                          <FontAwesomeIcon icon={faCheck} />
+                        </span>
+                        <span
+                          className="text-danger"
+                          id="denided-check"
+                          onClick={() => handleResponseDenided(rs)}
+                          key={rs._id}
+                        >
+                          <FontAwesomeIcon icon={faX} />
+                        </span>
+                      </>
+                    )}
                   </td>
                 </tr>
-              ))}
+              ))
+            )}
           </tbody>
         </table>
       </div>

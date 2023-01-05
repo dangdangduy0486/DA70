@@ -2,19 +2,23 @@
   background-color: white;
   min-height: calc(100vh-56px);
 }
+
 .container_fiat span {
   color: var(--yellwo-color);
 }
+
 .container_fiat h1 {
   text-align: center;
   padding: 1rem;
 }
+
 .container_estimate {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
 }
+
 .container_amount {
   display: flex;
   align-items: center;
@@ -22,23 +26,27 @@
   font-size: 1rem;
   font-weight: 400;
 }
+
 .container_select {
   display: flex;
   align-items: center;
   margin-right: 1rem;
   justify-content: space-around;
 }
+
 .container_myasset {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
+
 .myasset_details {
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
+
 .myasset_detail {
   display: flex;
   justify-content: space-between;

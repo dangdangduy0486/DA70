@@ -17,7 +17,7 @@ const RequestRow = ({ vs_currency, ids }) => {
       });
   }, []);
 
-  // console.log(coinInfo);
+  console.log(coinInfo);
   return (
     <>
       {coinInfo.map((c) => (

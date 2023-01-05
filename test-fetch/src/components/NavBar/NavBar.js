@@ -2,6 +2,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/esm/Button";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBitcoinSign } from "@fortawesome/free-solid-svg-icons";
@@ -11,19 +12,25 @@ import { useState } from "react";
 import "./NavBar.css";
 import MenuProfile from "../MenuProfile/MenuProfile";
 import useAuth from "../../hooks/useAuth";
-import { useSendLogoutMutation } from "../../features/auth/authApiSlice";
 import CurrencyDetails from "../CurrencyDetails/CurrencyDetails";
 
 const NavBar = (props) => {
   const [vsCurrency, setVsCurrency] = useState("usd");
+  useEffect(() => {
+    callback();
+  }, []);
 
-  const callback = (childData) => {
-    setVsCurrency((vsCurrency) => (vsCurrency = childData));
+  const callback = async (childData) => {
+    if (childData) {
+      await setVsCurrency((vsCurrency) => (vsCurrency = childData));
+      await props.currencyFr(vsCurrency);
+      console.log(vsCurrency);
+    } else {
+      await props.currencyFr(vsCurrency);
+    }
   };
 
   const { email } = useAuth();
-  // const [sendLogout, { isLoading, isSuccess, isError, error }] =
-  //   useSendLogoutMutation();
 
   return (
     <>
@@ -115,14 +122,11 @@ const NavBar = (props) => {
                   </ul>
                 </li>
               </Nav.Item>
-              {/* <Nav.Item style={{ display: "flex", justifyContent: "end" }}>
-                <CurrencyDetails
-                  currencyFr={callback}
-                  vsCurrency={vsCurrency}
-                />
-              </Nav.Item> */}
             </Nav>
           </Navbar.Collapse>
+          <Nav>
+            <CurrencyDetails currencyFr={callback} vsCurrency={vsCurrency} />
+          </Nav>
           {email ? (
             <>
               <Nav className="me-0 menu-right">

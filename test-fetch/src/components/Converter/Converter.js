@@ -1,74 +1,113 @@
 import React from "react";
-import "./Converter.css";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CurrencyInput from "../CurrencyInput/CurrencyInput";
-import Button from "react-bootstrap/esm/Button";
-import NavBar from "../NavBar/NavBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
+import "./Converter.css";
+import CurrencyDetails from "../CurrencyDetails/CurrencyDetails";
+
 const Coverter = () => {
-  const [amount1, setAmount1] = useState(1);
-  const [amount2, setAmount2] = useState(1);
-  const [currency1, setCurrency1] = useState("btc");
-  const [currency2, setCurrency2] = useState("btc");
-  const [rates, setRates] = useState([]);
-  const token = localStorage.getItem("token");
-  const opts = {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
+  const [info, setInfo] = useState([]);
+  const [input, setInput] = useState(0);
+  const [from, setFrom] = useState("usd");
+  const [to, setTo] = useState("inr");
+  const [options, setOptions] = useState([]);
+  const [output, setOutput] = useState(0);
+
   useEffect(() => {
     axios
-      .get(`https://api.coingecko.com/api/v3/exchange_rates`, opts)
-      .then((response) => {
-        setRates(response.data.rates);
+      .get(
+        `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${from}.json`
+      )
+      .then((res) => {
+        setInfo(res.data[from]);
       });
-  }, []);
+  }, [from]);
 
-  function numberFormat(number) {
-    return number.toFixed(6);
+  useEffect(() => {
+    setOptions(Object.keys(info));
+    convert();
+  }, [info]);
+
+  // Function to convert the currency
+  function convert() {
+    var rate = info[to];
+    setOutput(input * rate);
   }
-  function handleAmount1Change(amount1) {
-    setAmount2(
-      numberFormat((amount1 * rates[currency2].value) / rates[currency1].value)
-    );
-    setAmount1(amount1);
+
+  // Function to switch between two currency
+  function flip() {
+    var temp = from;
+    setFrom(to);
+    setTo(temp);
   }
-  function handleCurrency1Change(currency1) {
-    setAmount2(
-      numberFormat((amount1 * rates[currency2].value) / rates[currency1].value)
-    );
-    setCurrency1(currency1);
-  }
+
   return (
-    <>
-      <NavBar />
-      <div className="container_converter">
-        <div className="coin_con">
-          <div className="coin_trade">
-            <h2>Converter Coin</h2>
-            <h5>From</h5>
-            <CurrencyInput
-              onAmountChange={handleAmount1Change}
-              onCurrencyChange={handleCurrency1Change}
-              currencies={Object.keys(rates)}
-              amount={amount1}
-              currency={currency1}
-            />
-            <h5>To</h5>
-            <CurrencyInput
-              onAmountChange={setAmount2}
-              onCurrencyChange={setCurrency2}
-              currencies={Object.keys(rates)}
-              amount={amount2}
-              currency={currency2}
-            />
-            <Button variant="outline-warning">Swap</Button>
-          </div>
+    <div className="App">
+      <div className="heading">
+        <h1>Currency converter</h1>
+      </div>
+      <div className="container">
+        <div className="left">
+          <h3>Amount</h3>
+          <input
+            type="text"
+            placeholder="Enter the amount"
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </div>
+        <div className="middle">
+          <h3>From</h3>
+          {/* <Dropdown
+            options={options}
+            onChange={(e) => {
+              setFrom(e.value);
+            }}
+            value={from}
+            placeholder="From"
+          /> */}
+          <CurrencyDetails
+            onChange={(e) => {
+              setFrom(e.value);
+            }}
+            value={from}
+            placeholder="From"
+          />
+        </div>
+        <div className="switch">
+          <FontAwesomeIcon
+            size="30px"
+            onClick={() => {
+              flip();
+            }}
+            icon={faArrowRightArrowLeft}
+          />
+        </div>
+        <div className="right">
+          <h3>To</h3>
+          <CurrencyDetails
+            onChange={(e) => {
+              setTo(e.value);
+            }}
+            value={to}
+            placeholder="To"
+          />
         </div>
       </div>
-    </>
+      <div className="result">
+        <button
+          onClick={() => {
+            convert();
+          }}
+        >
+          Convert
+        </button>
+        <h2>Converted Amount:</h2>
+        <p>{input + " " + from + " = " + output.toFixed(2) + " " + to}</p>
+      </div>
+    </div>
   );
 };
-
 export default Coverter;
