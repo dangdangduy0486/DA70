@@ -8,19 +8,13 @@ const Currency = require("../models/currency");
 
 //get all users
 const allUsers = async (req, res) => {
+  console.log("hello");
   try {
     const user = await User.findOne({
-      // _id: req.params.id,
-      email: req.parmas.email,
+      email: req.params.email,
     });
 
-    if (!user) {
-      return res.status(400).send({
-        message: "Invalid link",
-      });
-    }
-
-    if (user.role !== "admin") {
+    if (!user && user.role !== "admin") {
       return res.status(400).send({
         message: "Invalid link",
       });

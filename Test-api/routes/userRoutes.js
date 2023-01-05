@@ -9,6 +9,7 @@ const {
   editUserInfo,
   request,
   requestInfo,
+  p2pRequest,
 } = require("../controllers/userController");
 
 //forgot password
@@ -31,5 +32,7 @@ router.post("/request/:email/:type", request);
 
 //
 router.get("/request/:email/:type", requestInfo);
+
+router.post("/request-p2p/:email", p2pRequest);
 
 module.exports = router;
