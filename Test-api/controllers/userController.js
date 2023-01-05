@@ -7,7 +7,6 @@ const CryptoJS = require("crypto-js");
 const sendEmail = require("../utils/sendEmail");
 const User = require("../models/User");
 const Token = require("../models/token");
-const Order = require("../models/order");
 const Wallet = require("../models/wallet");
 const Request = require("../models/request");
 
@@ -28,14 +27,13 @@ const forgotPassword = async (req, res) => {
     let user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(409).send({ message: "User Not Exist!" });
 
-    const url = `${process.env.BASE_URL}api/user/reset-password/${user.id}`;
+    const url = `${process.env.BASE_URL}api/user/reset-password/${user.email}`;
     await sendEmail(user.email, "Password Reset", url);
 
     res
       .status(201)
       .send({ message: "An Email sent to your account please check" });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
@@ -75,7 +73,6 @@ const resetPasswordRequest = async (req, res) => {
       message: "Email verified successfully",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
@@ -84,7 +81,7 @@ const resetPasswordRequest = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.params.email,
+      email: req.params.email,
     });
 
     if (!user)
@@ -95,7 +92,7 @@ const resetPassword = async (req, res) => {
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.newpassword, salt);
     await User.updateOne(
-      { _id: req.params.userID },
+      { email: req.params.email },
       {
         $set: {
           password: hashPassword,
@@ -105,7 +102,6 @@ const resetPassword = async (req, res) => {
 
     res.status(201).send({ message: "Reset password successfully" });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
@@ -174,47 +170,20 @@ const request = async (req, res) => {
       });
     }
 
-    // const {
-    //   requestType,
-    //   type,
-    //   firstUnit,
-    //   secondUnit,
-    //   amount,
-    //   total,
-    //   senderAddress,
-    //   recieverAddress,
-    // } = req.body;
-
-    // if (!req.body) {
-    //   return res.status(401).send({
-    //     message: "missing something",
-    //   });
-    // }
-    if (!req.body === null) {
-      return res.status(401).send({
-        message: "missing something",
-      });
-    }
-    console.log(req.body);
-    console.log("hello 1");
-
     if (req.params.type === "spot") {
       const existWallet = await Wallet.findOne({
         userID: user._id,
         currencyID: req.body.secondUnit,
-        type: "fiat",
       });
-      console.log(existWallet);
 
       if (!existWallet) {
         return res.status(401).send({
-          message: "Please..",
+          message: "Please use other currency units",
         });
       }
-      console.log("hello 2");
       let total = parseFloat(existWallet.amount) - parseFloat(req.body.total);
       if (total > 0) {
-        const request = await Request.create({
+        await Request.create({
           userID: user._id,
           requestType: req.params.type,
           type: req.body.type ? req.body.type : null,
@@ -230,25 +199,22 @@ const request = async (req, res) => {
             : null,
         });
 
-        const wallet = await Wallet.findOneAndUpdate(
+        await Wallet.findOneAndUpdate(
           {
             userID: user._id,
             currencyID: req.body.secondUnit,
-            type: "fiat",
           },
           { amount: total }
         );
-        console.log("hello 3");
+
         return res.status(200).send({
-          request,
-          wallet,
+          message: "Your request has been sent",
         });
       }
       return res.status(401).send({
-        message: "Please",
+        message: "Your amount is not enough",
       });
     }
-    console.log("hello 4");
     const request = await Request.create({
       userID: user._id,
       requestType: req.params.type,
@@ -257,9 +223,7 @@ const request = async (req, res) => {
       secondUnit: req.body.secondUnit ? req.body.secondUnit : null,
       amount: req.body.amount ? req.body.amount : null,
       total: req.body.total ? req.body.total : null,
-      senderAddress: req.body.senderAddress
-        ? generateMD5(req.body.senderAddress)
-        : null,
+      senderAddress: req.body.senderAddress ? req.body.senderAddress : null,
       recieverAddress: req.body.recieverAddress
         ? generateMD5(req.body.recieverAddress)
         : null,
@@ -267,6 +231,7 @@ const request = async (req, res) => {
 
     return res.status(200).send({
       request,
+      message: "Your request has been sent",
     });
   } catch (error) {
     return res.status(500).send({

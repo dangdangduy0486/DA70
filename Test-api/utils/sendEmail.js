@@ -14,10 +14,14 @@ module.exports = async (email, subject, text) => {
       },
     });
     const mailOptions = {
-      from: process.env.USER + "ADMIN",
+      from: {
+        name: "Admin",
+        address: process.env.USER,
+      },  
       to: email,
       subject: subject,
       text: text,
+      // html: ,
     };
     await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {

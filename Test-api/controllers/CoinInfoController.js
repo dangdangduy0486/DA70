@@ -8,10 +8,10 @@ const axiosOptions = {
   },
 };
 
-const getCoinInfo = async (id) => {
+const getCoinInfo = async (vs_currency, ids) => {
   try {
     const res = await axios
-      .get(config.COIN_INFO_URL(id), axiosOptions)
+      .get(config.COIN_INFO_URL(vs_currency, ids), axiosOptions)
       .then((response) => {
         return response;
       })
@@ -25,10 +25,10 @@ const getCoinInfo = async (id) => {
 };
 //fetch
 const CoinParser = async (req, res) => {
-  if (!req.query.id) {
+  if (!req.query.vs_currency || !req.query.ids) {
     return res.status(403).json({ error: "missing something" });
   }
-  const CoinInfo = await getCoinInfo(req.query.id);
+  const CoinInfo = await getCoinInfo(req.query.vs_currency, req.query.ids);
   return res.status(200).json(CoinInfo);
 };
 module.exports = {

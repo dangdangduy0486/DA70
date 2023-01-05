@@ -6,7 +6,6 @@ const CryptoJS = require("crypto-js");
 const sendEmail = require("../utils/sendEmail");
 const User = require("../models/User");
 const Token = require("../models/token");
-const Order = require("../models/order");
 
 const generateMD5 = (input) => {
   const expire = Math.ceil(Date.now() / 1000) + 25200;
@@ -42,7 +41,7 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send({
-      message: "Internal Server Error4",
+      message: "Internal Server Error",
       error: error,
     });
   }

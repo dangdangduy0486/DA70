@@ -49,7 +49,7 @@ app.use("/api/trending", require("./routes/trendingCoinsRoute"));
 //coin information
 app.use("/api/coins", require("./routes/CoinInfoRoute"));
 
-// verify;
+//verify;
 // const VerifyJWT = require("./middleware/verifyJWT");
 // app.use(VerifyJWT);
 // token validate request
@@ -65,12 +65,6 @@ app.use("/api/admin", require("./routes/adminRoute"));
 
 //wallet
 app.use("/api/wallet", require("./routes/walletRoute"));
-
-//order
-app.use("/api/order", require("./routes/orderRoute"));
-
-//get request
-app.use("/api/request", require("./routes/requestRoute"));
 
 //history chart
 app.use("/api/historyChart", require("./routes/historyChartRoute"));

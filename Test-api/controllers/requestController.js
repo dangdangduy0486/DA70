@@ -102,12 +102,6 @@ const requestSpot = async (req, res) => {
   }
 };
 
-// const requestP2P
-
-// const requestFunding
-
-// const requestFutures
-
 module.exports = {
   getRequest,
 };

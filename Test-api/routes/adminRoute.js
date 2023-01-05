@@ -3,7 +3,8 @@ const {
   allUsers,
   editUser,
   deleteUser,
-  response,
+  responseFunding,
+  responseSpot
 } = require("../controllers/adminController");
 
 const router = express.Router();
@@ -17,7 +18,10 @@ router.patch("/edit-user/:email", editUser);
 //delete user
 router.delete("/delete-user/:email", deleteUser);
 
+//response request funding
+router.patch("/response/:email/funding", responseFunding);
+
 //response request recharge
-router.patch("/response/:email", response);
+router.patch("/response/:email/spot", responseSpot);
 
 module.exports = router;
