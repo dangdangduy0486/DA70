@@ -5,6 +5,7 @@ import "./Forgot.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import NavBar from "../../components/NavBar/NavBar";
+import { toast } from "react-toastify";
 
 const Forgot = () => {
   const history = useNavigate();
@@ -20,12 +21,15 @@ const Forgot = () => {
     try {
       await axios
         .post(url, { email }, opts)
-        .then(() => history("/login"))
-        .catch((err) => {
-          if (err && err.response) console.log("Error", err);
+        .then(() => {
+          toast.warning("Please check your email!!");
+          history("/login");
+        })
+        .catch((error) => {
+          if (error && error.response) toast.error(error);
         });
     } catch (error) {
-      console.log("Error...");
+      toast.error(error);
     }
   };
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 const NewPassword = () => {
   const history = useNavigate();
   // const url = `api/user/reset-password/${id}`;
@@ -18,12 +19,17 @@ const NewPassword = () => {
     try {
       await axios
         .patch(url, { newpassword }, opts)
-        .then(() => history("/login"))
-        .catch((err) => {
-          if (err && err.response) console.log("Error", err);
+        .then(() => {
+          toast.success("Change password completed!!");
+          history("/login");
+        })
+        .catch((error) => {
+          if (error && error.response) {
+            toast.error(error);
+          }
         });
     } catch (error) {
-      console.log("Error...");
+      toast.error(error);
     }
   };
 

@@ -5,6 +5,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import "./Request.css";
 import FundingRequest from "./FundingRequest";
 import SpotRequest from "./SpotRequest";
+import P2PRequest from "./P2PRequest";
 const Request = () => {
   return (
     <>
@@ -17,8 +18,8 @@ const Request = () => {
           <Tabs.TabPane tab="Spot" key="2">
             <SpotRequest />
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Transaction History" key="5">
-            Content of Tab Pane 3
+          <Tabs.TabPane tab="Transaction History" key="3">
+            <P2PRequest />
           </Tabs.TabPane>
         </Tabs>
       </div>
