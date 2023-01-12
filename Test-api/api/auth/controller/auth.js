@@ -10,13 +10,23 @@ const Order = require("../models/order");
 
 const generateMD5 = () => {
   const expire = Math.ceil(Date.now() / 1000) + 25200;
-  const hash = CryptoJS.MD5(expire + ` cntt@da&)dUybAo`);
+  const hash = CryptoJS.MD5(expire + process.env.HASH_SECRET_KEY);
   const base64 = hash
     .toString(CryptoJS.enc.Base64)
     .replace(/=/g, "")
     .replace(/\+/g, "-")
     .replace(/\//g, "_");
   return base64;
+};
+
+const encoded = (value) => {
+  var encrypted = CryptoJS.AES.encrypt(value, ` cntt@da&)dUybAo`);
+  return encrypted.toString();
+};
+const decoded = (encrypted) => {
+  var bytes = CryptoJS.AES.decrypt(encrypted, ` cntt@da&)dUybAo`);
+  var decrypted = bytes.toString(CryptoJS.enc.Utf8);
+  return decrypted;
 };
 
 //signup

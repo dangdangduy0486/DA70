@@ -9,13 +9,23 @@ const Token = require("../models/token");
 
 const generateMD5 = (input) => {
   const expire = Math.ceil(Date.now() / 1000) + 25200;
-  const hash = CryptoJS.MD5(expire + ` cntt@da&)dUybAo` + input);
+  const hash = CryptoJS.MD5(expire + process.env.HASH_SECRET_KEY + input);
   const base64 = hash
     .toString(CryptoJS.enc.Base64)
     .replace(/=/g, "")
     .replace(/\+/g, "-")
     .replace(/\//g, "_");
   return base64;
+};
+
+const encoded = (value) => {
+  var encrypted = CryptoJS.AES.encrypt(value, ` cntt@da&)dUybAo`);
+  return encrypted.toString();
+};
+const decoded = (encrypted) => {
+  var bytes = CryptoJS.AES.decrypt(encrypted, ` cntt@da&)dUybAo`);
+  var decrypted = bytes.toString(CryptoJS.enc.Utf8);
+  return decrypted;
 };
 
 //signup
@@ -126,8 +136,7 @@ const login = async (req, res, next) => {
       },
       process.env.JWT_ACCESS_TOKEN,
       {
-        // expiresIn: "15m",
-        expiresIn: "15s",
+        expiresIn: "7d",
       }
     );
 
@@ -141,12 +150,12 @@ const login = async (req, res, next) => {
       }
     );
 
-    //create secure cookie with refresh token
-    res.cookie("jwt", refreshToken, {
+    //create secure cookie with access token
+    res.cookie("jwt", accessToken, {
       // httpOnly: true, //accessible only by web server
       // secure: true, //https
       // sameSite: "None", //cross-site cookie
-      // maxAge: 7 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
+      // maxAge: 7 * 24 * 60 * 60 * 1000, //cookie exp
     });
 
     res.status(200).json({
@@ -160,49 +169,49 @@ const login = async (req, res, next) => {
   }
 };
 
-const refresh = (req, res) => {
-  const cookies = req.cookies;
-  console.log(cookies);
-  if (!cookies?.jwt)
-    return res.status(401).json({
-      message: "Unauthorized",
-    });
+// const refresh = (req, res) => {
+//   const cookies = req.cookies;
+//   console.log(cookies);
+//   if (!cookies?.jwt)
+//     return res.status(401).json({
+//       message: "Unauthorized",
+//     });
 
-  const refreshToken = cookies.jwt;
+//   const refreshToken = cookies.jwt;
 
-  jwt.verify(
-    refreshToken,
-    process.env.JWT_REFRESH_TOKEN,
-    async (err, decoded) => {
-      if (err)
-        return res.status(403).json({
-          message: "Forbidden",
-        });
+//   jwt.verify(
+//     refreshToken,
+//     process.env.JWT_REFRESH_TOKEN,
+//     async (err, decoded) => {
+//       if (err)
+//         return res.status(403).json({
+//           message: "Forbidden",
+//         });
 
-      const user = await User.findOne({
-        email: decoded.email,
-      }).exec();
+//       const user = await User.findOne({
+//         email: decoded.email,
+//       }).exec();
 
-      if (!user)
-        return res.status(401).json({
-          message: "Unauthorized",
-        });
+//       if (!user)
+//         return res.status(401).json({
+//           message: "Unauthorized",
+//         });
 
-      const accessToken = jwt.sign(
-        {
-          UserInfo: {
-            email: user.email,
-            role: user.role,
-          },
-        },
-        process.env.JWT_ACCESS_TOKEN,
-        { expiresIn: "15m" }
-      );
+//       const accessToken = jwt.sign(
+//         {
+//           UserInfo: {
+//             email: user.email,
+//             role: user.role,
+//           },
+//         },
+//         process.env.JWT_ACCESS_TOKEN,
+//         { expiresIn: "15m" }
+//       );
 
-      res.json({ accessToken });
-    }
-  );
-};
+//       res.json({ accessToken });
+//     }
+//   );
+// };
 
 const logout = (req, res) => {
   const cookies = req.cookies;
@@ -224,6 +233,6 @@ module.exports = {
   signup,
   verifyEmail,
   login,
-  refresh,
+  // refresh,
   logout,
 };

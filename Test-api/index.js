@@ -51,7 +51,7 @@ app.use("/api/coins", require("./routes/CoinInfoRoute"));
 
 //verify;
 // const VerifyJWT = require("./middleware/verifyJWT");
-// app.use(VerifyJWT);
+app.use(require("./middleware/verifyJWT"));
 // token validate request
 
 //user

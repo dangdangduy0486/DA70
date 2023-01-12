@@ -346,12 +346,15 @@ const responseSpot = async (req, res) => {
               wallet,
             });
           }
+          else{
+            type = "Cryptocurrencies";
+          }
 
           const wallet = await Wallet.create({
             userID: request.userID,
             currencyID: request.firstUnit,
             amount: request.amount,
-            type: "Cryptocurrencies",
+            type: type,
           });
 
           console.log("hello7");

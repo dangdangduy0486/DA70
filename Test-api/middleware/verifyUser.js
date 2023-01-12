@@ -17,7 +17,7 @@ const verifyUser = async (req, res) => {
       return res.status(403).json({
         message: "Forbidden",
       });
-    const email = decoded.email;
+    const email = decoded.UserInfo.email;
     const user = await User.findOne({
       email: decoded.email,
     }).exec();
