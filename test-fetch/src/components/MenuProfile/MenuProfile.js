@@ -1,32 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import axios from "axios";
 import "./MenuProfile.css";
 import profile from "../../images/profile.svg";
 import info from "../../images/infor.svg";
-import UserInfor from "../../pages/UserInfo/UserInfor";
 import { useGetUserQuery } from "../../features/user/userApiSlice";
-import Loading from "../../pages/Loading/Loading";
 import { useSendLogoutMutation } from "../../features/auth/authApiSlice";
 
 const MenuProfile = ({ email }) => {
+  // const history = useNavigation();
   function handleMenu() {
     let menuHand = document.querySelector(".sub-menu-wrap");
     menuHand.classList.toggle("open-menu");
-    // let subMenu = document.querySelector(".sub-menu");
-    // subMenu.style.zIndex = "1";
-    // subMenu.style.display = "block";
-    // subMenu.style.position = "fixed";
-    // subMenu.style.width = "15%";
-
-    // z-index: 1;
-    // display: block;
-    // position: fixed;
-    // width: 15%;
   }
 
   const { data, isLoading, isError } = useGetUserQuery(email);
   const [sendLogout] = useSendLogoutMutation();
+
+  const handleLogout = async () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("app/token");
+    await sendLogout;
+    window.location.reload(false);
+  };
 
   if (!data || isLoading || isError) return null;
 
@@ -64,20 +60,19 @@ const MenuProfile = ({ email }) => {
           </Link>
         </div>
       </div> */}
-      <div class="dropstart menu-profile">
+      <div className="dropstart menu-profile">
         <img
-          class="btn dropdown-toggle"
+          className="btn dropdown-toggle img_user"
           type="button"
           id="dropdownMenuProfile"
           data-bs-toggle="dropdown"
           aria-expanded="false"
-          className="img_user"
           src={profile}
           alt=""
-          onClick={handleMenu}
+          // onClick={handleMenu}
         ></img>
         <ul
-          class="dropdown-menu dropdown-menu-profile"
+          className="dropdown-menu dropdown-menu-profile"
           aria-labelledby="dropdownMenuProfile"
         >
           <li>
@@ -103,7 +98,7 @@ const MenuProfile = ({ email }) => {
           </li>
           <li>
             <Link style={{ textDecoration: "none" }} to="/">
-              <p className="text-danger" onClick={sendLogout}>
+              <p className="text-danger" onClick={handleLogout}>
                 Logout
               </p>
             </Link>

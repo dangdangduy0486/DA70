@@ -17,7 +17,7 @@ const Fiat = () => {
     return value.type === "Fiat Currencies";
   }
   let fiatList = data.wallet.filter(isFiat);
-  
+
   var map = fiatList.reduce(function (map, invoice) {
     var name = invoice.currencyID;
     var amount1 = invoice.amount * 1;
@@ -81,7 +81,7 @@ const Fiat = () => {
                 </table>
               </div>
               <div className="myasset_detail">
-                <h2>Spot</h2>
+                <h2>Crypto Currencies</h2>
               </div>
               <div>
                 <table className="table">

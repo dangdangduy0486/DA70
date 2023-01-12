@@ -10,6 +10,8 @@
   margin-top: 56px;
   margin-bottom: 2em;
   font-size: 15px;
+  background: url("../../images/coin2.png");
+  background-size: cover;
 }
 
 .container_charge h4 {

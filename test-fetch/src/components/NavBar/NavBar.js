@@ -13,6 +13,7 @@ import "./NavBar.css";
 import MenuProfile from "../MenuProfile/MenuProfile";
 import useAuth from "../../hooks/useAuth";
 import CurrencyDetails from "../CurrencyDetails/CurrencyDetails";
+import SearchBar from "../SearchBar/SearchBar";
 
 const NavBar = (props) => {
   const [vsCurrency, setVsCurrency] = useState("usd");
@@ -77,8 +78,8 @@ const NavBar = (props) => {
               <Link style={{ textDecoration: "none" }} to="/converter">
                 <Nav.Link href="/converter">Converter</Nav.Link>
               </Link>
-              <Link style={{ textDecoration: "none" }} to="/trading">
-                <Nav.Link href="/trading">P2P</Nav.Link>
+              <Link style={{ textDecoration: "none" }} to="/p2p-trading">
+                <Nav.Link href="/p2p-trading">P2P</Nav.Link>
               </Link>
               {/* <Link style={{ textDecoration: "none" }} to="/aboutus">
                 <Nav.Link href="/aboutus">About Us</Nav.Link>
@@ -122,6 +123,9 @@ const NavBar = (props) => {
                   </ul>
                 </li>
               </Nav.Item>
+              {/* <Nav.Item>
+                <SearchBar />
+              </Nav.Item> */}
             </Nav>
           </Navbar.Collapse>
           <Nav>
@@ -143,7 +147,7 @@ const NavBar = (props) => {
                 <MenuProfile className="menu-profile" email={email} />
                 <Link
                   style={{ textDecoration: "none", alignSelf: "center" }}
-                  to="/charge"
+                  to="/funding"
                 >
                   <FontAwesomeIcon
                     icon={faSackDollar}

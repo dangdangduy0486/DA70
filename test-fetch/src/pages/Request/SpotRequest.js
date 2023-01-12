@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX, faCheck, faCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import getCurrencySymbol from "currency-symbols";
+import moment from "moment/moment";
 
 import useAuth from "../../hooks/useAuth";
 import RequestRow from "./SpotRequestRow";
@@ -15,6 +17,7 @@ const SpotRequest = () => {
   const [spotRequest, setSpotRequest] = useState(null);
   const [status, setStatus] = useState(null);
   const [reqID, setReqID] = useState(null);
+  // const [date, setDate] = useState();
   // const [requestType, setRequestType] = useState("Spot order");
   const { email, role } = useAuth();
 
@@ -28,16 +31,28 @@ const SpotRequest = () => {
   //   req();
   // };
 
+  // const oldTime = new Date("2023-01-10T04:17:48.372Z");
+
   const handleResponseApproved = async (value) => {
     await setReqID(value._id);
     await setStatus("approved");
     const url = `api/admin/response/${email}/spot`;
+    const token = localStorage.getItem("token");
 
+    const opts = {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    };
     await axios
-      .patch(url, {
-        requestID: reqID,
-        status: status,
-      })
+      .patch(
+        url,
+        {
+          requestID: reqID,
+          status: status,
+        },
+        opts
+      )
       .then((response) => {
         window.location.reload(false);
         req();
@@ -53,12 +68,22 @@ const SpotRequest = () => {
     await setReqID(value._id);
     await setStatus("rejected");
     const url = `api/admin/response/${email}/spot`;
+    const token = localStorage.getItem("token");
 
+    const opts = {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    };
     await axios
-      .patch(url, {
-        requestID: reqID,
-        status: status,
-      })
+      .patch(
+        url,
+        {
+          requestID: reqID,
+          status: status,
+        },
+        opts
+      )
       .then((response) => {
         window.location.reload(false);
         req();
@@ -71,14 +96,24 @@ const SpotRequest = () => {
   };
 
   const req = () => {
+    const token = localStorage.getItem("token");
+    const opts = {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    };
     const url = `api/user/request/${email}/spot`;
     axios
-      .get(url)
+      .get(url, opts)
       .then((response) => {
         setSpotRequest(response.data.request);
       })
       .catch((error) => {
-        toast.error(error.data.message);
+        if (!error.response.data.message) {
+          toast.error(error.data.message);
+        } else {
+          toast.error(error.response.data.message);
+        }
       });
   };
 
@@ -91,7 +126,7 @@ const SpotRequest = () => {
   }, []);
 
   if (!spotRequest) return null;
-  console.log(spotRequest.length);
+  console.log(spotRequest);
   return (
     <>
       <div>
@@ -105,6 +140,7 @@ const SpotRequest = () => {
               <th scope="col">Total</th>
               <th scope="col">Type</th>
               <th scope="col">Status</th>
+              <th scope="col">Date</th>
               {role === "admin" ? <td>Actions</td> : null}
             </tr>
           </thead>
@@ -123,7 +159,18 @@ const SpotRequest = () => {
                     />
                     <td>{r.senderAddress}</td>
                     <td>{r.amount}</td>
-                    <td>{r.total.toLocaleString()}</td>
+                    <td>
+                      <span className="text-muted">{`${
+                        getCurrencySymbol(r.secondUnit)
+                          ? getCurrencySymbol(r.secondUnit)
+                          : "?"
+                      } `}</span>
+                      <span>
+                        {r.total.toLocaleString()
+                          ? r.total.toLocaleString()
+                          : "?"}
+                      </span>
+                    </td>
                     <td>
                       <span>{r.type}</span>
                     </td>
@@ -142,6 +189,9 @@ const SpotRequest = () => {
                         {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
                       </span>
                     </td>
+
+                    <td>{moment(r.date).fromNow()}</td>
+
                     {r.status === "approved" || r.status === "rejected" ? (
                       <td></td>
                     ) : (

@@ -4,6 +4,7 @@ import { faX, faCheck, faCircle } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import getCurrencySymbol from "currency-symbols";
 import { useNavigate } from "react-router-dom";
+import moment from "moment/moment";
 
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
@@ -20,12 +21,22 @@ const FundingRequest = () => {
     setReqID(value._id);
     setStatus("approved");
     const url = `api/admin/response/${email}/funding`;
+    const token = localStorage.getItem("token");
 
+    const opts = {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    };
     await axios
-      .patch(url, {
-        requestID: reqID,
-        status: status,
-      })
+      .patch(
+        url,
+        {
+          requestID: reqID,
+          status: status,
+        },
+        opts
+      )
       .then((response) => {
         window.location.reload(false);
         req();
@@ -33,7 +44,7 @@ const FundingRequest = () => {
         toast.success(response.data.message);
       })
       .catch((error) => {
-        toast.error(error.data.message);
+        toast.error(error.response.data.message);
       });
   };
 
@@ -41,12 +52,22 @@ const FundingRequest = () => {
     setReqID(value._id);
     setStatus("rejected");
     const url = `api/admin/response/${email}/funding`;
+    const token = localStorage.getItem("token");
 
+    const opts = {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    };
     await axios
-      .patch(url, {
-        requestID: reqID,
-        status: status,
-      })
+      .patch(
+        url,
+        {
+          requestID: reqID,
+          status: status,
+        },
+        opts
+      )
       .then((response) => {
         window.location.reload(false);
         req();
@@ -54,20 +75,27 @@ const FundingRequest = () => {
         toast.success(response.data.message);
       })
       .catch((error) => {
-        toast.error(error.data.message);
+        toast.error(error.response.data.message);
       });
   };
 
   const req = () => {
     const url = `api/user/request/${email}/funding`;
+    const token = localStorage.getItem("token");
+
+    const opts = {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    };
     axios
-      .get(url)
+      .get(url, opts)
       .then((response) => {
         setFundingRequest(response.data.request);
         toast.success(response.data.message);
       })
       .catch((error) => {
-        toast.error(error.data.message);
+        toast.error(error.response.data.message);
       });
   };
 
@@ -75,9 +103,10 @@ const FundingRequest = () => {
     try {
       req();
     } catch (error) {
-      toast.error(error.data.message);
+      toast.error(error.response.data.message);
     }
   }, []);
+  console.log(fundingRequest);
 
   return (
     <>
@@ -90,6 +119,7 @@ const FundingRequest = () => {
               <th scope="col">From</th>
               <th scope="col">Amount</th>
               <th scope="col">Status</th>
+              <th scope="col">Date</th>
               {role === "admin" ? <th scope="col">Action</th> : null}
             </tr>
           </thead>
@@ -128,6 +158,9 @@ const FundingRequest = () => {
                       {rs.status.charAt(0).toUpperCase() + rs.status.slice(1)}
                     </span>
                   </td>
+
+                  <td>{moment(rs.date).fromNow()}</td>
+
                   <td className="request-action">
                     {rs.status === "approved" || rs.status === "rejected" ? (
                       <>

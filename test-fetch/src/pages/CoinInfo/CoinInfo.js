@@ -13,13 +13,11 @@ import { toast } from "react-toastify";
 
 import "./CoinInfo.css";
 import Footer from "../../components/Footer/Footer";
-import CurrencyInput from "../../components/CurrencyInput/CurrencyInput";
 import NavBar from "../../components/NavBar/NavBar";
 import Loading from "../Loading/Loading";
 import Button from "react-bootstrap/esm/Button";
 import HistoryChart from "../../components/HistoryChart/HistoryChart";
 import useAuth from "../../hooks/useAuth";
-import { getByTestId } from "@testing-library/react";
 
 const CoinInfo = (props) => {
   const [coinInfo, setCoinInfo] = useState([]);
@@ -36,12 +34,19 @@ const CoinInfo = (props) => {
 
   const { email } = useAuth();
 
-  useEffect(() => {
-    let spotTotal = document.getElementById("spotTotal");
-    setTotal(spotTotal.innerText);
-  });
+  const handleAmountChange = (event) => {
+    if (!event.target.value === true) {
+      setAmount(0);
+    }
+    setAmount(parseFloat(event.target.value));
+  };
 
-  const handleCreateSpotRequest = async () => {
+  // const getTotal = (value) => {
+  //   let total = value;
+  //   console.log(total);
+  // };
+
+  const handleCreateSpotRequest = async (total) => {
     const url = `/api/user/request/${email}/spot`;
     const token = localStorage.getItem("token");
 
@@ -66,8 +71,6 @@ const CoinInfo = (props) => {
       )
       .then((response) => {
         toast.success(response.data.message);
-        // spotTotal.innerText = 0;
-        // setAmount(0);
       })
       .catch((error) => {
         if (!email) {
@@ -77,13 +80,6 @@ const CoinInfo = (props) => {
         toast.error(error.response.data.message);
       });
     return res.data;
-  };
-
-  const handleAmountChange = (event) => {
-    if (!event.target.value === true) {
-      setAmount(0);
-    }
-    setAmount(parseFloat(event.target.value));
   };
 
   // const req = async () => {
@@ -492,6 +488,10 @@ const CoinInfo = (props) => {
                     } `}
                   </span>
                   <span className="fs-3" id="spotTotal" name="spotTotal">
+                    {/* {coinInfo.current_price * amount
+                      ? // ? coinInfo.current_price * amount
+                        getTotal(coinInfo.current_price * amount)
+                      : 0} */}
                     {coinInfo.current_price * amount
                       ? coinInfo.current_price * amount
                       : 0}
@@ -499,7 +499,9 @@ const CoinInfo = (props) => {
                 </div>
                 <Button
                   variant="outline-warning"
-                  onClick={handleCreateSpotRequest}
+                  onClick={() =>
+                    handleCreateSpotRequest(coinInfo.current_price * amount)
+                  }
                 >
                   Buy
                 </Button>

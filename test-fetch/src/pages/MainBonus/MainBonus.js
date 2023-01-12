@@ -8,6 +8,7 @@ import { Carousel } from "antd";
 import Loading from "../Loading/Loading";
 import Footer from "../../components/Footer/Footer";
 import { useGetTrendingCoinsQuery } from "../../features/coins/coinsApiSlice";
+import axios from "axios";
 
 const Mainbonus = () => {
   const [trendingCoins, setTrendingCoins] = useState([]);

@@ -253,12 +253,17 @@ const MarketsDetails = ({ markets, symbol, categoryFr }) => {
                     <button
                       type="button"
                       className="btn btn-secondary"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Tooltip on top"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
                     >
                       Buy
                     </button>
+                    <ul
+                      className="dropdown-menu"
+                      style={{ textAlign: "center" }}
+                    >
+                      <li>Please login first!</li>
+                    </ul>
                   </td>
                 </tr>
               ))}

@@ -4,6 +4,7 @@ import { faX, faCheck, faCircle } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import getCurrencySymbol from "currency-symbols";
 import { useNavigate } from "react-router-dom";
+import moment from "moment/moment";
 
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
@@ -59,9 +60,16 @@ const P2PRequest = () => {
   //   };
 
   const req = () => {
+    const token = localStorage.getItem("token");
+
+    const opts = {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    };
     const url = `api/user/request/${email}/p2p`;
     axios
-      .get(url)
+      .get(url, opts)
       .then((response) => {
         setP2PRequest(response.data.request);
         toast.success(response.data.message);
@@ -101,6 +109,7 @@ const P2PRequest = () => {
               <th scope="col">To</th>
               <th scope="col">Method</th>
               <th scope="col">Amount</th>
+              <th scope="col">Date</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
@@ -125,6 +134,7 @@ const P2PRequest = () => {
                     } `}</span>
                     <span>{rs.amount ? rs.amount.toLocaleString() : "?"}</span>
                   </td>
+                  <td>{moment(rs.date).fromNow()}</td>
                   <td>
                     <span
                       className={`${

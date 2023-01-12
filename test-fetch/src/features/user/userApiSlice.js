@@ -18,10 +18,26 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     getUserWallet: build.query({
       query: ({ email }) => {
-        console.log(email);
         return {
           url: `api/wallet/info/${email}`,
         };
+      },
+    }),
+    funding: build.mutation({
+      query: ({ arg }) => {
+        console.log(arg);
+        // const { email, firstUnit, senderAddress, amount, recieverAddress } =
+        //   arg;
+        // return {
+        //   url: `api/user/request/${email}/funding`,
+        //   method: "POST",
+        //   params: {
+        //     firstUnit,
+        //     senderAddress,
+        //     amount,
+        //     recieverAddress,
+        //   },
+        // };
       },
     }),
   }),
@@ -31,4 +47,5 @@ export const {
   useGetUserQuery,
   useGetUserRecieptsQuery,
   useGetUserWalletQuery,
+  useFundingMutation,
 } = userApiSlice;

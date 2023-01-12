@@ -43,27 +43,27 @@ const Login = () => {
   const handleEmailInput = (e) => setEmail(e.target.value);
   const handlePwdInput = (e) => setPassword(e.target.value);
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      email: Yup.string()
-        .required("Required")
-        .matches(
-          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-          "Please enter your email"
-        ),
-      password: Yup.string()
-        .required("Required")
-        .matches(
-          /^[A-Za-z]\w{7,14}$/,
-          "Input Password and Submit [7 to 15 characters which contain only characters, numeric digits, underscore and first character must be a letter "
-        ),
-    }),
-    onSubmit,
-  });
+  // const formik = useFormik({
+  //   initialValues: {
+  //     email: "",
+  //     password: "",
+  //   },
+  //   validationSchema: Yup.object({
+  //     email: Yup.string()
+  //       .required("Required")
+  //       .matches(
+  //         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+  //         "Please enter your email"
+  //       ),
+  //     password: Yup.string()
+  //       .required("Required")
+  //       .matches(
+  //         /^[A-Za-z]\w{7,14}$/,
+  //         "Input Password and Submit [7 to 15 characters which contain only characters, numeric digits, underscore and first character must be a letter "
+  //       ),
+  //   }),
+  //   onSubmit,
+  // });
 
   // if (isLoading) {
   //   return <Loading />;
