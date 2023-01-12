@@ -1,11 +1,18 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
-
-const Exchange = () => {
+import { useRoute } from "@react-navigation/native";
+const Exchange = ({ navigation }) => {
   return (
-    <View>
-      <Text>Exchange</Text>
-    </View>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "black",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text style={{ color: "white" }}>Exchange with id : </Text>
+    </SafeAreaView>
   );
 };
 

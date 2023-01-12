@@ -6,7 +6,7 @@ import Market from "../../pages/Market/Market";
 import Exchange from "../../pages/Exchange/Exchange";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { COLORS } from "../../color/Color";
-import Aboutus from "../../pages/Aboutus/Aboutus";
+import Wallet from "../../pages/Wallet/Wallet";
 import StackNavigation from "./StackNavigation";
 const Tab = createBottomTabNavigator();
 const Tabs = () => {
@@ -23,8 +23,8 @@ const Tabs = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={StackNavigation}
+        name="Home1"
+        component={Home}
         options={{
           tabBarLabel: "Home",
           headerShown: false,
@@ -66,10 +66,10 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="Aboutus"
-        component={Aboutus}
+        name="Wallet"
+        component={Wallet}
         options={{
-          tabBarLabel: "About us",
+          tabBarLabel: "Wallet",
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>

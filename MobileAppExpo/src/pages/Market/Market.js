@@ -4,8 +4,8 @@ import { COLORS } from "../../color/Color";
 import ListCoin from "../../components/ListCoin/ListCoin";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-const Market = () => {
-  const navigation = useNavigation();
+import * as Animatable from "react-native-animatable";
+const Market = ({ navigation }) => {
   const [coinList, setCoinList] = useState([]);
   useEffect(() => {
     axios
@@ -31,19 +31,21 @@ const Market = () => {
         keyExtractor={(item) => item.id}
         data={coinList}
         renderItem={({ item }) => (
-          <ListCoin
-            urlLogo={item.image}
-            name={item.name}
-            symbol={item.usdt}
-            currentPrice={item.current_price}
-            priceChangePercentage24h={item.price_change_percentage_24h}
-            onPress={() => {
-              /* 1. Navigate to the Details route with params */
-              navigation.navigate("CoinDetail", {
-                id: item.id,
-              });
-            }}
-          />
+          <Animatable.View animation="slideInDown" duration={1000} delay={300}>
+            <ListCoin
+              urlLogo={item.image}
+              name={item.name}
+              symbol={item.usdt}
+              currentPrice={item.current_price}
+              priceChangePercentage24h={item.price_change_percentage_24h}
+              onPress={() => {
+                /* 1. Navigate to the Details route with params */
+                navigation.navigate("CoinDetail", {
+                  id: item.id,
+                });
+              }}
+            />
+          </Animatable.View>
         )}
       />
     </View>

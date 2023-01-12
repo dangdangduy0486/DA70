@@ -13,7 +13,7 @@ import Loading from "../../pages/Loading/Loading";
 import { useRoute } from "@react-navigation/native";
 import { COLORS } from "../../color/Color";
 const ChartCoin = ({ coin }) => {
-  const [isLoading, setIsLoading] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [chartCoin, setChartCoin] = useState([]);
   const [chartCoin1, setChartCoin1] = useState([]);

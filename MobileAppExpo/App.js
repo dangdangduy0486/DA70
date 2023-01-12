@@ -6,6 +6,7 @@ import Home from "./src/pages/Home/Home";
 import Login from "./src/pages/Login/Login";
 import Tabs from "./src/components/navigation/Tabs";
 import Market from "./src/pages/Market/Market";
+import StackNavigation from "./src/components/navigation/StackNavigation";
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
@@ -18,7 +19,7 @@ export default function App() {
         />
         <Stack.Screen name="Login" component={Login} />
       </Stack.Navigator> */}
-      <Tabs />
+      <StackNavigation />
     </NavigationContainer>
   );
 }

@@ -9,7 +9,7 @@ import { useRoute } from "@react-navigation/native";
 const BackAction = () => {
   const navigation = useNavigation();
   const hihi = () => {
-    navigation.navigate("Market");
+    navigation.goBack();
   };
   return (
     <View
@@ -24,7 +24,7 @@ const BackAction = () => {
       <View style={{ flex: 1, alignItems: "flex-start" }}>
         <TouchableOpacity
           style={{ flexDirection: "row", alignItems: "center" }}
-          onPress={hihi}
+          onPress={() => navigation.goBack()}
         >
           <MaterialCommunityIcons
             name="arrow-left-circle"

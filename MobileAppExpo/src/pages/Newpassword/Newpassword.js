@@ -59,7 +59,7 @@ const Newpassword = ({ navigation }) => {
           onSubmit={(values) => {
             setTimeout(() => {
               navigation.navigate("Login");
-              console.log(values);
+              console.log("hi", values);
             }, 3000);
           }}
         >

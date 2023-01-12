@@ -1,7 +1,14 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Animated,
+} from "react-native";
 import React from "react";
 import { COLORS } from "../../color/Color";
-
+import * as Animatable from "react-native-animatable";
 const ListCoin = ({
   urlLogo,
   name,

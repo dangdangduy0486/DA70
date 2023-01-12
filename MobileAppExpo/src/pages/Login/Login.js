@@ -54,7 +54,7 @@ const Login = ({ navigation }) => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             setTimeout(() => {
-              navigation.navigate("Home");
+              navigation.navigate("DBCoin");
             }, 3000);
             console.log(values);
           }}

@@ -16,7 +16,7 @@ import HomeCss from "./HomeCss";
 import Casourel from "../../components/Casourel/Casourel";
 import bao from "../../images/coin2.png";
 import { COLORS } from "../../color/Color";
-const Home = () => {
+const Home = ({ navigation }) => {
   const [trendCoin, setTrendCoin] = useState([]);
   useEffect(() => {
     axios
@@ -28,7 +28,7 @@ const Home = () => {
         console.log(error);
       });
   }, []);
-  const navigation = useNavigation();
+
   function headerView() {
     return (
       <View style={{ width: "100%", height: 200 }}>

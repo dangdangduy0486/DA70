@@ -16,9 +16,9 @@ import axios from "axios";
 import BackAction from "../../components/BackAction/BackAction";
 import ChartCoin from "../../components/ChartCoin/ChartCoin";
 import { COLORS } from "../../color/Color";
-const CoinDetail = (navigation) => {
+const CoinDetail = ({ navigation }) => {
   const regex = /(<([^>]+)>)/gi;
-  const [isLoading, setIsLoading] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [coinInfo, setCoinInfo] = useState([]);
   const [bao, setBao] = useState([]);
@@ -40,7 +40,7 @@ const CoinDetail = (navigation) => {
         setIsError(true);
       });
   }, [id]);
-  // console.log(coinInfo);
+
   if (!coinInfo || isError || isLoading) return <Loading />;
   function trading() {
     return (
@@ -98,6 +98,11 @@ const CoinDetail = (navigation) => {
               width: "100%",
               flexDirection: "row",
               justifyContent: "center",
+            }}
+            onPress={() => {
+              navigation.navigate("Exchange", {
+                name: coinInfo.name,
+              });
             }}
           >
             <Text style={{ fontWeight: "bold" }}>Buy</Text>
